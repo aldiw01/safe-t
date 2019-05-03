@@ -8,7 +8,7 @@ class Login extends Component {
     super();
     this.Auth = new AuthService();
     this.state = {
-      username: '',
+      email: '',
       password: '',
       isLoggedin: false
     }
@@ -30,7 +30,7 @@ class Login extends Component {
   handleFormSubmit = (event) => {
     this.setState({ loader: true });
     event.preventDefault();
-    this.Auth.login(this.state.username, this.state.password)
+    this.Auth.login(this.state.email, this.state.password)
       .then(res => {
         if (res.data.success) {
           this.setState({ loader: false });
@@ -60,11 +60,9 @@ class Login extends Component {
                         <p className="text-muted">Sign In to your account</p>
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-user"></i>
-                            </InputGroupText>
+                            <InputGroupText>@</InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="Username" autoComplete="username" name="username" onChange={this.handleChange} />
+                          <Input type="text" placeholder="E-mail" autoComplete="email" name="email" onChange={this.handleChange} />
                         </InputGroup>
                         <InputGroup className="mb-4">
                           <InputGroupAddon addonType="prepend">

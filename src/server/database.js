@@ -11,9 +11,10 @@ const c = new Client({
 
 module.exports = {
 
-	cekLogin: function (user, pass, callback) {
+	cekLogin: function (email, pass, callback) {
 		console.log("login");
-		c.query("SELECT * FROM data_admin WHERE username='" + user + "' AND password='" + pass + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		console.log(email + " " + pass)
+		c.query("SELECT * FROM data_admin WHERE email='" + email + "' AND password='" + pass + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -28,6 +29,7 @@ module.exports = {
 					});
 				});
 			}
+			console.log(data)
 			callback(err, data);
 		});
 		c.end();
@@ -158,7 +160,8 @@ module.exports = {
 			});
 		});
 		c.end();
-	}, verif: function (req, res, rand) {
+	},
+	verif: function (req, res, rand) {
 		c.query("INSERT INTO tbl_verif (email,token) VALUES ('" + req.email + "','" + rand + "')", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -201,7 +204,8 @@ module.exports = {
 			}
 		});
 		c.end();
-	}, isVerified: function (req, res) {
+	},
+	isVerified: function (req, res) {
 		c.query("UPDATE tbl_verif  SET token='closed' WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -216,7 +220,8 @@ module.exports = {
 			});
 		});
 		c.end();
-	}, forgotPass(req, res, rand) {
+	},
+	forgotPass(req, res, rand) {
 		c.query("INSERT INTO tbl_forgot (email,token) VALUES ('" + req.email + "','" + rand + "')", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -233,7 +238,8 @@ module.exports = {
 		});
 		c.end();
 
-	}, resetPassword: function (req, res) {
+	},
+	resetPassword: function (req, res) {
 		c.query("UPDATE tbl_pengguna  SET pass= PASSWORD('" + req.password + "') WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -248,6 +254,27 @@ module.exports = {
 				throw err;
 		});
 
+		c.end();
+	},
+	cekRegistered: function (req, res) {
+		c.query("SELECT * FROM data_admin WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			if (rows.info.numRows !== '0') {
+				res.json({
+					success: true,
+					err: null,
+					message: "email already registered"
+				});
+			} else {
+				res.json({
+					success: false,
+					err: null,
+					message: "email not registered"
+				});
+			}
+		});
 		c.end();
 	}
 

@@ -27,13 +27,13 @@ const secret = 'safe-t_dijalan';
 
 // LOGIN ROUTE
 app.post('/api/login', (req, res) => {
-	const { username } = req.body;
+	const { email } = req.body;
 
 	var mykey = crypto.createCipher('aes-128-cbc', secret);
 	var password = mykey.update(req.body.password, 'utf8', 'hex')
 	password += mykey.final('hex');
 
-	db.cekLogin(username, password, function (err, data) {
+	db.cekLogin(email, password, function (err, data) {
 		if (data.length === 1) {
 			//If all credentials are correct do this
 			let token = jwt.sign({
@@ -119,6 +119,10 @@ app.put('/api/admin/:id', (req, res) => {
 
 app.delete('/api/admin/:id', (req, res) => {
 	db.delAdmin(req, res);
+})
+
+app.post('/api/cekRegistered', (req, res) => {
+	db.cekRegistered(req.body, res);
 })
 
 // Starting the app on PORT 3000

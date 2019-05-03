@@ -9,10 +9,10 @@ export default class AuthService {
         this.getProfile = this.getProfile.bind(this)
     }
 
-    login(username, password) {
+    login(email, password) {
         // Get a token from api server using the fetch api
         var details = {
-            'username': username,
+            'email': email,
             'password': password
         };
         return (axios.post(localStorage.getItem('serverAPI') + '/login', details)

@@ -10,7 +10,11 @@ class Register extends Component {
       username: '',
       password: '',
       email: '',
-      isLoggedin: false
+      isLoggedin: false,
+      isPasswordConfirmed: false,
+      isRegisteredEmail: false,
+      isGoodName: false,
+      isGoodPassword: false
     }
   }
 
@@ -22,8 +26,57 @@ class Register extends Component {
     }
   }
 
-  handleChange = (event) => {
+  handleCheckUsername = (event) => {
     this.setState({ [event.target.name]: event.target.value })
+    console.log(event.target.value.length)
+    if (event.target.value.length > 5) {
+      this.setState({
+        isGoodName: true
+      })
+    } else {
+      this.setState({
+        isGoodName: false
+      })
+    }
+  }
+
+  handleCheckPassword = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+    console.log(event.target.value.length)
+    if (event.target.value.length > 5) {
+      this.setState({
+        isGoodPassword: true
+      })
+    } else {
+      this.setState({
+        isGoodPassword: false
+      })
+    }
+  }
+
+  handleChangeAndCheckEmail = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+
+    const data = new FormData()
+
+    data.append("email", event.target.value)
+    axios.post(localStorage.getItem('serverAPI') + '/cekRegistered', data, {
+    }).then(res => {
+      console.log(res.data);
+      if (res.data.success) {
+        this.setState({ isRegisteredEmail: true });
+      } else {
+        this.setState({ isRegisteredEmail: false });
+      }
+    });
+  }
+
+  handleConfirmPassword = (event) => {
+    if ((this.state.password === event.target.value) && (event.target.value.length > 5)) {
+      this.setState({ isPasswordConfirmed: true });
+    } else {
+      this.setState({ isPasswordConfirmed: false });
+    }
   }
 
   handleSubmit = (event) => {
@@ -60,15 +113,19 @@ class Register extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <i className="icon-check" style={{ position: 'absolute' }}></i>
-                        <Input type="text" placeholder="Username" autoComplete="username" name="username" onChange={this.handleChange} />
+                        {this.state.isGoodName ?
+                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
+                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
+                        <Input type="text" placeholder="Username" autoComplete="username" name="username" onChange={this.handleCheckUsername} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>@</InputGroupText>
                         </InputGroupAddon>
-                        <i className="icon-check" style={{ position: 'absolute' }}></i>
-                        <Input type="text" placeholder="Email" autoComplete="email" name="email" onChange={this.handleChange} />
+                        {!this.state.isRegisteredEmail && this.state.email !== '' ?
+                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
+                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
+                        <Input type="email" placeholder="Email" autoComplete="email" name="email" onChange={this.handleChangeAndCheckEmail} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -76,8 +133,10 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <i className="icon-check" style={{ position: 'absolute' }}></i>
-                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" onChange={this.handleChange} />
+                        {this.state.isGoodPassword ?
+                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
+                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
+                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" onChange={this.handleCheckPassword} required />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -85,10 +144,12 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <i className="icon-check" style={{ position: 'absolute' }}></i>
-                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" />
+                        {this.state.isPasswordConfirmed ?
+                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
+                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
+                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" onChange={this.handleConfirmPassword} required />
                       </InputGroup>
-                      <Button color="success" block type="submit">Create Account</Button>
+                      <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed} >Create Account</Button>
                     </Form>
                   </CardBody>
                   <CardFooter className="p-4">
