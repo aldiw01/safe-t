@@ -23,24 +23,29 @@ app.use(upload());
 const jwtMW = exjwt({
 	secret: 'safe-t_dijalan'
 });
-
+const secret = 'safe-t_dijalan';
 
 // LOGIN ROUTE
-app.post('api/login', (req, res) => {
-	const { username, password } = req.body;
-	var dt = [];
+app.post('/api/login', (req, res) => {
+	const { username } = req.body;
+
+	var mykey = crypto.createCipher('aes-128-cbc', secret);
+	var password = mykey.update(req.body.password, 'utf8', 'hex')
+	password += mykey.final('hex');
+
 	db.cekLogin(username, password, function (err, data) {
-		//res.json({a:'aaa'}); 
-		//var data = datas;
 		if (data.length === 1) {
 			//If all credentials are correct do this
-			let token = jwt.sign({ id: data[0].id, username: data[0].name, privilege_id: data[0].privilege_id, starttime: data[0].starttime, endtime: data[0].endtime, todayshiftname: data[0].shiftname }, 'telkom@DDS', { expiresIn: 129600 }); // Sigining the token
+			let token = jwt.sign({
+				id: data[0].id,
+				username: data[0].name,
+				email: data[0].email,
+			}, secret, { expiresIn: 129600 }); // Sigining the token
 			res.json({
 				success: true,
 				err: null,
 				token
 			});
-			//break;
 		}
 		else {
 			res.json({
@@ -52,7 +57,7 @@ app.post('api/login', (req, res) => {
 	});
 });
 
-app.get('api/', jwtMW /* Using the express jwt MW here */, (req, res) => {
+app.get('/api/', jwtMW /* Using the express jwt MW here */, (req, res) => {
 	res.send('You are authenticated'); //Sending some response when authenticated
 });
 
@@ -68,24 +73,52 @@ app.use(function (err, req, res, next) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // API List
-app.get('api/user', (req, res) => {
-	db.getUser(req.body, res);
+app.get('/api/user', (req, res) => {
+	db.getUserAll(req.body, res);
 })
 
-app.get('api/user/:id', (req, res) => {
-	db.getUser(req.body, res);
+app.get('/api/user/:id', (req, res) => {
+	db.getUser(req.params, res);
 })
 
-app.post('api/user', (req, res) => {
-	db.getUser(req.body, res);
+app.post('/api/user', (req, res) => {
+	var mykey = crypto.createCipher('aes-128-cbc', secret);
+	var password = mykey.update(req.body.password, 'utf8', 'hex')
+	password += mykey.final('hex');
+
+	db.newUser(req.body, password, res);
 })
 
-app.put('api/user/:id', (req, res) => {
-	db.getUser(req.body, res);
+app.put('/api/user/:id', (req, res) => {
+	db.updateUser(req, res);
 })
 
-app.delete('api/user/:id', (req, res) => {
-	db.getUser(req.body, res);
+app.delete('/api/user/:id', (req, res) => {
+	db.delUser(req, res);
+})
+
+app.get('/api/admin', (req, res) => {
+	db.getAdminAll(req.body, res);
+})
+
+app.get('/api/admin/:id', (req, res) => {
+	db.getAdmin(req.params, res);
+})
+
+app.post('/api/admin', (req, res) => {
+	var mykey = crypto.createCipher('aes-128-cbc', secret);
+	var password = mykey.update(req.body.password, 'utf8', 'hex')
+	password += mykey.final('hex');
+
+	db.newAdmin(req.body, password, res);
+})
+
+app.put('/api/admin/:id', (req, res) => {
+	db.updateAdmin(req, res);
+})
+
+app.delete('/api/admin/:id', (req, res) => {
+	db.delAdmin(req, res);
 })
 
 // Starting the app on PORT 3000

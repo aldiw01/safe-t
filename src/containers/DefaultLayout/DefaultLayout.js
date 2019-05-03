@@ -1,6 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
+import AuthService from '../../server/AuthService';
 
 import {
   AppAside,
@@ -24,11 +25,16 @@ const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
+  constructor() {
+    super();
+    this.Auth = new AuthService();
+  }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   signOut(e) {
     e.preventDefault()
+    this.Auth.logout();
     this.props.history.push('/login')
   }
 
@@ -67,7 +73,7 @@ class DefaultLayout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/login" />
+                  {localStorage.getItem('id_token') ? <Redirect from="/" to="/dashboard" /> : <Redirect from="/" to="/login" />}
                 </Switch>
               </Suspense>
             </Container>

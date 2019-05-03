@@ -1,4 +1,5 @@
 import decode from 'jwt-decode';
+import axios from 'axios';
 export default class AuthService {
     // Initializing important variables
     constructor(domain) {
@@ -14,20 +15,18 @@ export default class AuthService {
             'username': username,
             'password': password
         };
-        const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-
-        return this.fetch(`${this.domain}/api/login`, {
-            method: 'POST',
-            body: formBody
-        }).then(res => {
-            // console.log(res)
-            if (res.success) {
-                this.setToken(res.token) // Setting the token in localStorage
-                var id = this.getProfile();
-                localStorage.setItem('user_id', id.id);
-            }
-            return Promise.resolve(res);
-        })
+        return (axios.post(localStorage.getItem('serverAPI') + '/login', details)
+            .then(res => {
+                if (res.data.success) {
+                    this.setToken(res.data.token) // Setting the token in localStorage
+                    var id = this.getProfile();
+                    localStorage.setItem('user_id', id.id);
+                }
+                return Promise.resolve(res);
+            })
+            .catch(error => {
+                console.log(error);
+            }))
     }
 
     loggedIn() {
@@ -75,7 +74,7 @@ export default class AuthService {
         // performs api calls sending the required authentication headers
         const headers = {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
 
