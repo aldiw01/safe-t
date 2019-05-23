@@ -222,59 +222,43 @@ export default {
       },
     },
     {
-      divider: true,
+      name: 'Kendaraan',
+      url: '/kendaraan',
+      icon: 'fa fa-car'
     },
     {
-      title: true,
-      name: 'Extras',
-    },
-    {
-      name: 'Pages',
-      url: '/pages',
-      icon: 'icon-star',
+      name: 'User',
+      url: '/user',
+      icon: 'icon-user',
       children: [
         {
-          name: 'Login',
-          url: '/login',
-          icon: 'icon-star',
+          name: 'Daftar User',
+          url: '/user/list',
+          icon: 'icon-bell',
         },
         {
-          name: 'Register',
-          url: '/register',
-          icon: 'icon-star',
+          name: 'User Pending',
+          url: '/user/pending',
+          icon: 'icon-bell',
+        }
+      ]
+    },
+    {
+      name: 'Tiket',
+      url: '/tiket',
+      icon: 'icon-flag',
+      children: [
+        {
+          name: 'Tiket Aktif',
+          url: '/tiket/active',
+          icon: 'icon-bell',
         },
         {
-          name: 'Error 404',
-          url: '/404',
-          icon: 'icon-star',
-        },
-        {
-          name: 'Error 500',
-          url: '/500',
-          icon: 'icon-star',
-        },
-      ],
-    },
-    {
-      name: 'Disabled',
-      url: '/dashboard',
-      icon: 'icon-ban',
-      attributes: { disabled: true },
-    },
-    {
-      name: 'Download CoreUI',
-      url: 'https://coreui.io/react/',
-      icon: 'icon-cloud-download',
-      class: 'mt-auto',
-      variant: 'success',
-      attributes: { target: '_blank', rel: "noopener" },
-    },
-    {
-      name: 'Try CoreUI PRO',
-      url: 'https://coreui.io/pro/react/',
-      icon: 'icon-layers',
-      variant: 'danger',
-      attributes: { target: '_blank', rel: "noopener" },
-    },
-  ],
+          name: 'Tiket Closed',
+          url: '/tiket/closed',
+          icon: 'icon-bell',
+        }
+      ]
+    }
+  ]
 };

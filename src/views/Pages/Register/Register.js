@@ -10,11 +10,19 @@ class Register extends Component {
       username: '',
       password: '',
       email: '',
+      KTP: '',
+      CaptureKTP: '',
       isLoggedin: false,
       isPasswordConfirmed: false,
       isRegisteredEmail: false,
       isGoodName: false,
-      isGoodPassword: false
+      isGoodEmail: false,
+      isGoodPassword: false,
+      isGoodKTP: false,
+      isEmailClicked: false,
+      isNameClicked: false,
+      isPasswordClicked: false,
+      isKTPClicked: false
     }
   }
 
@@ -56,19 +64,30 @@ class Register extends Component {
 
   handleChangeAndCheckEmail = (event) => {
     this.setState({ [event.target.name]: event.target.value })
+    let validate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const data = new FormData()
+    console.log(validate.test(event.target.value))
+    if (validate.test(event.target.value)) {
+      this.setState({
+        isGoodEmail: true
+      })
+      const data = new FormData()
 
-    data.append("email", event.target.value)
-    axios.post(localStorage.getItem('serverAPI') + '/cekRegistered', data, {
-    }).then(res => {
-      console.log(res.data);
-      if (res.data.success) {
-        this.setState({ isRegisteredEmail: true });
-      } else {
-        this.setState({ isRegisteredEmail: false });
-      }
-    });
+      data.append("email", event.target.value)
+      axios.post(localStorage.getItem('serverAPI') + '/cekRegistered', data, {
+      }).then(res => {
+        console.log(res.data);
+        if (res.data.success) {
+          this.setState({ isRegisteredEmail: true });
+        } else {
+          this.setState({ isRegisteredEmail: false });
+        }
+      });
+    } else {
+      this.setState({
+        isGoodEmail: false
+      })
+    }
   }
 
   handleConfirmPassword = (event) => {
@@ -77,6 +96,25 @@ class Register extends Component {
     } else {
       this.setState({ isPasswordConfirmed: false });
     }
+  }
+
+  handleCheckKTP = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+    console.log(event.target.value.length)
+    if (event.target.value.length == 16 && !isNaN(event.target.value)) {
+      this.setState({
+        isGoodKTP: true
+      })
+    } else {
+      this.setState({
+        isGoodKTP: false
+      })
+    }
+  }
+
+  handleCheckCaptureKTP = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+    console.log(event.target.value)
   }
 
   handleSubmit = (event) => {
@@ -113,19 +151,13 @@ class Register extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        {this.state.isGoodName ?
-                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
-                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
-                        <Input type="text" placeholder="Username" autoComplete="username" name="username" onChange={this.handleCheckUsername} required />
+                        <Input type="text" placeholder="Full Name" autoComplete="username" name="username" className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>@</InputGroupText>
                         </InputGroupAddon>
-                        {!this.state.isRegisteredEmail && this.state.email !== '' ?
-                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
-                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
-                        <Input type="email" placeholder="Email" autoComplete="email" name="email" onChange={this.handleChangeAndCheckEmail} required />
+                        <Input type="email" placeholder="Email" autoComplete="email" name="email" className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -133,35 +165,30 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        {this.state.isGoodPassword ?
-                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
-                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
-                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" onChange={this.handleCheckPassword} required />
+                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
                       </InputGroup>
-                      <InputGroup className="mb-4">
+                      <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        {this.state.isPasswordConfirmed ?
-                          <i className="icon-check" style={{ position: 'absolute' }}></i> :
-                          <i className="icon-close" style={{ position: 'absolute' }}></i>}
-                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" onChange={this.handleConfirmPassword} required />
+                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
                       </InputGroup>
-                      <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed} >Create Account</Button>
+                      <InputGroup className="mb-1">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="fa fa-id-card-o"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input type="text" placeholder="No. KTP" name="KTP" className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
+                      </InputGroup>
+                      <InputGroup className="mb-4 input-group border rounded p-1">
+                        <Input type="file" id="file-input" name="CaptureKTP" required onChange={this.handleCheckCaptureKTP} />
+                      </InputGroup>
+                      <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.CaptureKTP} >Create Account</Button>
                     </Form>
                   </CardBody>
-                  <CardFooter className="p-4">
-                    <Row>
-                      <Col xs="12" sm="6">
-                        <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
-                      </Col>
-                      <Col xs="12" sm="6">
-                        <Button className="btn-twitter mb-1" block><span>twitter</span></Button>
-                      </Col>
-                    </Row>
-                  </CardFooter>
                 </Card>
               </Col>
             </Row>

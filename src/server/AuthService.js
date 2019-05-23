@@ -15,7 +15,7 @@ export default class AuthService {
             'email': email,
             'password': password
         };
-        return (axios.post(localStorage.getItem('serverAPI') + '/login', details)
+        return (axios.post(localStorage.getItem('serverAPI') + '/loginAdmin', details)
             .then(res => {
                 if (res.data.success) {
                     this.setToken(res.data.token) // Setting the token in localStorage

@@ -22,7 +22,7 @@ const ButtonDropdowns = React.lazy(() => import('./views/Buttons/ButtonDropdowns
 const ButtonGroups = React.lazy(() => import('./views/Buttons/ButtonGroups'));
 const Buttons = React.lazy(() => import('./views/Buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/Charts'));
-const Dashboard = React.lazy(() => import('./views/Dashboard'));
+// const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const CoreUIIcons = React.lazy(() => import('./views/Icons/CoreUIIcons'));
 const Flags = React.lazy(() => import('./views/Icons/Flags'));
 const FontAwesome = React.lazy(() => import('./views/Icons/FontAwesome'));
@@ -35,6 +35,12 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
+const Dashboard = React.lazy(() => import('./views/Admin/Dashboard'));
+const Kendaraan = React.lazy(() => import('./views/Admin/Kendaraan'));
+const Active = React.lazy(() => import('./views/Admin/Tiket/Active'));
+const Closed = React.lazy(() => import('./views/Admin/Tiket/Closed'));
+const List = React.lazy(() => import('./views/Admin/User/List'));
+const Pending = React.lazy(() => import('./views/Admin/User/Pending'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -77,8 +83,15 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
+  { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/kendaraan', name: 'Kendaraan', component: Kendaraan },
+  { path: '/tiket', exact: true, name: 'Tiket', component: Active },
+  { path: '/tiket/active', name: 'Active', component: Active },
+  { path: '/tiket/closed', name: 'Closed', component: Closed },
+  { path: '/user', exact: true, name: 'User', component: List },
+  { path: '/user/list', name: 'List', component: List },
+  { path: '/user/pending', name: 'Pending', component: Pending }
 ];
 
 export default routes;

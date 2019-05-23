@@ -1,1 +1,8 @@
 
+.dataTables_filter {
+  float: right;
+}
+
+.pagination {
+  float: right;
+}

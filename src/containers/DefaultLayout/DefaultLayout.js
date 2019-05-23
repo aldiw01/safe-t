@@ -41,6 +41,7 @@ class DefaultLayout extends Component {
   render() {
     return (
       <div className="app">
+        {localStorage.getItem('id_token') ? "" : <Redirect from="/" to="/login" />}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />
@@ -73,16 +74,15 @@ class DefaultLayout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  {localStorage.getItem('id_token') ? <Redirect from="/" to="/dashboard" /> : <Redirect from="/" to="/login" />}
                 </Switch>
               </Suspense>
             </Container>
           </main>
-          <AppAside fixed>
+          {/* <AppAside fixed>
             <Suspense fallback={this.loading()}>
               <DefaultAside />
             </Suspense>
-          </AppAside>
+          </AppAside> */}
         </div>
         <AppFooter>
           <Suspense fallback={this.loading()}>

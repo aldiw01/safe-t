@@ -1,0 +1,6 @@
+{
+  "name": "Kendaraan",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Kendaraan.js"
+}

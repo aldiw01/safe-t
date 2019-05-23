@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.png'
 import sygnet from '../../assets/img/brand/mascot.png'
+import AuthService from '../../server/AuthService'
 
 const propTypes = {
   children: PropTypes.node,
@@ -14,10 +15,17 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+  constructor(props) {
+    super(props);
+    this.Auth = new AuthService();
+  }
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    const user = this.Auth.getProfile().username;
+    console.log(user)
 
     return (
       <React.Fragment>
@@ -43,11 +51,8 @@ class DefaultHeader extends Component {
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
           </NavItem>
-          <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>
-          </NavItem>
-          <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-location-pin"></i></NavLink>
+          <NavItem className="px-3 border-right border-secondary">
+            <NavLink to="#" className="nav-link text-capitalize">{user}</NavLink>
           </NavItem>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
@@ -60,7 +65,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
+              <DropdownItem onClick={e => window.location.href = "/users"}><i className="fa fa-user"></i> Profile</DropdownItem>
               <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>
               <DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>
               <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
@@ -70,7 +75,7 @@ class DefaultHeader extends Component {
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
-        <AppAsideToggler className="d-md-down-none" />
+        {/* <AppAsideToggler className="d-md-down-none" /> */}
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
     );

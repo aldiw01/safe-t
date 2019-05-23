@@ -11,10 +11,10 @@ const c = new Client({
 
 module.exports = {
 
-	cekLogin: function (email, pass, callback) {
-		console.log("login");
-		console.log(email + " " + pass)
-		c.query("SELECT * FROM data_admin WHERE email='" + email + "' AND password='" + pass + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+	cekLoginAdmin: function (email, pass, callback) {
+		console.log("loginAdmin");
+		var req = [email, pass];
+		c.query("SELECT * FROM data_admin WHERE email = ? AND password = ?", req, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -30,6 +30,34 @@ module.exports = {
 				});
 			}
 			console.log(data)
+			callback(err, data);
+		});
+		c.end();
+	},
+	cekLoginUser: function (email, pass, callback) {
+		console.log("loginUser");
+		var req = [email, pass];
+		c.query("SELECT * FROM data_user WHERE email = ? AND password = ?", req, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			if (rows.info.numRows !== '0') {
+				rows.forEach(function (items) {
+					data.push({
+						id: items[0],
+						username: items[1],
+						password: items[2],
+						nama: items[3],
+						email: items[4],
+						kontak: items[5],
+						no_ktp: items[6],
+						kelamin: items[7],
+						alamat: items[8],
+						log: items[9]
+					});
+				});
+			}
 			callback(err, data);
 		});
 		c.end();
@@ -63,7 +91,7 @@ module.exports = {
 		c.end();
 	},
 	getUser: function (req, res) {
-		c.query("SELECT * FROM `data_user`WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT * FROM `data_user` WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -105,7 +133,7 @@ module.exports = {
 	},
 	delUser: function (req, res) {
 		//console.log(req.id)
-		c.query("DELETE FROM tbl_pengguna WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("DELETE FROM data_user WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 			res.json({
@@ -117,7 +145,7 @@ module.exports = {
 		c.end();
 	},
 	updateUser: function (req, res) {
-		c.query("UPDATE tbl_pengguna  SET nik='" + req.nik + "',name='" + req.username + "',email='" + req.email + "',phone='" + req.phone + "',loker='" + req.loker + "',logintype='" + req.logintype + "',privilege_id='" + req.privilege_id + "' WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("UPDATE data_user  SET nik='" + req.nik + "',name='" + req.username + "',email='" + req.email + "',phone='" + req.phone + "',loker='" + req.loker + "',logintype='" + req.logintype + "',privilege_id='" + req.privilege_id + "' WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 

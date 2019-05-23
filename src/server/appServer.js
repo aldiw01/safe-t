@@ -26,14 +26,46 @@ const jwtMW = exjwt({
 const secret = 'safe-t_dijalan';
 
 // LOGIN ROUTE
-app.post('/api/login', (req, res) => {
+app.post('/api/loginAdmin', (req, res) => {
+	const { email } = req.body;
+	console.log(req.body);
+
+	var mykey = crypto.createCipher('aes-128-cbc', secret);
+	var password = mykey.update(req.body.password, 'utf8', 'hex')
+	password += mykey.final('hex');
+
+	db.cekLoginAdmin(email, password, function (err, data) {
+		if (data.length === 1) {
+			//If all credentials are correct do this
+			let token = jwt.sign({
+				id: data[0].id,
+				username: data[0].username,
+				email: data[0].email,
+			}, secret, { expiresIn: 129600 }); // Sigining the token
+			res.json({
+				success: true,
+				err: null,
+				token
+			});
+		}
+		else {
+			res.json({
+				success: false,
+				token: null,
+				err: 'Username or password is incorrect'
+			});
+		}
+	});
+});
+
+app.post('/api/loginUser', (req, res) => {
 	const { email } = req.body;
 
 	var mykey = crypto.createCipher('aes-128-cbc', secret);
 	var password = mykey.update(req.body.password, 'utf8', 'hex')
 	password += mykey.final('hex');
 
-	db.cekLogin(email, password, function (err, data) {
+	db.cekLoginUser(email, password, function (err, data) {
 		if (data.length === 1) {
 			//If all credentials are correct do this
 			let token = jwt.sign({
