@@ -1,39 +1,62 @@
 const express = require('express');
 var app = express();
-var upload = require('express-fileupload');
 var db = require('./database.js');
+const multer = require('multer');
 
-app.use(upload());
+const storageVehicle = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/uploads/vehicle/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '_' + file.originalname);
+  }
+})
+
+const storageTicket = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/uploads/ticket/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '_' + file.originalname);
+  }
+})
+
+function fileFilter(req, file, cb) {
+  if (file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb({ message: 'Only for image (jpg/jpeg/png).' }, false);
+  }
+};
 
 module.exports = {
-
-    sendFile:function(req,res,docPath,username,id){
-      if(req){
-        var file = req,
-          name = "["+username+"] "+file.name,
-          type = file.mimetype;
-        var uploadpath = __dirname + '/uploads/'+docPath+'/'+ name;
-        file.mv(uploadpath,function(err){
-          if(err){
-            console.log("File Upload Failed",name,err);
-            console.log(uploadpath);
-            //res.send("Error Occured!")
-          }
-          else {
-            console.log("File Uploaded",name);
-            console.log(uploadpath);
-            //res.send('Done! Uploading files')
-          }
-        });
-        db.dirFileAlihkelola(username,docPath,name,id);
+  sendFile: function (req, res) {
+    var upload = multer({
+      storage: storageVehicle,
+      limits: {
+        fileSize: 1024 * 1024
+      },
+      fileFilter: fileFilter
+    }).single('fileImage');
+    console.log("HERE");
+    upload(req, res, function (err) {
+      if (err instanceof multer.MulterError) {
+        // A Multer error occurred when uploading.
+        res.send(err);
+        console.log("HERE2");
+        return
+      } else if (err) {
+        // An unknown error occurred when uploading.
+        res.send(err);
+        console.log("HERE2");
+        return
+      } else if (req.file == undefined) {
+        res.send('index', { message: 'No file selected!' })
+        console.log("HERE2");
+        return
       }
-      else {
-        //res.send("No File selected !");
-       // res.end();
-      };
-
-
-    }
-    
-
+      // Everything went fine.
+      console.log('Upload success.');
+    })
+  }
 }

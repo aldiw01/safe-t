@@ -1,8 +1,28 @@
 
+html {
+  overflow: overlay;
+}
+
 .dataTables_filter {
   float: right;
 }
 
 .pagination {
   float: right;
+}
+
+.modal-body-display {
+  display: flex;
+}
+
+@media (max-width: 992px) {
+  .modal-body-display {
+    display: block !important;
+  }
+}
+
+@media (width: 992px) {
+  .modal-body-display {
+    display: flex !important;
+  }
 }

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Link, Redirect } from 'react-router-dom';
+import { Alert, Button, Card, CardBody, CardHeader, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      name: '',
       password: '',
+      passwordVal: '',
       email: '',
-      KTP: '',
-      CaptureKTP: '',
+      citizen_id: '',
+      fileImage: '',
       isLoggedin: false,
       isPasswordConfirmed: false,
       isRegisteredEmail: false,
@@ -22,7 +23,10 @@ class Register extends Component {
       isEmailClicked: false,
       isNameClicked: false,
       isPasswordClicked: false,
-      isKTPClicked: false
+      isKTPClicked: false,
+      visible: false,
+      message: '',
+      badge: 'info'
     }
   }
 
@@ -32,6 +36,10 @@ class Register extends Component {
         isLoggedin: true
       })
     }
+  }
+
+  onDismiss = () => {
+    this.setState({ visible: false });
   }
 
   handleCheckUsername = (event) => {
@@ -91,6 +99,7 @@ class Register extends Component {
   }
 
   handleConfirmPassword = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
     if ((this.state.password === event.target.value) && (event.target.value.length > 5)) {
       this.setState({ isPasswordConfirmed: true });
     } else {
@@ -113,19 +122,53 @@ class Register extends Component {
   }
 
   handleCheckCaptureKTP = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value)
+    this.setState({ [event.target.name]: event.target.files[0] })
+    console.log(event.target.files[0])
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    axios.post(localStorage.getItem('serverAPI') + '/admin', this.state)
+    const data = new FormData();
+    data.append('name', this.state.name);
+    data.append('email', this.state.email);
+    data.append('password', this.state.password);
+    data.append('citizen_id', this.state.citizen_id);
+    data.append('fileImage', this.state.fileImage);
+    axios.post(localStorage.getItem('serverAPI') + '/admin', data)
       .then(res => {
         if (res.data.success) {
-          alert('Account registered successfully. Please check your e-mail to activate your account.');
-          window.location.reload();
+          this.setState({
+            name: '',
+            password: '',
+            passwordVal: '',
+            email: '',
+            citizen_id: '',
+            fileImage: '',
+            isLoggedin: false,
+            isPasswordConfirmed: false,
+            isRegisteredEmail: false,
+            isGoodName: false,
+            isGoodEmail: false,
+            isGoodPassword: false,
+            isGoodKTP: false,
+            isEmailClicked: false,
+            isNameClicked: false,
+            isPasswordClicked: false,
+            isKTPClicked: false,
+            visible: true,
+            message: 'Account registered successfully. Please check your e-mail to activate your account.',
+            badge: 'success'
+          })
+          // alert('Account registered successfully. Please check your e-mail to activate your account.');
+          // window.location.reload();
         } else {
-          alert('Register failed, please try again later');
+          this.setState({
+            visible: true,
+            message: res.data.message,
+            badge: 'warning'
+          })
+          // alert(res.data.message);
+          console.log(res.data);
         }
       })
       .catch(error => {
@@ -138,11 +181,18 @@ class Register extends Component {
       this.state.isLoggedin ? <Redirect to="/dashboard" /> :
         <div className="app flex-row align-items-center">
           <Container>
+            <Row className="w-50 m-auto">
+              <Col xs="12">
+                <Alert color={this.state.badge} isOpen={this.state.visible} toggle={this.onDismiss}>
+                  {this.state.message}
+                </Alert>
+              </Col>
+            </Row>
             <Row className="justify-content-center">
               <Col md="9" lg="7" xl="6">
                 <Card className="mx-4">
                   <CardBody className="p-4">
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form method="post" enctype="multipart/form-data" onSubmit={this.handleSubmit}>
                       <h1>Register</h1>
                       <p className="text-muted">Create your account</p>
                       <InputGroup className="mb-3">
@@ -151,13 +201,13 @@ class Register extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Full Name" autoComplete="username" name="username" className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
+                        <Input type="text" placeholder="Full Name" autoComplete="name" name="name" value={this.state.name} className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>@</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" placeholder="Email" autoComplete="email" name="email" className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
+                        <Input type="email" placeholder="Email" autoComplete="email" name="email" value={this.state.email} className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -165,7 +215,7 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
+                        <Input type="password" placeholder="Password" autoComplete="new-password" name="password" value={this.state.password} className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
                       </InputGroup>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
@@ -173,7 +223,7 @@ class Register extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
+                        <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="passwordVal" value={this.state.passwordVal} className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
                       </InputGroup>
                       <InputGroup className="mb-1">
                         <InputGroupAddon addonType="prepend">
@@ -181,12 +231,15 @@ class Register extends Component {
                             <i className="fa fa-id-card-o"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="No. KTP" name="KTP" className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
+                        <Input type="text" placeholder="No. KTP" name="citizen_id" value={this.state.citizen_id} className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
                       </InputGroup>
                       <InputGroup className="mb-4 input-group border rounded p-1">
-                        <Input type="file" id="file-input" name="CaptureKTP" required onChange={this.handleCheckCaptureKTP} />
+                        <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
                       </InputGroup>
-                      <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.CaptureKTP} >Create Account</Button>
+                      <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.fileImage} >Create Account</Button>
+                      <Link to="/login">
+                        <Button color="primary" className="w-100 mt-4" active tabIndex={-1}>Login</Button>
+                      </Link>
                     </Form>
                   </CardBody>
                 </Card>

@@ -2,6 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import AuthService from '../../server/AuthService';
+import axios from 'axios';
 
 import {
   AppAside,
@@ -28,6 +29,7 @@ class DefaultLayout extends Component {
   constructor() {
     super();
     this.Auth = new AuthService();
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
   }
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
@@ -41,7 +43,7 @@ class DefaultLayout extends Component {
   render() {
     return (
       <div className="app">
-        {localStorage.getItem('id_token') ? "" : <Redirect from="/" to="/login" />}
+        {this.Auth.loggedIn() ? "" : <Redirect from="/" to="/login" />}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />

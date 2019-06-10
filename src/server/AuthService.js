@@ -41,8 +41,9 @@ export default class AuthService {
             if (decoded.exp < Date.now() / 1000) { // Checking if token is expired. N
                 return true;
             }
-            else
+            else {
                 return false;
+            }
         }
         catch (err) {
             return false;
