@@ -5,11 +5,30 @@ export default class AuthService {
     constructor(domain) {
         this.domain = domain || 'http://localhost:8900' // API server domain
         this.fetch = this.fetch.bind(this) // React binding stuff
-        this.login = this.login.bind(this)
+        this.loginUser = this.loginUser.bind(this)
+        this.loginAdmin = this.loginAdmin.bind(this)
         this.getProfile = this.getProfile.bind(this)
     }
 
-    login(email, password) {
+    loginUser(email, password) {
+        // Get a token from api server using the fetch api
+        var details = {
+            'email': email,
+            'password': password
+        };
+        return (axios.post(localStorage.getItem('serverAPI') + '/loginUser', details)
+            .then(res => {
+                if (res.data.success) {
+                    this.setToken(res.data.token) // Setting the token in localStorage
+                }
+                return Promise.resolve(res);
+            })
+            .catch(error => {
+                console.log(error);
+            }))
+    }
+
+    loginAdmin(email, password) {
         // Get a token from api server using the fetch api
         var details = {
             'email': email,
@@ -19,8 +38,6 @@ export default class AuthService {
             .then(res => {
                 if (res.data.success) {
                     this.setToken(res.data.token) // Setting the token in localStorage
-                    var id = this.getProfile();
-                    localStorage.setItem('user_id', id.id);
                 }
                 return Promise.resolve(res);
             })

@@ -12,20 +12,30 @@ class List extends Component {
       edit: false,
       delete: false,
       data: [{
+        id: 0,
         name: '',
         email: '',
         phone: '',
         citizen_id: '',
+        captured_id: '',
         gender: '',
         address: '',
+        status: '',
+        created: '',
+        updated: ''
       }],
       focus: [{
-        owner: '',
-        vehicle_id: '',
-        brand: '',
-        type: '',
-        build_year: '',
-        color: '',
+        id: 0,
+        name: '',
+        email: '',
+        phone: '',
+        citizen_id: '',
+        captured_id: '',
+        gender: '',
+        address: '',
+        status: '',
+        created: '',
+        updated: ''
       }]
     }
   }
@@ -164,7 +174,7 @@ class List extends Component {
     data.rows.forEach(function (items, i) {
       if (items.status === "1") {
         rows.push({
-          id: items.id,
+          id: parseInt(items.id),
           name: items.name,
           email: items.email,
           phone: items.phone,
@@ -206,6 +216,9 @@ class List extends Component {
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
+                        <Col xs="3">ID</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.id}</Col>
+                        <div className="w-100 py-2"></div>
                         <Col xs="3">Nama</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.name}</Col>
                         <div className="w-100 py-2"></div>
@@ -224,10 +237,19 @@ class List extends Component {
                         <Col xs="3">Alamat</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.address}</Col>
                         <div className="w-100 py-2"></div>
+                        <Col xs="3">Status</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Verified</Col>
+                        <div className="w-100 py-2"></div>
+                        <Col xs="3">Created</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
+                        <div className="w-100 py-2"></div>
+                        <Col xs="3">Updated</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
+                        <div className="w-100 py-2"></div>
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src='/assets/guide/zhiyong-li-24s.jpg' alt='KTP' />
+                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/user/' + this.state.focus.captured_id} alt='KTP' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>

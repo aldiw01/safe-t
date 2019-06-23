@@ -1,15 +1,13 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
-  "version": "2.1.6",
-  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "https://coreui.io",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "name": "safe-t",
+  "version": "0.1.0",
+  "description": "Smart IoT Applications for Orderly Traffic",
+  "author": "Aldi Wiranata",
+  "copyright": "Copyright 2019 IMV Laboratory Aldi Wiranata",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
+    "url": "https://github.com/GammaMatch/safe-t.git"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.9",
@@ -60,7 +58,7 @@
     "eject": "react-scripts eject"
   },
   "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+    "url": "https://github.com/GammaMatch/safe-t/issues"
   },
   "eslintConfig": {
     "extends": "react-app"

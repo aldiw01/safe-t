@@ -1,0 +1,6 @@
+{
+  "name": "RegisterAdmin",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./RegisterAdmin.js"
+}

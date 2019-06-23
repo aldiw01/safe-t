@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var sendEmail = require('./emailVerification.js');
+var mailService = require('./mailService.js');
 const Client = require('mariasql');
 const c = new Client({
 	host: 'localhost',
@@ -12,9 +12,8 @@ const c = new Client({
 module.exports = {
 
 	cekLoginAdmin: function (email, pass, callback) {
-		console.log("loginAdmin");
 		var req = [email, pass];
-		c.query("SELECT * FROM data_admin WHERE email = ? AND password = ?", req, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT * FROM data_admin WHERE email=? AND password=?", req, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -23,21 +22,21 @@ module.exports = {
 				rows.forEach(function (items) {
 					data.push({
 						id: items[0],
-						username: items[1],
-						password: items[2],
+						name: items[1],
 						email: items[3],
+						citizen_id: items[4],
+						captured_id: items[5],
+						previledge_id: items[6]
 					});
 				});
 			}
-			console.log(data)
 			callback(err, data);
 		});
 		c.end();
 	},
 	cekLoginUser: function (email, pass, callback) {
-		console.log("loginUser");
 		var req = [email, pass];
-		c.query("SELECT * FROM data_user WHERE email = ? AND password = ?", req, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT * FROM data_user WHERE email=? AND password=?", req, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -46,15 +45,14 @@ module.exports = {
 				rows.forEach(function (items) {
 					data.push({
 						id: items[0],
-						password: items[1],
 						name: items[2],
 						email: items[3],
 						phone: items[4],
 						citizen_id: items[5],
-						gender: items[6],
-						address: items[7],
-						created: items[8],
-						updated: items[9]
+						captured_id: items[6],
+						gender: items[7],
+						address: items[8],
+						status: items[9]
 					});
 				});
 			}
@@ -62,195 +60,69 @@ module.exports = {
 		});
 		c.end();
 	},
-	getUserAll: function (req, res) {
-		c.query('SELECT * FROM `data_user` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
+	verifyToken: function (req, res) {
+		c.query("SELECT `email` FROM `verification_token` WHERE `token`=? AND `status`=0", [req.token], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
-			var data = [];
-			rows.forEach(function (items) {
-				data.push({
-					id: items[0],
-					password: items[1],
-					name: items[2],
-					email: items[3],
-					phone: items[4],
-					citizen_id: items[5],
-					gender: items[6],
-					address: items[7],
-					status: items[8],
-					created: items[9],
-					updated: items[10]
+			if (rows.info.numRows !== '0') {
+				rows.forEach(function (items) {
+					c.query("UPDATE `verification_token` SET status='1' WHERE `email`=?", [items[0]], { metadata: true, useArray: true }, function (err, rows) {
+						if (err)
+							throw err;
+					});
+					c.query("UPDATE `data_user` SET status='1' WHERE email=?", [items[0]], { metadata: true, useArray: true }, function (err, rows) {
+						if (err)
+							throw err;
+
+						res.json({
+							success: true,
+							err: null,
+							message: "Thank you for verifying your email. Your account has been activated"
+						});
+					});
 				});
-			});
-			if (data.length < 1) {
-				res.status(404).send('Data not found.');
 			} else {
-				res.json(data);
+				res.json({
+					success: false,
+					err: null,
+					message: "Invalid token!"
+				});
 			}
 		});
 		c.end();
 	},
-	getUser: function (req, res) {
-		c.query("SELECT * FROM `data_user` WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+	verifyUser: function (req, res) {
+		c.query("UPDATE `data_user` SET status='1' WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
-			var data = [];
-			rows.forEach(function (items) {
-				data.push({
-					id: items[0],
-					password: items[1],
-					name: items[2],
-					email: items[3],
-					phone: items[4],
-					citizen_id: items[5],
-					gender: items[6],
-					address: items[7],
-					status: items[8],
-					created: items[9],
-					updated: items[10]
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	checkVerified: function (req, res) {
+		c.query("SELECT `status` FROM `data_user` WHERE `id`=? AND `status`=1", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			if (rows.info.numRows !== '0') {
+				res.json({
+					success: true,
+					err: null,
+					message: "User already verified"
 				});
-			});
-			if (data.length < 1) {
-				res.status(404).send('Data not found.');
 			} else {
-				res.json(data);
-			}
-		});
-		c.end();
-	},
-	newUser: function (req, password, res) {
-		c.query("INSERT INTO data_user (username, password, nama, email, kontak, no_ktp, kelamin, alamat) VALUES ('" + req.username + "','" + password + "','" + req.email + "','" + req.kontak + "','" + req.no_ktp + "','" + req.kelamin + "','" + req.alamat + "')", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	delUser: function (req, res) {
-		//console.log(req.id)
-		c.query("DELETE FROM data_user WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	updateUser: function (req, res) {
-		c.query("UPDATE data_user  SET nik='" + req.nik + "',name='" + req.username + "',email='" + req.email + "',phone='" + req.phone + "',loker='" + req.loker + "',logintype='" + req.logintype + "',privilege_id='" + req.privilege_id + "' WHERE id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			//console.log(rows);
-			//let data = {data:rows};
-			//console.log(res.end(rows.info.affectedRows));
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	newAdmin: function (req, password, res) {
-		console.log("req.body");
-		console.log(req);
-		var request = [req.name, password, req.email, req.citizen_id, req.captured_id]
-		c.query("INSERT INTO `data_admin` (`name`, `password`, `email`, `citizen_id`, `captured_id`) VALUES (?, ?, ?, ?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	regist: function (req, res) {
-		c.query("INSERT INTO tbl_pengguna (name,email,pass,phone,nik,privilege_id,loker) VALUES ('" + req.username + "','" + req.email + "',PASSWORD('" + req.password + "'),'" + req.phone + "','" + req.nik + "',6,'')", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			console.log("hahaha");
-			//let data = {data:rows};
-			//console.log(res.end(rows.info.affectedRows));
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	verif: function (req, res, rand) {
-		c.query("INSERT INTO tbl_verif (email,token) VALUES ('" + req.email + "','" + rand + "')", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-			var subject = "Verify Your Email";
-			var page = "verf";
-			sendEmail.sendMail(req.email, rand, subject, page);
-			//let data = {data:rows};
-			//console.log(res.end(rows.info.affectedRows));
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
-		});
-		c.end();
-	},
-	isToken: function (req, res) {
-		if (req.page == "") {
-
-		}
-		c.query("SELECT email FROM " + req.table + " WHERE token ='" + req.token + "'", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			//dbCallback(null,rows);
-			var isEmpty = false;
-			var data = [];
-			rows.forEach(function (items) {
-				isEmpty = true;
-				data.push({
-					email: items[0],
-					emil: items[0]
+				res.json({
+					success: false,
+					err: null,
+					message: "User is not verified"
 				});
-			});
-			if (isEmpty) {
-				res.json({ data: data[0].email });
-			} else {
-				//let data = {data:rows};
-				res.json({ data: "data is empty" });
 			}
-		});
-		c.end();
-	},
-	isVerified: function (req, res) {
-		c.query("UPDATE tbl_verif  SET token='closed' WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
-				throw err;
-
-			//console.log(rows);
-			//let data = {data:rows};
-			//console.log(res.end(rows.info.affectedRows));
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
 		});
 		c.end();
 	},
@@ -260,7 +132,7 @@ module.exports = {
 				throw err;
 			var subject = "Forgot Password";
 			var page = "reset";
-			sendEmail.sendMail(req.email, rand, subject, page);
+			mailService.sendMail(req.email, rand, subject, page);
 			//let data = {data:rows};
 			//console.log(res.end(rows.info.affectedRows));
 			res.json({
@@ -289,8 +161,8 @@ module.exports = {
 
 		c.end();
 	},
-	cekRegistered: function (req, res) {
-		c.query("SELECT * FROM data_admin WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+	checkAdminRegistered: function (req, res) {
+		c.query("SELECT * FROM data_admin WHERE email=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -306,6 +178,186 @@ module.exports = {
 					err: null,
 					message: "email not registered"
 				});
+			}
+		});
+		c.end();
+	},
+	checkUserRegistered: function (req, res) {
+		c.query("SELECT * FROM data_user WHERE email=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			if (rows.info.numRows !== '0') {
+				res.json({
+					success: true,
+					err: null,
+					message: "email already registered"
+				});
+			} else {
+				res.json({
+					success: false,
+					err: null,
+					message: "email not registered"
+				});
+			}
+		});
+		c.end();
+	},
+	getUserAll: function (req, res) {
+		c.query('SELECT * FROM `data_user` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					name: items[2],
+					email: items[3],
+					phone: items[4],
+					citizen_id: items[5],
+					captured_id: items[6],
+					gender: items[7],
+					address: items[8],
+					status: items[9],
+					created: items[10],
+					updated: items[11]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getUser: function (req, res) {
+		c.query("SELECT * FROM `data_user` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					name: items[2],
+					email: items[3],
+					phone: items[4],
+					citizen_id: items[5],
+					captured_id: items[6],
+					gender: items[7],
+					address: items[8],
+					status: items[9],
+					created: items[10],
+					updated: items[11]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	newUser: function (req, password, res) {
+		var request = [password, req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address];
+		c.query("INSERT INTO `verification_token`(`email`, `token`, `status`) VALUES (?, ?, '0')", [req.email, req.token], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			mailService.sendVerification(req.email, req.name, req.token);
+		});
+		c.query("INSERT INTO `data_user`(`password`, `name`, `email`, `phone`, `citizen_id`, `captured_id`, `gender`, `address`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '0')", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	updateUser: function (req, password, res) {
+		var request = [password, req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address, req.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send({ message: 'Bad Request: Parameters cannot empty.' });
+		}
+		c.query("UPDATE `data_user` SET `password`=?,`name`=?,`email`=?,`phone`=?,`citizen_id`=?,`captured_id`=?,`gender`=?,`address`=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	deleteUser: function (req, res) {
+		var request = [req.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("DELETE FROM data_user WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			if (rows.info.affectedRows < 1) {
+				res.status(404).send({ message: 'Data not found.' });
+			} else {
+				res.json({
+					success: true,
+					err: null,
+					affectedRows: rows.info.affectedRows
+				});
+			}
+		});
+		c.end();
+	},
+	newAdmin: function (req, password, res) {
+		var request = [req.name, password, req.email, req.citizen_id, req.captured_id]
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("INSERT INTO `data_admin` (`name`, `password`, `email`, `citizen_id`, `captured_id`) VALUES (?, ?, ?, ?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	getAdmin: function (req, res) {
+		c.query("SELECT * FROM `data_admin` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					name: items[1],
+					email: items[3],
+					citizen_id: items[4],
+					captured_id: items[5],
+					previledge_id: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
 			}
 		});
 		c.end();
@@ -338,7 +390,11 @@ module.exports = {
 		c.end();
 	},
 	getVehicle: function (req, res) {
-		c.query("SELECT * FROM `data_kendaraan` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+		var request = [req.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("SELECT * FROM `data_kendaraan` WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -418,7 +474,7 @@ module.exports = {
 		});
 		c.end();
 	},
-	getViolationsAll: function (req, res) {
+	getTicketAll: function (req, res) {
 		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.incident_date,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type)", null, { metadata: true, useArray: true }, function (err, rows) {
 		c.query('SELECT * FROM `data_pelanggaran` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
@@ -448,9 +504,38 @@ module.exports = {
 		});
 		c.end();
 	},
-	getViolations: function (req, res) {
+	getTicket: function (req, res) {
 		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.incident_date,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type) WHERE t1.id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 		c.query("SELECT * FROM `data_pelanggaran` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					reporter_id: items[1],
+					violator_id: items[2],
+					vehicle_id: items[3],
+					violation_type: items[4],
+					detail: items[5],
+					incident_date: items[6],
+					documentation: items[7],
+					status: items[8],
+					created: items[9],
+					updated: items[10]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getUserTicket: function (req, res) {
+		c.query("SELECT * FROM `data_pelanggaran` WHERE reporter_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 

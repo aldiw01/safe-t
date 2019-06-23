@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl,
 
 const items = [
   {
-    src: '/assets/guide/zhiyong-li-24s.jpg',
+    src: '/assets/guide/Holograms.jpg',
     altText: 'Slide 1',
     caption: 'Slide 1',
   },

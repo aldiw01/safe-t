@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 
-class Kendaraan extends Component {
+class Poin extends Component {
 
   constructor(props) {
     super(props);
@@ -128,7 +128,7 @@ class Kendaraan extends Component {
           sort: 'asc'
         },
         {
-          label: 'No Kendaraan',
+          label: 'No Poin',
           field: 'vehicle_id',
           sort: 'asc'
         },
@@ -194,7 +194,7 @@ class Kendaraan extends Component {
           <Col xs="12" xl="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Data Kendaraan</strong>
+                <i className="fa fa-align-justify"></i><strong>Data Poin</strong>
               </CardHeader>
               <CardBody>
                 <MDBDataTable
@@ -206,7 +206,7 @@ class Kendaraan extends Component {
                 />
 
                 <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Kendaraan</ModalHeader>
+                  <ModalHeader toggle={() => this.toggleView(0)}>Data Poin</ModalHeader>
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
@@ -216,7 +216,7 @@ class Kendaraan extends Component {
                         <Col xs="5">Owner</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.owner}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col xs="5">No Kendaraan</Col>
+                        <Col xs="5">No Poin</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Merk</Col>
@@ -249,7 +249,7 @@ class Kendaraan extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Edit Kendaraan</ModalHeader>
+                  <ModalHeader toggle={() => this.toggleEdit(0)}>Edit Poin</ModalHeader>
                   <ModalBody className="mt-4 mx-4">
                     <Form action="" method="post" className="form-horizontal">
                       <FormGroup row>
@@ -262,7 +262,7 @@ class Kendaraan extends Component {
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">No Kendaraan</Label>
+                          <Label htmlFor="hf-username">No Poin</Label>
                         </Col>
                         <Col xs="12" md="9">
                           <Input type="text" onChange={this.handleChange} name="vehicle_id" value={this.state.focus.vehicle_id} />
@@ -309,7 +309,7 @@ class Kendaraan extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Kendaraan</ModalHeader>
+                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Poin</ModalHeader>
                   <ModalBody>
                     Do you really want to delete this vehicle?
                   </ModalBody>
@@ -328,4 +328,4 @@ class Kendaraan extends Component {
   }
 }
 
-export default Kendaraan;
+export default Poin;

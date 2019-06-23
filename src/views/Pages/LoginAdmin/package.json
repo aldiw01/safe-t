@@ -1,0 +1,6 @@
+{
+  "name": "LoginAdmin",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LoginAdmin.js"
+}

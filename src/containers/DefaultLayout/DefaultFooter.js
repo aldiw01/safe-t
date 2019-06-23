@@ -15,7 +15,7 @@ class DefaultFooter extends Component {
 
     return (
       <React.Fragment>
-        <span><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; 2019 IMV Laboratory</span>
+        <span><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; {new Date().getFullYear()} IMV Laboratory</span>
         <span className="ml-auto">Powered by <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">CoreUI for React</a></span>
       </React.Fragment>
     );
