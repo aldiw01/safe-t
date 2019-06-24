@@ -1,6 +1,7 @@
 "use strict";
 const nodemailer = require("nodemailer");
-const crypto = require("crypto");
+const user = "safet.imv@gmail.com";
+const pass = "safe-t_dijalan";
 
 // async..await is not allowed in global scope, must use a wrapper
 module.exports = {
@@ -17,8 +18,8 @@ module.exports = {
       secure: false,
       requireTLS: true, // use TLS
       auth: {
-        user: "safet.imv@gmail.com",
-        pass: "safe-t_dijalan"
+        user: user,
+        pass: pass
       },
       tls: {
         // do not fail on invalid certs
@@ -51,49 +52,4 @@ module.exports = {
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
   },
-  sendApproval: function (target, username, namaproduk) {
-
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      requireTLS: true, // use TLS
-      auth: {
-        user: "safet.imv@gmail.com",
-        pass: "safe-t_dijalan"
-      },
-      tls: {
-        // do not fail on invalid certs
-        rejectUnauthorized: false
-      }
-    });
-
-
-
-    // setup email data with unicode symbols
-    let message = {
-      from: '"Safe-t" <safet.imv@gmail.com>', // sender address
-      to: target, // list of receivers
-      subject: "Request to Approve", // Subject line
-      text: "Hello world?", // plain text body
-      html: "You have new Product to review:<br/> <b>from Username: </b>" + username + "<br/><b>Product Name: </b>" + namaproduk +
-        "<br/> Please Login to Review Product"
-    };
-
-    // send mail with defined transport object
-    transporter.sendMail(message, (error, info) => {
-      if (error) {
-        console.log('Error occurred');
-        console.log(error.message);
-        return process.exit(1);
-      }
-
-      console.log('Message sent successfully!');
-      console.log(nodemailer.getTestMessageUrl(info));
-
-      // only needed when using pooled connections
-      transporter.close();
-    });
-
-  }
 }

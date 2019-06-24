@@ -8,12 +8,12 @@ This project is under development, feel free to contact me for question.
 $ git clone https://github.com/GammaMatch/safe-t.git
 ```
 
-### Go into app's directory
+### go into app's directory
 ``` bash
 $ cd safe-t
 ```
 
-### Import database safe-t.sql into mySQL server
+### import database safe_t.sql into mySQL server
 
 ### install node and npm
 For windows version, you can get it here -> https://nodejs.org/en/download/ 
