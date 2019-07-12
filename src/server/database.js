@@ -26,7 +26,9 @@ module.exports = {
 						email: items[3],
 						citizen_id: items[4],
 						captured_id: items[5],
-						previledge_id: items[6]
+						privilege_id: items[6],
+						created: items[7],
+						updated: items[8]
 					});
 				});
 			}
@@ -52,7 +54,9 @@ module.exports = {
 						captured_id: items[6],
 						gender: items[7],
 						address: items[8],
-						status: items[9]
+						status: items[9],
+						created: items[10],
+						updated: items[11]
 					});
 				});
 			}
@@ -126,20 +130,32 @@ module.exports = {
 		});
 		c.end();
 	},
-	forgotPass(req, res, rand) {
-		c.query("INSERT INTO tbl_forgot (email,token) VALUES ('" + req.email + "','" + rand + "')", null, { metadata: true, useArray: true }, function (err, rows) {
+	forgotPassword(req, res, token) {
+		const expired = new Date().valueOf() + 3 * 60 * 60 * 1000;
+		var request = [req.email, token, expired];
+		c.query("SELECT `name` FROM `data_user` WHERE `email`=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
-			var subject = "Forgot Password";
-			var page = "reset";
-			mailService.sendMail(req.email, rand, subject, page);
-			//let data = {data:rows};
-			//console.log(res.end(rows.info.affectedRows));
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					name: items[0]
+				});
 			});
+			if (data.length < 1) {
+				res.send({
+					message: "User not registered",
+					success: false
+				});
+			} else {
+				c.query("INSERT INTO `reset_password` (`email`, `token`, `expired`, `status`) VALUES (?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
+					if (err)
+						throw err;
+
+					mailService.sendResetPassword(req.email, data[0].name, token, res);
+				});
+			}
 		});
 		c.end();
 
@@ -154,7 +170,7 @@ module.exports = {
 				affectedRows: rows.info.affectedRows
 			});
 		});
-		c.query("DELETE FROM tbl_forgot WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("DELETE FROM reset_password WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 		});
@@ -281,12 +297,12 @@ module.exports = {
 		});
 		c.end();
 	},
-	updateUser: function (req, password, res) {
-		var request = [password, req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address, req.id];
+	updateUser: function (req, res) {
+		var request = [req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address, req.id];
 		if (request.includes(undefined) || request.includes("")) {
 			res.status(400).send({ message: 'Bad Request: Parameters cannot empty.' });
 		}
-		c.query("UPDATE `data_user` SET `password`=?,`name`=?,`email`=?,`phone`=?,`citizen_id`=?,`captured_id`=?,`gender`=?,`address`=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("UPDATE `data_user` SET `name`=?,`email`=?,`phone`=?,`citizen_id`=?,`captured_id`=?,`gender`=?,`address`=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -324,7 +340,7 @@ module.exports = {
 		if (request.includes(undefined) || request.includes("")) {
 			res.status(400).send('Bad Request: Parameters cannot empty.');
 		}
-		c.query("INSERT INTO `data_admin` (`name`, `password`, `email`, `citizen_id`, `captured_id`) VALUES (?, ?, ?, ?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("INSERT INTO `data_admin` (`name`, `password`, `email`, `citizen_id`, `captured_id`, `privilege_id`) VALUES (?, ?, ?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -333,6 +349,32 @@ module.exports = {
 				err: null,
 				affectedRows: rows.info.affectedRows
 			});
+		});
+		c.end();
+	},
+	getAdminAll: function (req, res) {
+		c.query("SELECT * FROM `data_admin`", null, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					name: items[1],
+					email: items[3],
+					citizen_id: items[4],
+					captured_id: items[5],
+					privilege_id: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
 		});
 		c.end();
 	},
@@ -349,7 +391,7 @@ module.exports = {
 					email: items[3],
 					citizen_id: items[4],
 					captured_id: items[5],
-					previledge_id: items[6],
+					privilege_id: items[6],
 					created: items[7],
 					updated: items[8]
 				});
@@ -475,7 +517,7 @@ module.exports = {
 		c.end();
 	},
 	getTicketAll: function (req, res) {
-		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.incident_date,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type)", null, { metadata: true, useArray: true }, function (err, rows) {
+		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.documentation,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type)", null, { metadata: true, useArray: true }, function (err, rows) {
 		c.query('SELECT * FROM `data_pelanggaran` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -505,7 +547,7 @@ module.exports = {
 		c.end();
 	},
 	getTicket: function (req, res) {
-		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.incident_date,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type) WHERE t1.id='" + req.id + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		// c.query("SELECT t1.id,t2.name AS reporter,t3.owner AS violator,t3.vehicle_id,t4.type AS violation_type,t1.detail,t1.incident_date,t1.documentation,t1.status,t1.created,t1.updated FROM data_pelanggaran t1 LEFT JOIN (data_user t2, data_kendaraan t3, violation_list t4) ON (t2.id=t1.reporter_id AND t3.id=t1.violator_id AND t4.id=t1.violation_type) WHERE t1.id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 		c.query("SELECT * FROM `data_pelanggaran` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -562,6 +604,75 @@ module.exports = {
 			}
 		});
 		c.end();
-	}
+	},
+	newTicket: function (req, res) {
+		var request = [req.reporter_id, req.violator_id, req.vehicle_id, req.violation_type, req.detail, req.incident_date, req.documentation]
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("INSERT INTO `data_pelanggaran` (`reporter_id`, `violator_id`, `vehicle_id`, `violation_type`, `detail`, `incident_date`, `documentation`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				message: "Upload success.",
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	updateTicket: function (req, res) {
+		var request = [req.body.reporter_id, req.body.violator_id, req.body.vehicle_id, req.body.violation_type, req.body.detail, req.body.incident_date, req.params.id]
+		console.log(request)
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+			return
+		}
+		c.query("UPDATE `data_pelanggaran` SET reporter_id=?, violator_id=?, vehicle_id=?, violation_type=?, detail=?, incident_date=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	deleteTicket: function (req, res) {
+		c.query("DELETE FROM `data_pelanggaran` WHERE id=?", [req.params.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	setAdminPrivilege: function (req, res) {
+		c.query("UPDATE `data_admin` SET privilege_id=? WHERE id=?", [req.body.privilege_id, req.params.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
 
 }

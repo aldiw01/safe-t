@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import axios from 'axios';
+import AuthService from '../../../server/AuthService';
 
 class Register extends Component {
   constructor(props) {
     super(props);
+    this.Auth = new AuthService();
     this.state = {
       address: '',
       badge: 'info',
@@ -40,7 +42,7 @@ class Register extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('id_token')) {
+    if (this.Auth.loggedIn()) {
       this.setState({
         isLoggedin: true
       })
@@ -73,7 +75,6 @@ class Register extends Component {
 
   handleCheckPassword = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value.length)
     if (event.target.value.length > 5) {
       this.setState({
         isGoodPassword: true
@@ -82,6 +83,12 @@ class Register extends Component {
       this.setState({
         isGoodPassword: false
       })
+    }
+
+    if ((event.target.value === this.state.passwordVal) && (event.target.value.length > 5)) {
+      this.setState({ isPasswordConfirmed: true });
+    } else {
+      this.setState({ isPasswordConfirmed: false });
     }
   }
 
@@ -132,15 +139,6 @@ class Register extends Component {
     }
   }
 
-  handleCheckGender = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-    if (event.target.value.length > 5) {
-      this.setState({ isGoodPhone: true });
-    } else {
-      this.setState({ isGoodPhone: false });
-    }
-  }
-
   handleCheckAddress = (event) => {
     this.setState({ [event.target.name]: event.target.value })
     if (event.target.value.length > 5) {
@@ -153,7 +151,7 @@ class Register extends Component {
   handleCheckKTP = (event) => {
     this.setState({ [event.target.name]: event.target.value })
     console.log(event.target.value.length)
-    if (event.target.value.length == 16 && !isNaN(event.target.value)) {
+    if (event.target.value.length === 16 && !isNaN(event.target.value)) {
       this.setState({
         isGoodKTP: true
       })

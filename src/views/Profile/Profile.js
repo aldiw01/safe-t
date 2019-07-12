@@ -7,6 +7,9 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.Auth = new AuthService();
+    if (!this.Auth.loggedIn()) {
+      window.location = '/login';
+    }
     this.state = {
       data: [{
         id: '',
@@ -25,52 +28,42 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    if (this.Auth.getProfile().user_type === "Admin") {
-      axios.get(localStorage.getItem('serverAPI') + '/admin/' + this.Auth.getProfile().id)
-        .then(res => {
-          // var status = res.data[0].status === '1' ? 'Verified' : 'Not verified';
-          this.setState({
-            data: [{
-              ID: res.data[0].id,
-              Name: res.data[0].name,
-              Email: res.data[0].email,
-              Phone: res.data[0].phone,
-              Citizen_ID: res.data[0].citizen_id,
-              // Gender: res.data[0].gender,
-              // Address: res.data[0].address,
-              // Status: status,
-              Previledge_ID: res.data[0].previledge_id,
-              Registered: res.data[0].created,
-              Updated: res.data[0].updated
-            }]
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else if (this.Auth.getProfile().user_type === "User") {
-      axios.get(localStorage.getItem('serverAPI') + '/user/' + this.Auth.getProfile().id)
-        .then(res => {
-          var status = res.data[0].status === '1' ? 'Verified' : 'Not verified';
-          this.setState({
-            data: [{
-              ID: res.data[0].id,
-              Name: res.data[0].name,
-              Email: res.data[0].email,
-              Phone: res.data[0].phone,
-              Citizen_ID: res.data[0].citizen_id,
-              Gender: res.data[0].gender,
-              Address: res.data[0].address,
-              Status: status,
-              // Previledge_ID: res.data[0].previledge_id,
-              Registered: res.data[0].created,
-              Updated: res.data[0].updated
-            }]
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    console.log(this.Auth.getProfile())
+    const profile = this.Auth.getProfile();
+    if (profile.user_type === "Admin") {
+      // var status = res.data[0].status === '1' ? 'Verified' : 'Not verified';
+      this.setState({
+        data: [{
+          ID: profile.id,
+          Name: profile.name,
+          Email: profile.email,
+          // Phone: profile.phone,
+          Citizen_ID: profile.citizen_id,
+          // Gender: profile.gender,
+          // Address: profile.address,
+          // Status: status,
+          Previledge_ID: profile.previledge_id,
+          Registered: profile.created,
+          Updated: profile.updated
+        }]
+      });
+    } else if (profile.user_type === "User") {
+      var status = profile.status === '1' ? 'Verified' : 'Not verified';
+      this.setState({
+        data: [{
+          ID: profile.id,
+          Name: profile.name,
+          Email: profile.email,
+          Phone: profile.phone,
+          Citizen_ID: profile.citizen_id,
+          Gender: profile.gender,
+          Address: profile.address,
+          Status: status,
+          // Previledge_ID: profile.previledge_id,
+          Registered: profile.created,
+          Updated: profile.updated
+        }]
+      })
     }
   }
 

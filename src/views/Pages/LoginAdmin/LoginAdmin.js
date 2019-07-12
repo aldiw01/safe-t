@@ -34,7 +34,7 @@ class LoginAdmin extends Component {
       .then(res => {
         if (res.data.success) {
           this.setState({ loader: false });
-          window.location.href = '/dashboard';
+          window.location.href = '/admin';
         } else {
           this.setState({ loader: false });
           alert(res.data.err);
@@ -47,7 +47,7 @@ class LoginAdmin extends Component {
 
   render() {
     return (
-      this.state.isLoggedin ? <Redirect to="/dashboard" /> :
+      this.state.isLoggedin ? <Redirect to="/admin" /> :
         <div className="app flex-row align-items-center">
           <Container>
             <Row className="justify-content-center">
@@ -62,7 +62,7 @@ class LoginAdmin extends Component {
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>@</InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="E-mail" autoComplete="email" name="email" onChange={this.handleChange} />
+                          <Input type="email" placeholder="E-mail" autoComplete="email" name="email" onChange={this.handleChange} required />
                         </InputGroup>
                         <InputGroup className="mb-4">
                           <InputGroupAddon addonType="prepend">
@@ -70,7 +70,7 @@ class LoginAdmin extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={this.handleChange} />
+                          <Input type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={this.handleChange} required />
                         </InputGroup>
                         <Row>
                           <Col xs="6">

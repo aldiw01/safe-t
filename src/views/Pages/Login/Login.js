@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import AuthService from '../../../server/AuthService';
 import axios from 'axios';
 
@@ -13,7 +13,9 @@ class Login extends Component {
       password: '',
       isAlertVisible: false,
       isLoggedin: false,
-      message: ''
+      message: '',
+      forgotPassword: false,
+      emailRecovery: ''
     }
   }
 
@@ -33,7 +35,10 @@ class Login extends Component {
           isAlertVisible: res.data.success,
           message: res.data.message
         });
-      });
+      })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 
@@ -41,9 +46,12 @@ class Login extends Component {
     this.setState({ isAlertVisible: false });
   }
 
+  onToggle = () => {
+    this.setState({ forgotPassword: !this.state.forgotPassword });
+  }
+
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value)
   }
 
   handleFormSubmit = (event) => {
@@ -63,6 +71,22 @@ class Login extends Component {
         console.log(err);
         alert(err);
       })
+  }
+
+  handleForgotPassword = (event) => {
+    event.preventDefault();
+    const req = { email: this.state.emailRecovery };
+    axios.post(localStorage.getItem('serverAPI') + '/forgot-password', req)
+      .then(res => {
+        this.setState({
+          forgotPassword: !this.state.forgotPassword,
+          isAlertVisible: true,
+          message: res.data.message
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -93,7 +117,7 @@ class Login extends Component {
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>@</InputGroupText>
                             </InputGroupAddon>
-                            <Input type="text" placeholder="E-mail" autoComplete="email" name="email" onChange={this.handleChange} />
+                            <Input type="email" placeholder="E-mail" autoComplete="email" name="email" onChange={this.handleChange} required />
                           </InputGroup>
                           <InputGroup className="mb-4">
                             <InputGroupAddon addonType="prepend">
@@ -101,14 +125,14 @@ class Login extends Component {
                                 <i className="icon-lock"></i>
                               </InputGroupText>
                             </InputGroupAddon>
-                            <Input type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={this.handleChange} />
+                            <Input type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={this.handleChange} required />
                           </InputGroup>
                           <Row>
                             <Col xs="6">
                               <Button color="primary" className="px-4">Login</Button>
                             </Col>
                             <Col xs="6" className="text-right">
-                              <Button color="link" className="px-0">Forgot password?</Button>
+                              <Button onClick={this.onToggle} color="link" className="px-0">Forgot password?</Button>
                             </Col>
                           </Row>
                         </Form>
@@ -131,6 +155,28 @@ class Login extends Component {
                       <span className="float-right"><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; {new Date().getFullYear()} IMV Laboratory</span>
                     </CardFooter>
                   </Card>
+
+                  <Modal isOpen={this.state.forgotPassword} toggle={this.onToggle} className={'modal-primary'}>
+                    <ModalHeader toggle={this.onToggle}>Forgot Password</ModalHeader>
+                    <ModalBody>
+                      <p>Type your email to recover your account.</p>
+                      <Form action="" method="post" className="form-horizontal" onSubmit={this.handleForgotPassword}>
+                        <FormGroup row>
+                          <Col md="3" className="m-auto">
+                            <Label htmlFor="hf-email">Email</Label>
+                          </Col>
+                          <Col xs="12" md="9">
+                            <Input type="text" onChange={this.handleChange} name="emailRecovery" value={this.state.emailRecovery} />
+                          </Col>
+                        </FormGroup>
+                      </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={this.handleForgotPassword}>Recover</Button>{' '}
+                      <Button color="secondary" onClick={this.onToggle}>Cancel</Button>
+                    </ModalFooter>
+                  </Modal>
+
                 </Col>
               </Row>
             </Container>

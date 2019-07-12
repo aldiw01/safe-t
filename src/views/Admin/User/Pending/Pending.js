@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
+import AuthService from '../../../../server/AuthService';
 
 class Pending extends Component {
 
   constructor(props) {
     super(props);
+    this.Auth = new AuthService();
+    if (!this.Auth.loggedIn()) {
+      window.location = '/admin/login';
+    }
     this.state = {
       view: false,
       edit: false,

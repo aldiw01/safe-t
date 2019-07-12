@@ -39,9 +39,11 @@ class DefaultHeader extends Component {
           <NavItem className="px-3">
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
           </NavItem>
-          <NavItem className="px-3">
-            <Link to="/users" className="nav-link">Users</Link>
-          </NavItem>
+          {this.Auth.getProfile().user_type === "Admin" ?
+            <NavItem className="px-3">
+              <Link to="/users" className="nav-link">Users</Link>
+            </NavItem> : ""
+          }
           {/* <NavItem className="px-3">
             <NavLink to="#" className="nav-link">Settings</NavLink>
           </NavItem> */}

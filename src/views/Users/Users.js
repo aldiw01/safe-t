@@ -1,37 +1,69 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-
-import usersData from './UsersData'
+import axios from 'axios';
+import AuthService from '../../server/AuthService';
 
 function UserRow(props) {
   const user = props.user
-  const userLink = `/users/${user.id}`
 
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
+  const getRole = (id) => {
+    return id === '2' ? 'Super Admin' :
+      id === '1' ? 'Staff' :
+        'Inactive'
   }
 
-  return (
-    <tr key={user.id.toString()}>
-      <th scope="row"><Link to={userLink}>{user.id}</Link></th>
-      <td><Link to={userLink}>{user.name}</Link></td>
-      <td>{user.registered}</td>
-      <td>{user.role}</td>
-      <td><Link to={userLink}><Badge color={getBadge(user.status)}>{user.status}</Badge></Link></td>
-    </tr>
-  )
+  const getBadge = (id) => {
+    return id === '2' ? 'primary' :
+      id === '1' ? 'success' :
+        'warning'
+  }
+
+  const getStatus = (id) => {
+    return id === '2' ? 'Super' :
+      id === '1' ? 'Active' :
+        'Pending'
+  }
+  console.log(new Date(user.created).toLocaleDateString())
+  if (user != undefined)
+    return (
+      <tr key={user.id.toString()}>
+        <th scope="row">{user.id}</th>
+        <td>{user.name}</td>
+        <td>{user.email}</td>
+        <td>{getRole(user.privilege_id)}</td>
+        <td>{new Date(user.created).toLocaleDateString('en-GB')}</td>
+        <td><Badge color={getBadge(user.privilege_id)}>{getStatus(user.privilege_id)}</Badge></td>
+      </tr>
+    )
 }
 
 class Users extends Component {
+  constructor() {
+    super();
+    this.Auth = new AuthService();
+    if (!this.Auth.loggedIn()) {
+      window.location = '/admin/login';
+    }
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get(localStorage.getItem('serverAPI') + '/admin')
+      .then(res => {
+        this.setState({
+          data: res.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   render() {
 
-    const userList = usersData.filter((user) => user.id < 10)
+    const userList = this.state.data;
 
     return (
       <div className="animated fadeIn">
@@ -39,7 +71,7 @@ class Users extends Component {
           <Col xl={6}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
+                <i className="fa fa-align-justify"></i> Admin List
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
@@ -47,14 +79,15 @@ class Users extends Component {
                     <tr>
                       <th scope="col">id</th>
                       <th scope="col">name</th>
-                      <th scope="col">registered</th>
+                      <th scope="col">email</th>
                       <th scope="col">role</th>
+                      <th scope="col">registered</th>
                       <th scope="col">status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {userList.map((user, index) =>
-                      <UserRow key={index} user={user}/>
+                      <UserRow key={index} user={user} />
                     )}
                   </tbody>
                 </Table>

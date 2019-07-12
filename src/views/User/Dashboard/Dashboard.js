@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
+import AuthService from '../../../server/AuthService';
 
 const items = [
   {
@@ -23,6 +24,10 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props);
+    this.Auth = new AuthService();
+    if (!this.Auth.loggedIn()) {
+      window.location = '/login';
+    }
     this.state = { activeIndex: 0 };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);

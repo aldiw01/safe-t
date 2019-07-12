@@ -5,7 +5,7 @@ This project is under development, feel free to contact me for question.
 
 ### clone the repo
 ``` bash
-$ git clone https://github.com/GammaMatch/safe-t.git
+$ git clone https://aldiw01@bitbucket.org/aldiw01/safe-t.git
 ```
 
 ### go into app's directory

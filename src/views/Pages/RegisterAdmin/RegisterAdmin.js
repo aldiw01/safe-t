@@ -68,6 +68,12 @@ class RegisterAdmin extends Component {
         isGoodPassword: false
       })
     }
+
+    if ((event.target.value === this.state.passwordVal) && (event.target.value.length > 5)) {
+      this.setState({ isPasswordConfirmed: true });
+    } else {
+      this.setState({ isPasswordConfirmed: false });
+    }
   }
 
   handleChangeAndCheckEmail = (event) => {
@@ -112,7 +118,7 @@ class RegisterAdmin extends Component {
   handleCheckKTP = (event) => {
     this.setState({ [event.target.name]: event.target.value })
     console.log(event.target.value.length)
-    if (event.target.value.length == 16 && !isNaN(event.target.value)) {
+    if (event.target.value.length === 16 && !isNaN(event.target.value)) {
       this.setState({
         isGoodKTP: true
       })
@@ -180,7 +186,7 @@ class RegisterAdmin extends Component {
 
   render() {
     return (
-      this.state.isLoggedin ? <Redirect to="/dashboard" /> :
+      this.state.isLoggedin ? <Redirect to="/admin" /> :
         <div className="app flex-row align-items-center">
           <Container>
             <Row className="w-50 m-auto">

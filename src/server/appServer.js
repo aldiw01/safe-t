@@ -114,6 +114,8 @@ app.post('/api/loginAdmin', (req, res) => {
 				citizen_id: data[0].citizen_id,
 				captured_id: data[0].captured_id,
 				previledge_id: data[0].previledge_id,
+				created: data[0].created,
+				updated: data[0].updated,
 				user_type: "Admin"
 			}, ADMIN_SECRET, { expiresIn: 43210 }); // Sigining the token
 			res.json({
@@ -161,6 +163,8 @@ app.post('/api/loginUser', (req, res) => {
 				gender: data[0].gender,
 				address: data[0].address,
 				status: data[0].status,
+				created: data[0].created,
+				updated: data[0].updated,
 				user_type: "User"
 			}, USER_SECRET, { expiresIn: 43210 }); // Sigining the token
 			res.json({
@@ -200,6 +204,10 @@ app.post('/api/check-user-registered', (req, res) => {
 	db.checkUserRegistered(req.body, res);
 })
 
+app.put('/api/admin/set-privilege/:id', (req, res) => {
+	db.setAdminPrivilege(req, res);
+})
+
 app.get('/api/user/verify/:id', (req, res) => {
 	db.checkVerified(req.params, res);
 })
@@ -212,9 +220,16 @@ app.post('/api/user/verify-token', (req, res) => {
 	db.verifyToken(req.body, res);
 })
 
+// Test only
 app.post('/api/user/verify/send-mail', (req, res) => {
 	const token = crypto.randomBytes(16).toString('hex');
 	mailService.sendVerification(req.body.email, req.body.name, token);
+})
+
+app.post('/api/forgot-password', (req, res) => {
+	const token = crypto.randomBytes(16).toString('hex');
+	// mailService.sendVerification(req.body.email, req.body.name, token);
+	db.forgotPassword(req.body, res, token);
 })
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,14 +280,7 @@ app.post('/api/user', (req, res) => {
 })
 
 app.put('/api/user/:id', jwtMW, (req, res) => {
-	if (req.body.password === undefined || req.body.password === "") {
-		res.status(400).send({ message: 'Bad Request: Parameters cannot empty.' });
-	}
-	var mykey = crypto.createCipher('aes-128-cbc', SECRET_CIPHER);
-	var password = mykey.update(req.body.password, 'utf8', 'hex')
-	password += mykey.final('hex');
-
-	db.updateUser(req, password, res);
+	db.updateUser(req.body, res);
 })
 
 app.delete('/api/user/:id', jwtMW, (req, res) => {
@@ -368,20 +376,42 @@ app.get('/api/ticket/user/:id', (req, res) => {
 	db.getUserTicket(req.params, res);
 })
 
-app.post('/api/ticket', jwtMW, (req, res) => {
-	var mykey = crypto.createCipher('aes-128-cbc', SECRET_CIPHER);
-	var password = mykey.update(req.body.password, 'utf8', 'hex')
-	password += mykey.final('hex');
+app.post('/api/ticket', (req, res) => {
+	var upload = multer({
+		storage: storageTicket,
+		limits: {
+			fileSize: 1024 * 1024
+		},
+		fileFilter: fileFilter
+	}).single('fileImage');
+	upload(req, res, function (err) {
+		if (err instanceof multer.MulterError) {
+			// A Multer error occurred when uploading.
+			res.send(err);
+			return
+		} else if (err) {
+			// An unknown error occurred when uploading.
+			res.send(err);
+			return
+		} else if (req.file == undefined) {
+			res.send('index', { message: 'No file selected!' })
+			return
+		}
+		// Everything went fine.
+		console.log('Upload success.');
 
-	db.newAdmin(req.body, password, res);
+		req.body.documentation = req.file.filename;
+
+		db.newTicket(req.body, res);
+	})
 })
 
 app.put('/api/ticket/:id', jwtMW, (req, res) => {
-	db.updateAdmin(req, res);
+	db.updateTicket(req, res);
 })
 
 app.delete('/api/ticket/:id', jwtMW, (req, res) => {
-	db.delAdmin(req, res);
+	db.deleteTicket(req, res);
 })
 
 // UPLOAD FILE

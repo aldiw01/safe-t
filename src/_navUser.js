@@ -16,7 +16,7 @@ export default {
     },
     {
       name: 'Laporan',
-      url: '/laporan',
+      url: '/tiket',
       icon: 'icon-note'
     },
     {

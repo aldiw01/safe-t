@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2019 at 09:38 PM
+-- Generation Time: Jul 12, 2019 at 08:30 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 5.6.33
 
@@ -35,7 +35,7 @@ CREATE TABLE `data_admin` (
   `email` varchar(100) DEFAULT NULL,
   `citizen_id` char(16) NOT NULL,
   `captured_id` text NOT NULL,
-  `previledge_id` char(1) NOT NULL,
+  `privilege_id` char(1) NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -44,12 +44,12 @@ CREATE TABLE `data_admin` (
 -- Dumping data for table `data_admin`
 --
 
-INSERT INTO `data_admin` (`id`, `name`, `password`, `email`, `citizen_id`, `captured_id`, `previledge_id`, `created`, `updated`) VALUES
-(1, 'aldiw01', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'aldiw01@gmail.com', '', '', '', '2019-06-05 14:22:12', '2019-06-20 03:30:49'),
-(2, 'sadam', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'sadam@gmail.com', '', '', '', '2019-06-05 14:22:12', '2019-06-20 03:30:49'),
-(6, 'aldi', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'aldiw@gmail.com', '', '', '', '2019-06-05 14:22:12', '2019-06-20 03:30:49'),
-(7, 'admin', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'admin@gmail.com', '', '', '', '2019-06-05 14:22:12', '2019-06-20 03:28:46'),
-(18, 'Aldi W', 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'aldiw01@gmail.coms', '2477669718933280', '2019-06-20T08-44-22.694Z_My Certificate_2.jpg', '', '2019-06-20 08:44:22', '2019-06-20 08:44:22');
+INSERT INTO `data_admin` (`id`, `name`, `password`, `email`, `citizen_id`, `captured_id`, `privilege_id`, `created`, `updated`) VALUES
+(1, 'aldiw01', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'aldiw01@gmail.com', '', '', '0', '2019-06-05 14:22:12', '2019-06-27 09:26:33'),
+(2, 'sadam', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'sadam@gmail.com', '', '', '0', '2019-06-05 14:22:12', '2019-06-27 09:26:37'),
+(6, 'aldi', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'aldiw@gmail.com', '', '', '0', '2019-06-05 14:22:12', '2019-06-27 09:26:40'),
+(7, 'admin', '+bzBfGTMIz93h8vtAUJlpD1GQSd1UIJXim+ljUYmdwQ=', 'admin@gmail.com', '', '', '2', '2019-06-05 14:22:12', '2019-06-27 09:26:43'),
+(18, 'Aldi W', 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'aldiw01@gmail.coms', '2477669718933280', '2019-06-20T08-44-22.694Z_My Certificate_2.jpg', '1', '2019-06-20 08:44:22', '2019-06-27 09:26:49');
 
 -- --------------------------------------------------------
 
@@ -212,7 +212,6 @@ INSERT INTO `data_pelanggaran` (`id`, `reporter_id`, `violator_id`, `vehicle_id`
 (10, 9, 91, '', 5, 'depreciating estuaries unexceptional finks Cheyennes mating kind glitzy rabbinical silentest Capistrano sheltered', '2019-01-10', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (11, 97, 72, '', 1, 'Rhee\'s disjoints tablespoon blanket\'s Maurice\'s peephole Twila\'s Garfield antiwar poking anal browser\'s', '2019-01-11', 'test.jpg', '1', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (12, 59, 45, '', 2, 'Glenn Pepys baleful mistletoe\'s Macon causation coachman underemployed Hellenize birthmarks indicator\'s Anaheim charade\'s illiteracy wake settable', '2019-01-12', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
-(13, 63, 90, '', 3, 'converges simplified equipped grossness\'s Leicester\'s gorillas tripos\'s enjoy compulsories Mongols miniature unclear roomful\'s sociopath\'s Ned propagandizing mated Sybil\'s', '2019-01-13', 'test.jpg', '1', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (14, 35, 77, '', 4, 'eyeliner circumcising allowed plasticity Lombard\'s blindsiding', '2019-01-14', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (15, 37, 51, '', 5, 'portable reciprocal', '2019-01-15', 'test.jpg', '1', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (16, 90, 16, '', 1, 'overtone collaboratives splurged', '2019-01-16', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
@@ -299,7 +298,8 @@ INSERT INTO `data_pelanggaran` (`id`, `reporter_id`, `violator_id`, `vehicle_id`
 (97, 52, 31, '', 2, 'nectar perplexing commotions Valerie sordidly equalized assimilated termagants laddered profanity Polaris\'s boxer Earhart\'s', '2019-04-07', 'test.jpg', '1', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (98, 96, 39, '', 3, 'minded freshmen Sadat slathers neck chairlift Adler sailboarding gal\'s Gillette crankier alb\'s embossed Stamford\'s Sylvia childbearing', '2019-04-08', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
 (99, 88, 23, '', 4, 'childlike Hamhung necessitate garrotting Selznick\'s aeon\'s ginseng\'s budgerigar Milwaukee\'s', '2019-04-09', 'test.jpg', '1', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
-(100, 27, 81, '', 5, 'upstages industries shabby attuned mayor ejects tides surplus Iva\'s McClellan\'s', '2019-04-10', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13');
+(100, 27, 81, '', 5, 'upstages industries shabby attuned mayor ejects tides surplus Iva\'s McClellan\'s', '2019-04-10', 'test.jpg', '0', '2019-06-13 08:28:13', '2019-06-13 08:28:13'),
+(101, 102, 7, 'A1001LW', 5, 'Pengendara tidak membawa kendaraan', '2019-07-12', '2019-07-12T17-59-33.323Z_agxJbNk6_700w_0.jpg', '0', '2019-07-12 17:59:33', '2019-07-12 18:20:36');
 
 -- --------------------------------------------------------
 
@@ -427,8 +427,41 @@ INSERT INTO `data_user` (`id`, `password`, `name`, `email`, `phone`, `citizen_id
 (98, 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'Douglas Angerer', 'schoolmistressesRumanias@GruyeresAntigone.gov', '578-564-3954', '9076529208000560', 'test.jpg', 'Male', '6282 Marilyn Rd', '0', '2019-06-08 15:55:47', '2019-06-20 03:31:40'),
 (99, 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'Hong Schwender', 'waistingproperty@Sabreenervatingmazourka.info', '169-995-8864', '8903604700891050', 'test.jpg', 'Female', '9693 Caprice Ave', '0', '2019-06-08 15:55:47', '2019-06-20 03:31:40'),
 (100, 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'Jamie Donoway', 'practicalitys@nutmiscellanies.com', '345-782-5305', '3803795468433300', 'test.jpg', 'Female', '8224 Devon St', '0', '2019-06-08 15:55:47', '2019-06-20 03:31:40'),
-(101, 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'Aldi Wiranata', 'aldi@gmail.com', '089678000631', '3173061009970007', '2019-06-13T16-58-45.574Z_New Doc 2018-01-22_2.jpg', 'Male', 'Bandung No.1', '1', '2019-06-13 16:58:45', '2019-06-20 04:25:03'),
+(101, 'k4K5meDLZZ1IUDtqeWKgCVNirqawFSqCvp0XrsTsi4U=', 'Aldi Wiranata', 'aldi_safet@gmail.com', '089678000631', '3173061009970007', '2019-06-13T16-58-45.574Z_New Doc 2018-01-22_2.jpg', 'Male', 'Bandung No.1', '1', '2019-06-13 16:58:45', '2019-07-12 17:50:28'),
 (102, '6eDF2sQACE1CfgNK9xCFI+iX2turmjD/MIPuxr43dn8=', 'Aldi Wiranata', 'aldiw01@gmail.com', '089678000631', '3173061010100007', '2019-06-23T18-36-26.482Z_My Certificate_22.jpg', 'Male', 'Kp.Pangkalan RT.006/RW.010 No.68, Jakarta', '1', '2019-06-23 18:36:26', '2019-06-23 19:07:29');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reset_password`
+--
+
+CREATE TABLE `reset_password` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `token` varchar(32) NOT NULL,
+  `expired` int(11) NOT NULL,
+  `status` char(1) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reset_password`
+--
+
+INSERT INTO `reset_password` (`id`, `email`, `token`, `expired`, `status`, `created`, `updated`) VALUES
+(1, '', '7b771eda933a97fe11e608d4a21bb15b', 2147483647, '0', '2019-07-12 16:49:25', '2019-07-12 16:49:25'),
+(2, '', '565497f08e1c5b09507c25769940b1f4', 2147483647, '0', '2019-07-12 16:51:36', '2019-07-12 16:51:36'),
+(3, 'aldiw01@gmail.com', '46f11aa98ee5454e0dc4bcac7a1b79a3', 2147483647, '0', '2019-07-12 16:55:42', '2019-07-12 16:55:42'),
+(4, 'aldiw01@gmail.com', '3e8576e01d2e052856553afa2f875133', 2147483647, '0', '2019-07-12 17:03:00', '2019-07-12 17:03:00'),
+(5, 'aldiw01@gmail.com', 'b7b4ef642956d0b9a1cf4093d463ef4e', 2147483647, '0', '2019-07-12 17:06:50', '2019-07-12 17:06:50'),
+(6, 'aldiw01@gmail.com', '586d6067498ae112388a4457231dd2d6', 2147483647, '0', '2019-07-12 17:07:46', '2019-07-12 17:07:46'),
+(7, 'aldiw01@gmail.com', '03236c13e231fd05ad112738d7861b65', 2147483647, '0', '2019-07-12 17:07:48', '2019-07-12 17:07:48'),
+(8, 'aldiw01@gmail.com', '334a93787ff39b416491a98303b7334d', 2147483647, '0', '2019-07-12 17:08:13', '2019-07-12 17:08:13'),
+(9, 'aldiw01@gmail.com', '82388f0e3324cbdb0b6cc68f4611b8be', 2147483647, '0', '2019-07-12 17:08:14', '2019-07-12 17:08:14'),
+(10, 'aldiw01@gmail.com', '58e11df48387da9ed30f56be6b3a10b8', 2147483647, '0', '2019-07-12 17:08:33', '2019-07-12 17:08:33'),
+(11, 'aldiw01@gmail.com', '5172adccc30c1de316a6c608d526f3ba', 2147483647, '0', '2019-07-12 17:10:15', '2019-07-12 17:10:15');
 
 -- --------------------------------------------------------
 
@@ -506,6 +539,12 @@ ALTER TABLE `data_user`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `reset_password`
+--
+ALTER TABLE `reset_password`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `verification_token`
 --
 ALTER TABLE `verification_token`
@@ -537,13 +576,19 @@ ALTER TABLE `data_kendaraan`
 -- AUTO_INCREMENT for table `data_pelanggaran`
 --
 ALTER TABLE `data_pelanggaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `data_user`
 --
 ALTER TABLE `data_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+
+--
+-- AUTO_INCREMENT for table `reset_password`
+--
+ALTER TABLE `reset_password`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `verification_token`

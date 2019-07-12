@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
+import AuthService from '../../../../server/AuthService';
 
 class Active extends Component {
 
   constructor(props) {
     super(props);
+    this.Auth = new AuthService();
+    if (!this.Auth.loggedIn()) {
+      window.location = '/admin/login';
+    }
     this.state = {
       view: false,
       edit: false,
@@ -166,7 +171,7 @@ class Active extends Component {
     data.rows.forEach(function (items, i) {
       if (items.status === "0") {
         rows.push({
-          id: items.id,
+          id: parseInt(items.id),
           reporter_id: items.reporter_id,
           violator_id: items.violator_id,
           vehicle_id: items.vehicle_id,

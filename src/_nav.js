@@ -2,7 +2,7 @@ export default {
   items: [
     {
       name: 'Dashboard',
-      url: '/dashboard',
+      url: '/admin',
       icon: 'icon-speedometer'
     },
     {
@@ -16,39 +16,39 @@ export default {
     },
     {
       name: 'Kendaraan',
-      url: '/kendaraan',
+      url: '/admin/kendaraan',
       icon: 'fa fa-car'
     },
     {
       name: 'User',
-      url: '/user',
+      url: '/admin/user',
       icon: 'icon-user',
       children: [
         {
           name: 'Daftar User',
-          url: '/user/list',
+          url: '/admin/user/list',
           icon: 'icon-user-following',
         },
         {
           name: 'User Pending',
-          url: '/user/pending',
+          url: '/admin/user/pending',
           icon: 'icon-user-unfollow',
         }
       ]
     },
     {
       name: 'Tiket',
-      url: '/tiket',
+      url: '/admin/tiket',
       icon: 'icon-note',
       children: [
         {
           name: 'Tiket Aktif',
-          url: '/tiket/active',
+          url: '/admin/tiket/active',
           icon: 'icon-notebook',
         },
         {
           name: 'Tiket Closed',
-          url: '/tiket/closed',
+          url: '/admin/tiket/closed',
           icon: 'icon-check',
         }
       ]

@@ -37,8 +37,10 @@ class DefaultLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
+    const user_type = this.Auth.getProfile().user_type;
     this.Auth.logout();
-    this.props.history.push('/login')
+    if (user_type === "Admin") this.props.history.push('/admin/login');
+    else this.props.history.push('/login');
   }
 
   render() {
