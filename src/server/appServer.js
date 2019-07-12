@@ -232,6 +232,26 @@ app.post('/api/forgot-password', (req, res) => {
 	db.forgotPassword(req.body, res, token);
 })
 
+app.post('/api/forgot-password-admin', (req, res) => {
+	const token = crypto.randomBytes(16).toString('hex');
+	// mailService.sendVerification(req.body.email, req.body.name, token);
+	db.forgotPassword_Admin(req.body, res, token);
+})
+
+app.get('/api/forgot-password/get-token/:token', (req, res) => {
+	db.forgotPassword_getToken(req.params, res);
+})
+
+app.put('/api/forgot-password/edit-password', (req, res) => {
+	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
+	db.forgotPassword_editPassword(req.body, password, res);
+})
+
+app.put('/api/forgot-password/edit-password-admin', (req, res) => {
+	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
+	db.forgotPassword_Admin_editPassword(req.body, password, res);
+})
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 // API User
 app.get('/api/user', jwtMW, (req, res) => {

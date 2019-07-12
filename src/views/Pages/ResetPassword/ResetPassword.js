@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import AuthService from '../../../server/AuthService';
 import axios from 'axios';
 
@@ -9,38 +9,42 @@ class ResetPassword extends Component {
     super();
     this.Auth = new AuthService();
     this.state = {
+      email: '',
       password: '',
       passwordVal: '',
-      isAlertVisible: false,
       isGoodPassword: false,
       isLoggedin: false,
       isPasswordConfirmed: false,
-      message: ''
+      status: ''
     }
   }
 
   componentDidMount() {
+    const waktu = new Date().valueOf();
     if (this.Auth.loggedIn()) {
       this.setState({
         isLoggedin: true
       })
     }
-    if (this.props.match.params.id !== undefined) {
-      const req = {
-        token: this.props.match.params.id
-      };
-      axios.post(localStorage.getItem('serverAPI') + '/user/verify-token', req, {
+    if (this.props.match.params.token !== undefined) {
+      axios.get(localStorage.getItem('serverAPI') + '/forgot-password/get-token/' + this.props.match.params.token, {
       }).then(res => {
-        this.setState({
-          isAlertVisible: res.data.success,
-          message: res.data.message
-        });
+        if (!res.data.message) {
+          if (waktu > res.data[0].expired) {
+            window.alert("Token was expired");
+            window.location.href = '/login';
+          } else {
+            this.setState({
+              email: res.data[0].email,
+              status: this.state.status
+            });
+          }
+        } else {
+          window.alert(res.data.message);
+          window.location.href = '/login';
+        }
       });
     }
-  }
-
-  onDismiss = () => {
-    this.setState({ isAlertVisible: false });
   }
 
   handleChange = (event) => {
@@ -78,20 +82,24 @@ class ResetPassword extends Component {
   handleFormSubmit = (event) => {
     this.setState({ loader: true });
     event.preventDefault();
-    this.Auth.loginUser(this.state.email, this.state.password)
-      .then(res => {
-        if (res.data.success) {
-          this.setState({ loader: false });
-          window.location.href = '/dashboard';
-        } else {
-          this.setState({ loader: false });
-          alert(res.data.err);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        alert(err);
-      })
+    const req = {
+      email: this.state.email,
+      password: this.state.password,
+      token: this.props.match.params.token
+    }
+    if (this.state.status === '0') {
+      axios.put(localStorage.getItem('serverAPI') + '/forgot-password/edit-password', req, {
+      }).then(res => {
+        window.alert(res.data.message);
+        window.location.href = '/login';
+      });
+    } else {
+      axios.put(localStorage.getItem('serverAPI') + '/forgot-password/edit-password-admin', req, {
+      }).then(res => {
+        window.alert(res.data.message);
+        window.location.href = '/admin/login';
+      });
+    }
   }
 
   render() {
@@ -100,13 +108,6 @@ class ResetPassword extends Component {
         <React.Fragment>
           <div className="app flex-row align-items-center">
             <Container>
-              <Row className="w-75 m-auto">
-                <Col xs="12">
-                  <Alert color="info" isOpen={this.state.isAlertVisible} toggle={this.onDismiss}>
-                    {this.state.message}
-                  </Alert>
-                </Col>
-              </Row>
               <Row className="justify-content-center">
                 <Col md="6">
                   <CardGroup>
@@ -125,7 +126,7 @@ class ResetPassword extends Component {
                             <Input type="password" placeholder="Password" autoComplete="new-password" name="password" value={this.state.password} className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
                           </InputGroup>
 
-                          <InputGroup className="mb-3">
+                          <InputGroup className="mb-4">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>
                                 <i className="icon-lock"></i>

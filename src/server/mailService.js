@@ -72,7 +72,7 @@ module.exports = {
       from: '"Safe-t" <safet.imv@gmail.com>', // sender address
       to: target, // list of receivers
       subject: "Safe-t User Verification", // Subject line
-      html: "Hello <strong>" + username + "</strong><br/>Anda telah mengirimkan permintaan reset password untuk akun Safe-t (<strong>" + target + "</strong>). Silahkan klik tautan berikut untuk mereset password akun anda.<br/>http://localhost:3000/forgotpassword/" + token + "<br/><br/>Tautan diatas dapat digunakan selama 3 jam, untuk mendapatkan tautan lainnya silahkan kunjungi http://localhost:3000/login/<br/><br/>Sincerely,<br/>Safe-t team"
+      html: "Hello <strong>" + username + "</strong><br/>Anda telah mengirimkan permintaan reset password untuk akun Safe-t (<strong>" + target + "</strong>). Silahkan klik tautan berikut untuk mereset password akun anda.<br/>http://localhost:3000/resetpassword/" + token + "<br/><br/>Tautan diatas dapat digunakan selama 3 jam, untuk mendapatkan tautan lainnya silahkan kunjungi http://localhost:3000/login/<br/><br/>Sincerely,<br/>Safe-t team"
     };
 
     // send mail with defined transport object
@@ -88,7 +88,7 @@ module.exports = {
       }
       console.log('Message sent successfully!');
       res.send({
-        message: "Message sent successfully!",
+        message: "Please check your email to reset your password.",
         success: false
       });
     });

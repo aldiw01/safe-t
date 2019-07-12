@@ -158,19 +158,90 @@ module.exports = {
 			}
 		});
 		c.end();
-
 	},
-	resetPassword: function (req, res) {
-		c.query("UPDATE tbl_pengguna  SET pass= PASSWORD('" + req.password + "') WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+	forgotPassword_Admin(req, res, token) {
+		const expired = new Date().valueOf() + 3 * 60 * 60 * 1000;
+		var request = [req.email, token, expired];
+		c.query("SELECT `name` FROM `data_admin` WHERE `email`=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					name: items[0]
+				});
+			});
+			if (data.length < 1) {
+				res.send({
+					message: "User not registered",
+					success: false
+				});
+			} else {
+				c.query("INSERT INTO `reset_password` (`email`, `token`, `expired`, `status`) VALUES (?, ?, ?, 2)", request, { metadata: true, useArray: true }, function (err, rows) {
+					if (err)
+						throw err;
+
+					mailService.sendResetPassword(req.email, data[0].name, token, res);
+				});
+			}
+		});
+		c.end();
+	},
+	forgotPassword_getToken(req, res) {
+		c.query("SELECT `email`, `expired`, `status` FROM `reset_password` WHERE `token`=? AND (`status`=0 OR `status`=2)", [req.token], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					email: items[0],
+					expired: items[1],
+					status: items[2]
+				});
+			});
+			if (data.length < 1) {
+				res.json({
+					message: "Token not found",
+					success: false,
+					err: null,
+					affectedRows: rows.info.affectedRows
+				});
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	forgotPassword_editPassword: function (req, password, res) {
+		c.query("UPDATE `data_user` SET password=? WHERE email=?", [password, req.email], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 			res.json({
+				message: "Your password has changed successfully",
 				success: true,
-				err: null,
 				affectedRows: rows.info.affectedRows
 			});
 		});
-		c.query("DELETE FROM reset_password WHERE email='" + req.email + "'", null, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("UPDATE `reset_password` SET status=1 WHERE token=?", [req.token], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+		});
+
+		c.end();
+	},
+	forgotPassword_Admin_editPassword: function (req, password, res) {
+		c.query("UPDATE `data_admin` SET password=? WHERE email=?", [password, req.email], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+			res.json({
+				message: "Your password has changed successfully",
+				success: true,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.query("UPDATE `reset_password` SET status=3 WHERE token=?", [req.token], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 		});

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import AuthService from '../../../server/AuthService';
+import axios from 'axios';
 
 class LoginAdmin extends Component {
   constructor() {
@@ -10,7 +11,11 @@ class LoginAdmin extends Component {
     this.state = {
       email: '',
       password: '',
-      isLoggedin: false
+      isAlertVisible: false,
+      isLoggedin: false,
+      message: '',
+      forgotPassword: false,
+      emailRecovery: ''
     }
   }
 
@@ -22,9 +27,16 @@ class LoginAdmin extends Component {
     }
   }
 
+  onDismiss = () => {
+    this.setState({ isAlertVisible: false });
+  }
+
+  onToggle = () => {
+    this.setState({ forgotPassword: !this.state.forgotPassword });
+  }
+
   handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value)
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   handleFormSubmit = (event) => {
@@ -42,7 +54,24 @@ class LoginAdmin extends Component {
       })
       .catch(err => {
         console.log(err);
+        alert(err);
       })
+  }
+
+  handleForgotPassword = (event) => {
+    event.preventDefault();
+    const req = { email: this.state.emailRecovery };
+    axios.post(localStorage.getItem('serverAPI') + '/forgot-password-admin', req)
+      .then(res => {
+        this.setState({
+          forgotPassword: !this.state.forgotPassword,
+          isAlertVisible: true,
+          message: res.data.message
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -50,6 +79,13 @@ class LoginAdmin extends Component {
       this.state.isLoggedin ? <Redirect to="/admin" /> :
         <div className="app flex-row align-items-center">
           <Container>
+            <Row className="w-75 m-auto">
+              <Col xs="12">
+                <Alert color="info" isOpen={this.state.isAlertVisible} toggle={this.onDismiss}>
+                  {this.state.message}
+                </Alert>
+              </Col>
+            </Row>
             <Row className="justify-content-center">
               <Col md="8">
                 <CardGroup>
@@ -77,7 +113,7 @@ class LoginAdmin extends Component {
                             <Button color="primary" className="px-4">Login Admin</Button>
                           </Col>
                           <Col xs="6" className="text-right">
-                            <Button color="link" className="px-0">Forgot password?</Button>
+                            <Button onClick={this.onToggle} color="link" className="px-0">Forgot password?</Button>
                           </Col>
                         </Row>
                       </Form>
@@ -100,6 +136,28 @@ class LoginAdmin extends Component {
                     <span className="float-right"><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; {new Date().getFullYear()} IMV Laboratory</span>
                   </CardFooter>
                 </Card>
+
+                <Modal isOpen={this.state.forgotPassword} toggle={this.onToggle} className={'modal-primary'}>
+                  <ModalHeader toggle={this.onToggle}>Forgot Password</ModalHeader>
+                  <ModalBody>
+                    <p>Type your email to recover your account.</p>
+                    <Form action="" method="post" className="form-horizontal" onSubmit={this.handleForgotPassword}>
+                      <FormGroup row>
+                        <Col md="3" className="m-auto">
+                          <Label htmlFor="hf-email">Email</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChange} name="emailRecovery" value={this.state.emailRecovery} />
+                        </Col>
+                      </FormGroup>
+                    </Form>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" onClick={this.handleForgotPassword}>Recover</Button>{' '}
+                    <Button color="secondary" onClick={this.onToggle}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
+
               </Col>
             </Row>
           </Container>
