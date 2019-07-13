@@ -192,7 +192,7 @@ class Active extends Component {
       if (items.status === "0") {
         rows.push({
           id: parseInt(items.id),
-          reporter_id: items.reporter_id,
+          reporter_id: 0,
           violator_id: items.violator_id,
           vehicle_id: items.vehicle_id,
           violation_type: items.violation_type,

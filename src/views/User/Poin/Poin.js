@@ -15,26 +15,8 @@ class Poin extends Component {
     this.state = {
       view: false,
       point: 0,
-      data: [{
-        owner: '',
-        vehicle_id: '',
-        brand: '',
-        type: '',
-        build_year: '',
-        color: '',
-        created: '',
-        updated: ''
-      }],
-      focus: [{
-        owner: '',
-        vehicle_id: '',
-        brand: '',
-        type: '',
-        build_year: '',
-        color: '',
-        created: '',
-        updated: ''
-      }]
+      data: [],
+      focus: []
     }
   }
 
@@ -160,16 +142,14 @@ class Poin extends Component {
     var rows = [];
     let toggleView = this.toggleView;
     data.rows.forEach(function (items, i) {
-      if (items !== []) {
-        rows.push({
-          id: items.id,
-          point: 10,
-          created: items.created,
-          actions: <React.Fragment>
-            <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
-          </React.Fragment>
-        });
-      }
+      rows.push({
+        id: items.id,
+        point: 10,
+        created: items.created,
+        actions: <React.Fragment>
+          <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
+        </React.Fragment>
+      });
     });
     const dataFix = {
       columns: data.columns,

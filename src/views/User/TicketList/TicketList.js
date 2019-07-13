@@ -14,26 +14,8 @@ class TicketList extends Component {
     }
     this.state = {
       view: false,
-      edit: false,
-      delete: false,
-      data: [{
-        reporter_id: '',
-        violator_id: '',
-        vehicle_id: '',
-        violation_type: '',
-        detail: '',
-        incident_date: '',
-        documentation: '',
-      }],
-      focus: [{
-        reporter_id: '',
-        violator_id: '',
-        vehicle_id: '',
-        violation_type: '',
-        detail: '',
-        incident_date: '',
-        documentation: '',
-      }]
+      data: [],
+      focus: []
     }
   }
 
@@ -60,55 +42,9 @@ class TicketList extends Component {
     })
   }
 
-  handleEdit = id => {
-    if (window.confirm("You will create change(s) on database. Are you sure?")) {
-      axios.put(localStorage.getItem('serverAPI') + '/ticket/' + id, this.state.focus)
-        .then(res => {
-          this.setState({
-            edit: !this.state.edit,
-          })
-          alert(JSON.stringify(res.data));
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
-  }
-
-  handleDelete = id => {
-    if (window.confirm("You will create change(s) on database. Are you sure?")) {
-      axios.delete(localStorage.getItem('serverAPI') + '/ticket/' + id)
-        .then(res => {
-          this.setState({
-            delete: !this.state.delete,
-          })
-          alert(JSON.stringify(res.data));
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
-  }
-
   toggleView = id => {
     this.setState({
       view: !this.state.view,
-      focus: this.state.data[id]
-    });
-  }
-
-  toggleEdit = id => {
-    this.setState({
-      edit: !this.state.edit,
-      focus: this.state.data[id]
-    });
-  }
-
-  toggleDelete = id => {
-    this.setState({
-      delete: !this.state.delete,
       focus: this.state.data[id]
     });
   }
@@ -166,10 +102,10 @@ class TicketList extends Component {
 
     var rows = [];
     let toggleView = this.toggleView;
-    let toggleEdit = this.toggleEdit;
-    let toggleDelete = this.toggleDelete;
     var status = ["Active", "Closed"];
     data.rows.forEach(function (items, i) {
+      console.log(data.rows.length)
+      console.log(items)
       rows.push({
         id: items.id,
         reporter_id: items.reporter_id,

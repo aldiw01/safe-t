@@ -17,6 +17,7 @@ class Kendaraan extends Component {
       edit: false,
       delete: false,
       data: [{
+        id: '',
         owner: '',
         vehicle_id: '',
         brand: '',
@@ -27,6 +28,7 @@ class Kendaraan extends Component {
         updated: ''
       }],
       focus: [{
+        id: '',
         owner: '',
         vehicle_id: '',
         brand: '',
@@ -171,7 +173,7 @@ class Kendaraan extends Component {
     let toggleEdit = this.toggleEdit;
     let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
-      if (items !== []) {
+      if (items.id !== '') {
         rows.push({
           id: items.id,
           owner: items.owner,
