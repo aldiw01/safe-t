@@ -14,8 +14,7 @@ class Poin extends Component {
     }
     this.state = {
       view: false,
-      edit: false,
-      delete: false,
+      point: 0,
       data: [{
         owner: '',
         vehicle_id: '',
@@ -44,13 +43,25 @@ class Poin extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/vehicle')
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/user/' + this.Auth.getProfile().id)
       .then(res => {
-        this.setState({ data: res.data });
+        this.setState({
+          data: res.data,
+          point: res.data.length * 10
+        });
       })
       .catch(error => {
         console.log(error);
       });
+    // axios.get(localStorage.getItem('serverAPI') + '/point/user/' + this.Auth.getProfile().id)
+    //   .then(res => {
+    //     if (res.data.point) {
+    //       this.setState({ point: res.data.point });
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   }
 
   handleChange = event => {
@@ -123,38 +134,18 @@ class Poin extends Component {
     const data = {
       columns: [
         {
-          label: 'ID',
+          label: 'Ticket ID',
           field: 'id',
           sort: 'asc'
         },
         {
-          label: 'Owner',
-          field: 'owner',
+          label: 'Point',
+          field: 'point',
           sort: 'asc'
         },
         {
-          label: 'No Poin',
-          field: 'vehicle_id',
-          sort: 'asc'
-        },
-        {
-          label: 'Merk',
-          field: 'brand',
-          sort: 'asc'
-        },
-        {
-          label: 'Jenis',
-          field: 'type',
-          sort: 'asc'
-        },
-        {
-          label: 'Tahun Pembuatan',
-          field: 'build_year',
-          sort: 'asc'
-        },
-        {
-          label: 'Warna',
-          field: 'color',
+          label: 'Tanggal',
+          field: 'created',
           sort: 'asc'
         },
         {
@@ -168,22 +159,14 @@ class Poin extends Component {
 
     var rows = [];
     let toggleView = this.toggleView;
-    let toggleEdit = this.toggleEdit;
-    let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
       if (items !== []) {
         rows.push({
           id: items.id,
-          owner: items.owner,
-          vehicle_id: items.vehicle_id,
-          brand: items.brand,
-          type: items.type,
-          build_year: items.build_year,
-          color: items.color,
+          point: 10,
+          created: items.created,
           actions: <React.Fragment>
             <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
-            <button title="Edit Data" className="px-3 py-1 mr-1 btn btn-warning" onClick={() => toggleEdit(i)}><i className="fa fa-pencil"></i></button>
-            <button title="Delete Data" className="px-3 py-1 mr-1 btn btn-danger" onClick={() => toggleDelete(i)}><i className="fa fa-minus-circle"></i></button>
           </React.Fragment>
         });
       }
@@ -201,40 +184,31 @@ class Poin extends Component {
               <CardHeader>
                 <i className="fa fa-align-justify"></i><strong>Data Poin</strong>
               </CardHeader>
-              <CardBody>
-                <MDBDataTable
-                  striped
-                  bordered
-                  small
-                  data={dataFix}
-                // paginationLabel={["<", ">"]}
-                />
+              <CardBody className="d-flex">
+                <Col sm="12" lg="4" className="m-auto">
+                  <img className="d-block w-100" src="/assets/img/medal.svg" alt='Medal' />
+                  <div className="border rounded text-center m-4 h1">{this.state.point}</div>
+                </Col>
+                <Col xs="8" xl="8" sm="12">
+                  <MDBDataTable
+                    striped
+                    bordered
+                    small
+                    data={dataFix}
+                  // paginationLabel={["<", ">"]}
+                  />
+                </Col>
 
                 <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
                   <ModalHeader toggle={() => this.toggleView(0)}>Data Poin</ModalHeader>
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
-                        <Col xs="5">ID</Col>
+                        <Col xs="5">Ticket ID</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.id}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col xs="5">Owner</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.owner}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">No Poin</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">Merk</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.brand}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">Jenis</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.type}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">Tahun Pembuatan</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.build_year}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">Warna</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.color}</Col>
+                        <Col xs="5">Point</Col>
+                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>10</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Created</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
@@ -245,82 +219,11 @@ class Poin extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src='/assets/guide/zhiyong-li-24s.jpg' alt='KTP' />
+                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Edit Poin</ModalHeader>
-                  <ModalBody className="mt-4 mx-4">
-                    <Form action="" method="post" className="form-horizontal">
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-email">Owner</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="owner" value={this.state.focus.owner} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">No Poin</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="vehicle_id" value={this.state.focus.vehicle_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Merk</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="brand" value={this.state.focus.brand} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Jenis</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="type" value={this.state.focus.type} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Tahun Pembuatan</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="build_year" value={this.state.focus.build_year} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Warna</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="color" value={this.state.focus.color} />
-                        </Col>
-                      </FormGroup>
-                    </Form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Poin</ModalHeader>
-                  <ModalBody>
-                    Do you really want to delete this vehicle?
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 

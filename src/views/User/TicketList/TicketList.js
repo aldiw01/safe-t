@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
-import AuthService from '../../../../server/AuthService';
+import AuthService from '../../../server/AuthService';
 
-class Active extends Component {
+class TicketList extends Component {
 
   constructor(props) {
     super(props);
@@ -42,7 +42,7 @@ class Active extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/ticket')
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/user/' + this.Auth.getProfile().id)
       .then(res => {
         this.setState({ data: res.data });
       })
@@ -146,13 +146,13 @@ class Active extends Component {
           sort: 'asc'
         },
         {
-          label: 'Detail',
-          field: 'detail',
+          label: 'Tanggal Pelanggaran',
+          field: 'incident_date',
           sort: 'asc'
         },
         {
-          label: 'Tanggal',
-          field: 'incident_date',
+          label: 'Status',
+          field: 'status',
           sort: 'asc'
         },
         {
@@ -168,23 +168,20 @@ class Active extends Component {
     let toggleView = this.toggleView;
     let toggleEdit = this.toggleEdit;
     let toggleDelete = this.toggleDelete;
+    var status = ["Active", "Closed"];
     data.rows.forEach(function (items, i) {
-      if (items.status === "0") {
-        rows.push({
-          id: items.id,
-          reporter_id: items.reporter_id,
-          violator_id: items.violator_id,
-          vehicle_id: items.vehicle_id,
-          violation_type: items.violation_type,
-          detail: items.detail,
-          incident_date: items.incident_date,
-          actions: <React.Fragment>
-            <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
-            <button title="Edit Data" className="px-3 py-1 mr-1 btn btn-warning" onClick={() => toggleEdit(i)}><i className="fa fa-pencil"></i></button>
-            <button title="Delete Data" className="px-3 py-1 mr-1 btn btn-danger" onClick={() => toggleDelete(i)}><i className="fa fa-minus-circle"></i></button>
-          </React.Fragment>
-        });
-      }
+      rows.push({
+        id: items.id,
+        reporter_id: items.reporter_id,
+        violator_id: items.violator_id,
+        vehicle_id: items.vehicle_id,
+        violation_type: items.violation_type,
+        incident_date: items.incident_date,
+        status: status[items.status],
+        actions: <React.Fragment>
+          <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
+        </React.Fragment>
+      });
     });
     const dataFix = {
       columns: data.columns,
@@ -197,7 +194,7 @@ class Active extends Component {
           <Col xs="12" xl="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Data Tiket Aktif</strong>
+                <i className="fa fa-align-justify"></i><strong>My Ticket List</strong>
               </CardHeader>
               <CardBody>
                 <MDBDataTable
@@ -254,77 +251,6 @@ class Active extends Component {
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Review Tiket</ModalHeader>
-                  <ModalBody className="mt-4 mx-4">
-                    <Form action="" method="post" className="form-horizontal">
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-email">Reporter ID</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="reporter_id" value={this.state.focus.reporter_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Violator ID</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="violator_id" value={this.state.focus.violator_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">No Kendaraan</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="vehicle_id" value={this.state.focus.vehicle_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Jenis Pelanggaran</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="violation_type" value={this.state.focus.violation_type} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Detail</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="detail" value={this.state.focus.detail} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Tanggal</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="incident_date" value={this.state.focus.incident_date} />
-                        </Col>
-                      </FormGroup>
-                    </Form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Tiket</ModalHeader>
-                  <ModalBody>
-                    Do you really want to delete this ticket?
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
               </CardBody>
             </Card>
           </Col>
@@ -334,4 +260,4 @@ class Active extends Component {
   }
 }
 
-export default Active;
+export default TicketList;

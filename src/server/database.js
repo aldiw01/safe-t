@@ -717,6 +717,21 @@ module.exports = {
 		});
 		c.end();
 	},
+	closeTicket: function (req, res) {
+		c.query("UPDATE `data_pelanggaran` SET status=1 WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
 	deleteTicket: function (req, res) {
 		c.query("DELETE FROM `data_pelanggaran` WHERE id=?", [req.params.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err) {
@@ -736,6 +751,137 @@ module.exports = {
 		c.query("UPDATE `data_admin` SET privilege_id=? WHERE id=?", [req.body.privilege_id, req.params.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	getPointAll: function (req, res) {
+		c.query('SELECT * FROM `data_point` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					user_id: items[1],
+					point: items[2],
+					created: items[3],
+					updated: items[4]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getPoint: function (req, res) {
+		var request = [req.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("SELECT * FROM `data_point` WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					user_id: items[1],
+					point: items[2],
+					created: items[3],
+					updated: items[4]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getUserPoint: function (req, res) {
+		var request = [req.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("SELECT * FROM `data_point` WHERE user_id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					user_id: items[1],
+					point: items[2],
+					created: items[3],
+					updated: items[4]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	newPoint: function (req, point, res) {
+		var request = [req.body.user_id, req.body.point]
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+		}
+		c.query("INSERT INTO `data_point` (`user_id`, `point`) VALUES (?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	updatePoint: function (req, res) {
+		var request = [req.body.point, req.body.user_id]
+		if (request.includes(undefined) || request.includes("")) {
+			res.status(400).send('Bad Request: Parameters cannot empty.');
+			return
+		}
+		c.query("UPDATE `data_point` SET point=? WHERE user_id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				success: true,
+				err: null,
+				affectedRows: rows.info.affectedRows
+			});
+		});
+		c.end();
+	},
+	deletePoint: function (req, res) {
+		c.query("DELETE FROM `data_point` WHERE user_id=?", [req.params.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
 
 			res.json({
 				success: true,

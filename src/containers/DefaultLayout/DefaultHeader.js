@@ -4,8 +4,8 @@ import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import logo from '../../assets/img/brand/logo.png'
-import sygnet from '../../assets/img/brand/mascot.png'
+import logo from '../../assets/img/logo.png'
+import sygnet from '../../assets/img/mascot.png'
 import AuthService from '../../server/AuthService'
 
 const propTypes = {
@@ -49,9 +49,9 @@ class DefaultHeader extends Component {
           </NavItem> */}
         </Nav>
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
+          {/* <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
-          </NavItem>
+          </NavItem> */}
           <NavItem className="px-3 border-right border-secondary">
             <NavLink to="/profile" className="nav-link text-capitalize">{user}</NavLink>
           </NavItem>

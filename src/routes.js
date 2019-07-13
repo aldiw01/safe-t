@@ -9,6 +9,7 @@ const Closed = React.lazy(() => import('./views/Admin/Tiket/Closed'));
 const List = React.lazy(() => import('./views/Admin/User/List'));
 const Pending = React.lazy(() => import('./views/Admin/User/Pending'));
 const DashboardUser = React.lazy(() => import('./views/User/Dashboard'));
+const TicketList = React.lazy(() => import('./views/User/TicketList'));
 const Poin = React.lazy(() => import('./views/User/Poin'));
 const Profile = React.lazy(() => import('./views/Profile/Profile'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
@@ -26,8 +27,8 @@ const routes = [
   { path: '/admin/user/list', name: 'List', component: List },
   { path: '/admin/user/pending', name: 'Pending', component: Pending },
   { path: '/dashboard', name: 'Dashboard', component: DashboardUser },
-  { path: '/poin', exact: true, name: 'Tiket', component: Poin },
-  { path: '/tiket', name: 'Closed', component: Closed },
+  { path: '/tiket', name: 'Ticket List', component: TicketList },
+  { path: '/poin', exact: true, name: 'Point', component: Poin },
   { path: '/profile', name: 'Profile', component: Profile },
   { path: '/:id', exact: true, name: 'Page 404', component: Page404 }
 ];

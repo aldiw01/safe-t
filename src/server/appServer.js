@@ -195,64 +195,6 @@ app.get('/api/', jwtMW /* Using the express jwt MW here */, (req, res) => {
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-// API List
-app.post('/api/check-admin-registered', (req, res) => {
-	db.checkAdminRegistered(req.body, res);
-})
-
-app.post('/api/check-user-registered', (req, res) => {
-	db.checkUserRegistered(req.body, res);
-})
-
-app.put('/api/admin/set-privilege/:id', (req, res) => {
-	db.setAdminPrivilege(req, res);
-})
-
-app.get('/api/user/verify/:id', (req, res) => {
-	db.checkVerified(req.params, res);
-})
-
-app.put('/api/user/verify/:id', jwtMW, (req, res) => {
-	db.verifyUser(req.params, res);
-})
-
-app.post('/api/user/verify-token', (req, res) => {
-	db.verifyToken(req.body, res);
-})
-
-// Test only
-app.post('/api/user/verify/send-mail', (req, res) => {
-	const token = crypto.randomBytes(16).toString('hex');
-	mailService.sendVerification(req.body.email, req.body.name, token);
-})
-
-app.post('/api/forgot-password', (req, res) => {
-	const token = crypto.randomBytes(16).toString('hex');
-	// mailService.sendVerification(req.body.email, req.body.name, token);
-	db.forgotPassword(req.body, res, token);
-})
-
-app.post('/api/forgot-password-admin', (req, res) => {
-	const token = crypto.randomBytes(16).toString('hex');
-	// mailService.sendVerification(req.body.email, req.body.name, token);
-	db.forgotPassword_Admin(req.body, res, token);
-})
-
-app.get('/api/forgot-password/get-token/:token', (req, res) => {
-	db.forgotPassword_getToken(req.params, res);
-})
-
-app.put('/api/forgot-password/edit-password', (req, res) => {
-	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
-	db.forgotPassword_editPassword(req.body, password, res);
-})
-
-app.put('/api/forgot-password/edit-password-admin', (req, res) => {
-	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
-	db.forgotPassword_Admin_editPassword(req.body, password, res);
-})
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 // API User
 app.get('/api/user', jwtMW, (req, res) => {
 	db.getUserAll(req.body, res);
@@ -430,8 +372,38 @@ app.put('/api/ticket/:id', jwtMW, (req, res) => {
 	db.updateTicket(req, res);
 })
 
+app.put('/api/ticket/close/:id', jwtMW, (req, res) => {
+	db.closeTicket(req.params, res);
+})
+
 app.delete('/api/ticket/:id', jwtMW, (req, res) => {
 	db.deleteTicket(req, res);
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// Forgot and Reset Password
+app.post('/api/forgot-password', (req, res) => {
+	const token = crypto.randomBytes(16).toString('hex');
+	db.forgotPassword(req.body, res, token);
+})
+
+app.post('/api/forgot-password-admin', (req, res) => {
+	const token = crypto.randomBytes(16).toString('hex');
+	db.forgotPassword_Admin(req.body, res, token);
+})
+
+app.get('/api/forgot-password/get-token/:token', (req, res) => {
+	db.forgotPassword_getToken(req.params, res);
+})
+
+app.put('/api/forgot-password/edit-password', (req, res) => {
+	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
+	db.forgotPassword_editPassword(req.body, password, res);
+})
+
+app.put('/api/forgot-password/edit-password-admin', (req, res) => {
+	const password = crypto.createHmac(HASH_ALGORITHM, SECRET_CIPHER).update(req.body.password).digest(CIPHER_BASE);
+	db.forgotPassword_Admin_editPassword(req.body, password, res);
 })
 
 // UPLOAD FILE
@@ -457,6 +429,72 @@ app.post('/api/uploadImage', jwtMW, (req, res) => {
 	// 	res.status(200).send({ message: "upload success." });
 	// })
 	// console.log(req.body);
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// API Point
+app.get('/api/point', (req, res) => {
+	db.getPointAll(req.body, res);
+})
+
+app.get('/api/point/:id', (req, res) => {
+	db.getPoint(req.params, res);
+})
+
+app.get('/api/point/user/:id', (req, res) => {
+	db.getUserPoint(req.params, res);
+})
+
+app.post('/api/point', jwtMW, (req, res) => {
+	const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
+	let point = cipher.update(req.body.point, 'utf8', 'hex');
+	point += cipher.final('hex');
+
+	db.newPoint(req, point, res);
+})
+
+app.put('/api/point/:uid', jwtMW, (req, res) => {
+	const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
+	let point = cipher.update(req.body.point, 'utf8', 'hex');
+	point += cipher.final('hex');
+
+	db.updatePoint(req, res);
+})
+
+app.delete('/api/point/:uid', jwtMW, (req, res) => {
+	db.deletePoint(req, res);
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// API List
+app.post('/api/check-admin-registered', (req, res) => {
+	db.checkAdminRegistered(req.body, res);
+})
+
+app.post('/api/check-user-registered', (req, res) => {
+	db.checkUserRegistered(req.body, res);
+})
+
+app.put('/api/admin/set-privilege/:id', (req, res) => {
+	db.setAdminPrivilege(req, res);
+})
+
+app.get('/api/user/verify/:id', (req, res) => {
+	db.checkVerified(req.params, res);
+})
+
+app.put('/api/user/verify/:id', jwtMW, (req, res) => {
+	db.verifyUser(req.params, res);
+})
+
+app.post('/api/user/verify-token', (req, res) => {
+	db.verifyToken(req.body, res);
+})
+
+// Test only
+app.post('/api/user/verify/send-mail', (req, res) => {
+	const token = crypto.randomBytes(16).toString('hex');
+	mailService.sendVerification(req.body.email, req.body.name, token);
 })
 
 // Error handling 

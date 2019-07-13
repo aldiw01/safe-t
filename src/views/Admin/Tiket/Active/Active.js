@@ -92,6 +92,26 @@ class Active extends Component {
     }
   }
 
+  handleVerified = () => {
+    var message = "You will close this ticket. Are you sure?";
+    if (Object.values(this.state.focus).includes("")) {
+      message = "You still have empty field(s), consider to fill it first.\n" + message;
+    }
+    if (window.confirm(message)) {
+      axios.put(localStorage.getItem('serverAPI') + '/ticket/close/' + this.state.focus.id)
+        .then(res => {
+          this.setState({
+            view: !this.state.view,
+          })
+          alert(JSON.stringify(res.data));
+          this.getData();
+        })
+        .catch(error => {
+          alert(error);
+        });
+    }
+  }
+
   toggleView = id => {
     this.setState({
       view: !this.state.view,
@@ -231,7 +251,7 @@ class Active extends Component {
                         <Col xs="3">Detail</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.detail}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col xs="3">Tanggal</Col>
+                        <Col xs="3">Tanggal Pelanggaran</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Status</Col>
@@ -250,6 +270,7 @@ class Active extends Component {
                     </Col>
                   </ModalBody>
                   <ModalFooter>
+                    <Button color="primary" onClick={this.handleVerified}>Verified</Button>
                     <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
                   </ModalFooter>
                 </Modal>
@@ -300,13 +321,16 @@ class Active extends Component {
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Tanggal</Label>
+                          <Label htmlFor="hf-username">Tanggal Pelanggaran</Label>
                         </Col>
                         <Col xs="12" md="9">
                           <Input type="text" onChange={this.handleChange} name="incident_date" value={this.state.focus.incident_date} />
                         </Col>
                       </FormGroup>
                     </Form>
+                    <Col sm="12" lg="12" className="m-auto">
+                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                    </Col>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}

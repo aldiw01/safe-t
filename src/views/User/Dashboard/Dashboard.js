@@ -4,7 +4,7 @@ import AuthService from '../../../server/AuthService';
 
 const items = [
   {
-    src: '/assets/guide/Holograms.jpg',
+    src: '/assets/guide/JR-credit-Arito-Sakaguchi.jpg',
     altText: 'Slide 1',
     caption: 'Slide 1',
   },
