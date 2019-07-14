@@ -29,21 +29,21 @@ class Poin extends Component {
       .then(res => {
         this.setState({
           data: res.data,
-          point: res.data.length * 10
+          // point: res.data.length * 10
         });
       })
       .catch(error => {
         console.log(error);
       });
-    // axios.get(localStorage.getItem('serverAPI') + '/point/user/' + this.Auth.getProfile().id)
-    //   .then(res => {
-    //     if (res.data.point) {
-    //       this.setState({ point: res.data.point });
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    axios.get(localStorage.getItem('serverAPI') + '/point/user/' + this.Auth.getProfile().id)
+      .then(res => {
+        if (res.data) {
+          this.setState({ point: res.data[0].point });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleChange = event => {

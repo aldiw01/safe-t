@@ -16,7 +16,9 @@ class Active extends Component {
       view: false,
       edit: false,
       delete: false,
+      message: '',
       data: [{
+        id: '',
         reporter_id: '',
         violator_id: '',
         vehicle_id: '',
@@ -25,7 +27,8 @@ class Active extends Component {
         incident_date: '',
         documentation: '',
       }],
-      focus: [{
+      focus: {
+        id: '',
         reporter_id: '',
         violator_id: '',
         vehicle_id: '',
@@ -33,7 +36,7 @@ class Active extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
-      }]
+      }
     }
   }
 
@@ -57,7 +60,13 @@ class Active extends Component {
         ...this.state.focus,
         [event.target.name]: event.target.value
       }
-    })
+    });
+  }
+
+  handleChangeEvent = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
   }
 
   handleEdit = id => {
@@ -67,7 +76,7 @@ class Active extends Component {
           this.setState({
             edit: !this.state.edit,
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -92,18 +101,30 @@ class Active extends Component {
     }
   }
 
-  handleVerified = () => {
+  handleCloseTicket = () => {
     var message = "You will close this ticket. Are you sure?";
     if (Object.values(this.state.focus).includes("")) {
       message = "You still have empty field(s), consider to fill it first.\n" + message;
     }
     if (window.confirm(message)) {
+      const req = {
+        ticket_id: this.state.focus.id,
+        from_id: this.Auth.getProfile().id,
+        to_id: this.state.focus.reporter_id,
+        info: "telah menutup status tiket anda",
+        message: this.state.message
+      }
+      axios.post(localStorage.getItem('serverAPI') + '/history', req)
+        .catch(error => {
+          alert(error);
+        });
+
       axios.put(localStorage.getItem('serverAPI') + '/ticket/close/' + this.state.focus.id)
         .then(res => {
           this.setState({
             view: !this.state.view,
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -115,7 +136,8 @@ class Active extends Component {
   toggleView = id => {
     this.setState({
       view: !this.state.view,
-      focus: this.state.data[id]
+      focus: this.state.data[id],
+      message: ''
     });
   }
 
@@ -192,7 +214,7 @@ class Active extends Component {
       if (items.status === "0") {
         rows.push({
           id: parseInt(items.id),
-          reporter_id: 0,
+          reporter_id: items.reporter_id,
           violator_id: items.violator_id,
           vehicle_id: items.vehicle_id,
           violation_type: items.violation_type,
@@ -267,10 +289,12 @@ class Active extends Component {
                     </Col>
                     <Col sm="12" lg="12" className="m-auto">
                       <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+
+                      <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control mt-3 border-primary" rows="2" placeholder="Mohon isi respon untuk menutup tiket"></textarea>
                     </Col>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={this.handleVerified}>Verified</Button>
+                    <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.message === ""}>Close Ticket</Button>
                     <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
                   </ModalFooter>
                 </Modal>
@@ -328,9 +352,7 @@ class Active extends Component {
                         </Col>
                       </FormGroup>
                     </Form>
-                    <Col sm="12" lg="12" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
-                    </Col>
+                    <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
                   </ModalBody>
                   <ModalFooter>
                     <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}

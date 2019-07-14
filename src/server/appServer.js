@@ -446,23 +446,61 @@ app.get('/api/point/user/:id', (req, res) => {
 })
 
 app.post('/api/point', jwtMW, (req, res) => {
-	const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
-	let point = cipher.update(req.body.point, 'utf8', 'hex');
-	point += cipher.final('hex');
+	// FOR FURTHER DEVELOPMENT
+	// const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
+	// let point = cipher.update(req.body.point, 'utf8', 'hex');
+	// point += cipher.final('hex');
 
+	const point = req.body.point;
 	db.newPoint(req, point, res);
 })
 
 app.put('/api/point/:uid', jwtMW, (req, res) => {
-	const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
-	let point = cipher.update(req.body.point, 'utf8', 'hex');
-	point += cipher.final('hex');
+	// FOR FURTHER DEVELOPMENT
+	// const cipher = crypto.createCipheriv(ALGORITHM, CIPHER_KEY, CIPHER_IV);
+	// let point = cipher.update(req.body.point, 'utf8', 'hex');
+	// point += cipher.final('hex');
 
-	db.updatePoint(req, res);
+	const point = req.body.point;
+	db.updatePoint(req.params, point, res);
 })
 
 app.delete('/api/point/:uid', jwtMW, (req, res) => {
-	db.deletePoint(req, res);
+	db.deletePoint(req.params, res);
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+// API History
+app.get('/api/history', (req, res) => {
+	db.getHistoryAll(req.body, res);
+})
+
+app.get('/api/history/:id', (req, res) => {
+	db.getHistory(req.params, res);
+})
+
+app.get('/api/history/from/:id', (req, res) => {
+	db.getFromUserHistory(req.params, res);
+})
+
+app.get('/api/history/to/:id', (req, res) => {
+	db.getToUserHistory(req.params, res);
+})
+
+app.get('/api/history/ticket/:id', (req, res) => {
+	db.getTicketHistory(req.params, res);
+})
+
+app.post('/api/history', jwtMW, (req, res) => {
+	db.newHistory(req.body, res);
+})
+
+app.put('/api/history/:id', jwtMW, (req, res) => {
+	db.updateHistory(req, res);
+})
+
+app.delete('/api/history/:id', jwtMW, (req, res) => {
+	db.deleteHistory(req.params, res);
 })
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -15,7 +15,9 @@ class Closed extends Component {
     this.state = {
       view: false,
       delete: false,
+      id: '',
       data: [{
+        id: '',
         reporter_id: '',
         violator_id: '',
         vehicle_id: '',
@@ -23,8 +25,11 @@ class Closed extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        created: '',
+        updated: '',
       }],
-      focus: [{
+      focus: {
+        id: '',
         reporter_id: '',
         violator_id: '',
         vehicle_id: '',
@@ -32,6 +37,19 @@ class Closed extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        created: '',
+        updated: '',
+      },
+      history: [{
+        id: '',
+        ticket_id: '',
+        from_id: '',
+        to_id: '',
+        info: '',
+        message: '',
+        status: '',
+        created: '',
+        updated: '',
       }]
     }
   }
@@ -76,7 +94,19 @@ class Closed extends Component {
   }
 
   toggleView = id => {
+    if (id !== this.state.id) {
+      console.log("retrieve")
+      axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
+        .then(res => {
+          this.setState({ history: res.data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
     this.setState({
+      id: id,
       view: !this.state.view,
       focus: this.state.data[id]
     });
@@ -182,8 +212,8 @@ class Closed extends Component {
                 // paginationLabel={["<", ">"]}
                 />
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Tiket</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Tiket</ModalHeader>
                   <ModalBody className="modal-body-display d-block">
                     <Col sm="12" lg="12" className="m-auto">
                       <Row>
@@ -218,13 +248,15 @@ class Closed extends Component {
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
                         <div className="w-100 py-2"></div>
                       </Row>
-                    </Col>
-                    <Col sm="12" lg="12" className="m-auto">
                       <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                      <Row>
+                        <div className="w-100 py-4"></div>
+                        <Col xs="12" className="h">Histori Tiket</Col>
+                      </Row>
                     </Col>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 

@@ -138,6 +138,7 @@ class TicketList extends Component {
                   bordered
                   small
                   data={dataFix}
+                  header={false}
                 // paginationLabel={["<", ">"]}
                 />
 

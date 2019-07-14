@@ -46,7 +46,8 @@ class LoginAdmin extends Component {
       .then(res => {
         if (res.data.success) {
           this.setState({ loader: false });
-          window.location.href = '/admin';
+          this.props.history.push("/");
+          // window.location.href = '/admin';
         } else {
           this.setState({ loader: false });
           alert(res.data.err);

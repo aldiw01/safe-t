@@ -65,19 +65,31 @@ module.exports = {
 		c.end();
 	},
 	verifyToken: function (req, res) {
-		c.query("SELECT `email` FROM `verification_token` WHERE `token`=? AND `status`=0", [req.token], { metadata: true, useArray: true }, function (err, rows) {
-			if (err)
+		c.query("SELECT t1.email, t2.id FROM `verification_token` t1 INNER JOIN `data_user` t2 ON (t1.token=? AND t1.status=0 AND t1.email=t2.email)", [req.token], { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
 				throw err;
+			}
 
 			if (rows.info.numRows !== '0') {
 				rows.forEach(function (items) {
 					c.query("UPDATE `verification_token` SET status='1' WHERE `email`=?", [items[0]], { metadata: true, useArray: true }, function (err, rows) {
-						if (err)
+						if (err) {
+							res.json(err);
 							throw err;
+						}
+					});
+					c.query("INSERT INTO `data_point` (`user_id`, `point`) VALUES (?, 0)", [items[1]], { metadata: true, useArray: true }, function (err, rows) {
+						if (err) {
+							res.json(err);
+							throw err;
+						}
 					});
 					c.query("UPDATE `data_user` SET status='1' WHERE email=?", [items[0]], { metadata: true, useArray: true }, function (err, rows) {
-						if (err)
+						if (err) {
+							res.json(err);
 							throw err;
+						}
 
 						res.json({
 							success: true,
@@ -102,9 +114,10 @@ module.exports = {
 				throw err;
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "User has verified successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -118,7 +131,7 @@ module.exports = {
 				res.json({
 					success: true,
 					err: null,
-					message: "User already verified"
+					message: "User was already verified"
 				});
 			} else {
 				res.json({
@@ -133,6 +146,10 @@ module.exports = {
 	forgotPassword(req, res, token) {
 		const expired = new Date().valueOf() + 3 * 60 * 60 * 1000;
 		var request = [req.email, token, expired];
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
 		c.query("SELECT `name` FROM `data_user` WHERE `email`=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -145,7 +162,7 @@ module.exports = {
 			});
 			if (data.length < 1) {
 				res.send({
-					message: "User not registered",
+					message: "User is not registered",
 					success: false
 				});
 			} else {
@@ -162,6 +179,10 @@ module.exports = {
 	forgotPassword_Admin(req, res, token) {
 		const expired = new Date().valueOf() + 3 * 60 * 60 * 1000;
 		var request = [req.email, token, expired];
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
 		c.query("SELECT `name` FROM `data_admin` WHERE `email`=?", [req.email], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -350,6 +371,10 @@ module.exports = {
 	},
 	newUser: function (req, password, res) {
 		var request = [password, req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address];
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
 		c.query("INSERT INTO `verification_token`(`email`, `token`, `status`) VALUES (?, ?, '0')", [req.email, req.token], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -361,9 +386,10 @@ module.exports = {
 				throw err;
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "User has registered successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -371,16 +397,18 @@ module.exports = {
 	updateUser: function (req, res) {
 		var request = [req.name, req.email, req.phone, req.citizen_id, req.captured_id, req.gender, req.address, req.id];
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send({ message: 'Bad Request: Parameters cannot empty.' });
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("UPDATE `data_user` SET `name`=?,`email`=?,`phone`=?,`citizen_id`=?,`captured_id`=?,`gender`=?,`address`=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "User has updated successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -388,7 +416,8 @@ module.exports = {
 	deleteUser: function (req, res) {
 		var request = [req.id];
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("DELETE FROM data_user WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
@@ -398,9 +427,10 @@ module.exports = {
 				res.status(404).send({ message: 'Data not found.' });
 			} else {
 				res.json({
-					success: true,
+					affectedRows: rows.info.affectedRows,
 					err: null,
-					affectedRows: rows.info.affectedRows
+					message: "User has deleted successfully",
+					success: true
 				});
 			}
 		});
@@ -409,16 +439,18 @@ module.exports = {
 	newAdmin: function (req, password, res) {
 		var request = [req.name, password, req.email, req.citizen_id, req.captured_id]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("INSERT INTO `data_admin` (`name`, `password`, `email`, `citizen_id`, `captured_id`, `privilege_id`) VALUES (?, ?, ?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Admin has registered successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -504,9 +536,6 @@ module.exports = {
 	},
 	getVehicle: function (req, res) {
 		var request = [req.id];
-		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
-		}
 		c.query("SELECT * FROM `data_kendaraan` WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
@@ -536,7 +565,8 @@ module.exports = {
 	newVehicle: function (req, res) {
 		var request = [req.body.owner, req.body.vehicle_id, req.body.brand, req.body.type, req.body.build_year, req.body.color]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("INSERT INTO `data_kendaraan` (`owner`, `vehicle_id`, `brand`, `type`, `build_year`, `color`) VALUES (?, ?, ?, ?, ?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err) {
@@ -545,9 +575,10 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Vehicle has recorded successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -555,7 +586,7 @@ module.exports = {
 	updateVehicle: function (req, res) {
 		var request = [req.body.owner, req.body.vehicle_id, req.body.brand, req.body.type, req.body.build_year, req.body.color, req.params.id]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
 			return
 		}
 		c.query("UPDATE `data_kendaraan` SET owner=?, vehicle_id=?, brand=?, type=?, build_year=?, color=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
@@ -565,9 +596,10 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Vehicle has updated successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -580,9 +612,10 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Vehicle has deleted successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -679,7 +712,8 @@ module.exports = {
 	newTicket: function (req, res) {
 		var request = [req.reporter_id, req.violator_id, req.vehicle_id, req.violation_type, req.detail, req.incident_date, req.documentation]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("INSERT INTO `data_pelanggaran` (`reporter_id`, `violator_id`, `vehicle_id`, `violation_type`, `detail`, `incident_date`, `documentation`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err) {
@@ -688,10 +722,10 @@ module.exports = {
 			}
 
 			res.json({
-				message: "Upload success.",
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Ticket has recorded successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -700,7 +734,7 @@ module.exports = {
 		var request = [req.body.reporter_id, req.body.violator_id, req.body.vehicle_id, req.body.violation_type, req.body.detail, req.body.incident_date, req.params.id]
 		console.log(request)
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
 			return
 		}
 		c.query("UPDATE `data_pelanggaran` SET reporter_id=?, violator_id=?, vehicle_id=?, violation_type=?, detail=?, incident_date=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
@@ -712,23 +746,45 @@ module.exports = {
 			res.json({
 				success: true,
 				err: null,
+				message: "Ticket has updated successfully",
 				affectedRows: rows.info.affectedRows
 			});
 		});
 		c.end();
 	},
 	closeTicket: function (req, res) {
-		c.query("UPDATE `data_pelanggaran` SET status=1 WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
-			if (err) {
-				res.json(err);
+		c.query("SELECT t1.reporter_id, t2.point FROM `data_pelanggaran` t1 INNER JOIN `data_point` t2 ON t1.id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
 				throw err;
-			}
 
-			res.json({
-				success: true,
-				err: null,
-				affectedRows: rows.info.affectedRows
-			});
+			if (rows.info.numRows !== '0') {
+				rows.forEach(function (items) {
+					c.query("UPDATE `data_pelanggaran` SET status=1 WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+						if (err) {
+							res.json(err);
+							throw err;
+						}
+					});
+					c.query("UPDATE `data_point` SET point=? WHERE user_id=?", [parseInt(items[1]) + 10, items[0]], { metadata: true, useArray: true }, function (err, rows) {
+						if (err) {
+							res.json(err);
+							throw err;
+						}
+
+						res.json({
+							success: true,
+							err: null,
+							message: "Ticket closed successfully"
+						});
+					});
+				});
+			} else {
+				res.status(404).send({
+					success: false,
+					err: null,
+					message: "Data not found."
+				});
+			}
 		});
 		c.end();
 	},
@@ -740,22 +796,29 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Ticket has deleted successfully",
+				success: true
 			});
 		});
 		c.end();
 	},
 	setAdminPrivilege: function (req, res) {
-		c.query("UPDATE `data_admin` SET privilege_id=? WHERE id=?", [req.body.privilege_id, req.params.id], { metadata: true, useArray: true }, function (err, rows) {
+		var request = [req.body.privilege_id, req.params.id];
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
+		c.query("UPDATE `data_admin` SET privilege_id=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Privilege has updated successfully",
+				success: true
 			});
 		});
 		c.end();
@@ -784,11 +847,7 @@ module.exports = {
 		c.end();
 	},
 	getPoint: function (req, res) {
-		var request = [req.id];
-		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
-		}
-		c.query("SELECT * FROM `data_point` WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT * FROM `data_point` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -811,11 +870,7 @@ module.exports = {
 		c.end();
 	},
 	getUserPoint: function (req, res) {
-		var request = [req.id];
-		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
-		}
-		c.query("SELECT * FROM `data_point` WHERE user_id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT * FROM `data_point` WHERE user_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -840,7 +895,8 @@ module.exports = {
 	newPoint: function (req, point, res) {
 		var request = [req.body.user_id, req.body.point]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
 		}
 		c.query("INSERT INTO `data_point` (`user_id`, `point`) VALUES (?, ?)", request, { metadata: true, useArray: true }, function (err, rows) {
 			if (err) {
@@ -849,17 +905,18 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Point has recorded successfully",
+				success: true
 			});
 		});
 		c.end();
 	},
-	updatePoint: function (req, res) {
-		var request = [req.body.point, req.body.user_id]
+	updatePoint: function (req, point, res) {
+		var request = [point, req.uid]
 		if (request.includes(undefined) || request.includes("")) {
-			res.status(400).send('Bad Request: Parameters cannot empty.');
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
 			return
 		}
 		c.query("UPDATE `data_point` SET point=? WHERE user_id=?", request, { metadata: true, useArray: true }, function (err, rows) {
@@ -869,24 +926,219 @@ module.exports = {
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Point has updated successfully",
+				success: true
 			});
 		});
 		c.end();
 	},
 	deletePoint: function (req, res) {
-		c.query("DELETE FROM `data_point` WHERE user_id=?", [req.params.id], { metadata: true, useArray: true }, function (err, rows) {
+		c.query("DELETE FROM `data_point` WHERE user_id=?", [req.uid], { metadata: true, useArray: true }, function (err, rows) {
 			if (err) {
 				res.json(err);
 				throw err;
 			}
 
 			res.json({
-				success: true,
+				affectedRows: rows.info.affectedRows,
 				err: null,
-				affectedRows: rows.info.affectedRows
+				message: "Point has deleted successfully",
+				success: true
+			});
+		});
+		c.end();
+	},
+	getHistoryAll: function (req, res) {
+		c.query('SELECT * FROM `history` ORDER BY id', null, { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					ticket_id: items[1],
+					from_id: items[2],
+					to_id: items[3],
+					info: items[4],
+					message: items[5],
+					status: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getHistory: function (req, res) {
+		c.query("SELECT * FROM `history` WHERE id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					ticket_id: items[1],
+					from_id: items[2],
+					to_id: items[3],
+					info: items[4],
+					message: items[5],
+					status: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getFromHistory: function (req, res) {
+		c.query("SELECT * FROM `history` WHERE from_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					ticket_id: items[1],
+					from_id: items[2],
+					to_id: items[3],
+					info: items[4],
+					message: items[5],
+					status: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getToHistory: function (req, res) {
+		c.query("SELECT * FROM `history` WHERE to_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					ticket_id: items[1],
+					from_id: items[2],
+					to_id: items[3],
+					info: items[4],
+					message: items[5],
+					status: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	getTicketHistory: function (req, res) {
+		c.query("SELECT * FROM `history` WHERE ticket_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+			if (err)
+				throw err;
+
+			var data = [];
+			rows.forEach(function (items) {
+				data.push({
+					id: items[0],
+					ticket_id: items[1],
+					from_id: items[2],
+					to_id: items[3],
+					info: items[4],
+					message: items[5],
+					status: items[6],
+					created: items[7],
+					updated: items[8]
+				});
+			});
+			if (data.length < 1) {
+				res.status(404).send('Data not found.');
+			} else {
+				res.json(data);
+			}
+		});
+		c.end();
+	},
+	newHistory: function (req, res) {
+		var request = [req.ticket_id, req.from_id, req.to_id, req.info, req.message]
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
+		c.query("INSERT INTO `history` (`ticket_id`, `from_id`, `to_id`, `info`, `message`, `status`) VALUES (?, ?, ?, ?, ?, 0)", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				affectedRows: rows.info.affectedRows,
+				err: null,
+				message: "History has recorded successfully",
+				success: true
+			});
+		});
+		c.end();
+	},
+	updateHistory: function (req, res) {
+		var request = [req.body.ticket_id, req.body, from_id, req.body.to_id, req.body.info, req.body.message, req.params.id]
+		if (request.includes(undefined) || request.includes("")) {
+			res.send({ message: 'Bad Request: Parameters cannot empty.' });
+			return
+		}
+		c.query("UPDATE `history` SET ticket_id=?, from_id=?, to_id=?, info=?, message=? WHERE id=?", request, { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				affectedRows: rows.info.affectedRows,
+				err: null,
+				message: "History has updated successfully",
+				success: true
+			});
+		});
+		c.end();
+	},
+	deleteHistory: function (req, res) {
+		c.query("DELETE FROM `data_point` WHERE user_id=?", [req.uid], { metadata: true, useArray: true }, function (err, rows) {
+			if (err) {
+				res.json(err);
+				throw err;
+			}
+
+			res.json({
+				affectedRows: rows.info.affectedRows,
+				err: null,
+				message: "History has deleted successfully",
+				success: true
 			});
 		});
 		c.end();

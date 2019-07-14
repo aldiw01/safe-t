@@ -1,6 +1,6 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "Safe-t",
+  "name": "Safe-t - Smart IoT Applications for Orderly Traffic",
   "icons": [
     {
       "src": "./assets/img/favicon.png",
