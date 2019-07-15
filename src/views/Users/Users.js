@@ -24,7 +24,7 @@ function UserRow(props) {
         'Pending'
   }
   console.log(new Date(user.created).toLocaleDateString())
-  if (user != undefined)
+  if (user !== undefined)
     return (
       <tr key={user.id.toString()}>
         <th scope="row">{user.id}</th>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
+import { Carousel, CarouselCaption, CarouselControl, CarouselIndicators, CarouselItem, Col, Row } from 'reactstrap';
 import AuthService from '../../../server/AuthService';
 
 const items = [
@@ -66,14 +66,6 @@ class Dashboard extends Component {
 
     const slides = items.map((item) => {
       return (
-        <CarouselItem onExiting={this.onExiting} onExited={this.onExited} key={item.src}>
-          <img className="d-block w-100" src={item.src} alt={item.altText} />
-        </CarouselItem>
-      );
-    });
-
-    const slides2 = items.map((item) => {
-      return (
         <CarouselItem
           onExiting={this.onExiting}
           onExited={this.onExited}
@@ -91,7 +83,7 @@ class Dashboard extends Component {
           <Col xs="12" xl="12">
             <Carousel activeIndex={activeIndex} next={this.next} previous={this.previous}>
               <CarouselIndicators items={items} activeIndex={activeIndex} onClickHandler={this.goToIndex} />
-              {slides2}
+              {slides}
               <CarouselControl direction="prev" directionText="Previous" onClickHandler={this.previous} />
               <CarouselControl direction="next" directionText="Next" onClickHandler={this.next} />
             </Carousel>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import axios from 'axios';
 import AuthService from '../../server/AuthService';
 
 class Profile extends Component {

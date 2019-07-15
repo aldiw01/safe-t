@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
@@ -104,8 +104,6 @@ class TicketList extends Component {
     let toggleView = this.toggleView;
     var status = ["Active", "Closed"];
     data.rows.forEach(function (items, i) {
-      console.log(data.rows.length)
-      console.log(items)
       rows.push({
         id: items.id,
         reporter_id: items.reporter_id,
@@ -138,7 +136,6 @@ class TicketList extends Component {
                   bordered
                   small
                   data={dataFix}
-                  header={false}
                 // paginationLabel={["<", ">"]}
                 />
 

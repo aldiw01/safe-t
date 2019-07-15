@@ -61,8 +61,7 @@ class Login extends Component {
       .then(res => {
         if (res.data.success) {
           this.setState({ loader: false });
-          this.props.history.push("/");
-          // window.location.href = '/dashboard';
+          this.props.history.push("/dashboard");
         } else {
           this.setState({ loader: false });
           alert(res.data.err);
