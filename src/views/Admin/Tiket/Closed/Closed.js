@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Button, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../../server/AuthService';
+import Spinner from 'react-spinkit';
 
 class Closed extends Component {
 
@@ -16,6 +17,7 @@ class Closed extends Component {
       view: false,
       delete: false,
       id: '',
+      loader: false,
       data: [{
         id: '',
         reporter_id: '',
@@ -43,8 +45,7 @@ class Closed extends Component {
       history: [{
         id: '',
         ticket_id: '',
-        from_id: '',
-        to_id: '',
+        from_name: '',
         info: '',
         message: '',
         status: '',
@@ -79,10 +80,12 @@ class Closed extends Component {
 
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
       axios.delete(localStorage.getItem('serverAPI') + '/ticket/' + id)
         .then(res => {
           this.setState({
             delete: !this.state.delete,
+            loader: false
           })
           alert(JSON.stringify(res.data));
           this.getData();
@@ -95,11 +98,27 @@ class Closed extends Component {
 
   toggleView = id => {
     if (id !== this.state.id) {
+      console.log(id)
+      console.log(this.state.id)
+      console.log(this.state.data[id].id)
       axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
         .then(res => {
           this.setState({ history: res.data });
+          console.log(res.data)
         })
         .catch(error => {
+          this.setState({
+            history: [{
+              id: '',
+              ticket_id: '',
+              from_name: '',
+              info: '',
+              message: '',
+              status: '',
+              created: '',
+              updated: '',
+            }]
+          });
           console.log(error);
         });
     }
@@ -241,17 +260,43 @@ class Closed extends Component {
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Closed</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Created</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Updated</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
+                        <Col><img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' /></Col>
+                        <div className="w-100 py-3"></div>
                       </Row>
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+
                       <Row>
-                        <div className="w-100 py-4"></div>
-                        <Col xs="12" className="h">Histori Tiket</Col>
+                        <Col xs="12">
+                          <Card>
+                            <CardHeader>
+                              <i className="fa fa-history"></i><strong>Ticket History</strong>
+                            </CardHeader>
+                            <CardBody>
+                              <ListGroup>
+                                {this.state.history[0].id ?
+                                  this.state.history.map(item =>
+                                    <ListGroupItem action key={item.id}>
+                                      <div className="d-flex w-100 justify-content-between">
+                                        <ListGroupItemHeading>{item.from_name}</ListGroupItemHeading>
+                                        <small>{new Date(item.created).toLocaleString('en-GB')}</small>
+                                      </div>
+                                      <ListGroupItemText>
+                                        {item.from_name + " " + item.info + " : "}
+                                        <span className="font-weight-bold">{item.message}</span>
+                                      </ListGroupItemText>
+                                    </ListGroupItem>
+                                  ) : "No record found"
+                                }
+                              </ListGroup>
+                            </CardBody>
+                          </Card>
+                        </Col>
                       </Row>
+
                     </Col>
                   </ModalBody>
                   <ModalFooter>
@@ -265,6 +310,7 @@ class Closed extends Component {
                     Do you really want to delete this ticket?
                   </ModalBody>
                   <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
                   </ModalFooter>

@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../../server/AuthService';
+import Spinner from 'react-spinkit';
 
 class Active extends Component {
 
@@ -17,6 +18,7 @@ class Active extends Component {
       edit: false,
       delete: false,
       message: '',
+      loader: false,
       data: [{
         id: '',
         reporter_id: '',
@@ -71,10 +73,12 @@ class Active extends Component {
 
   handleEdit = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
       axios.put(localStorage.getItem('serverAPI') + '/ticket/' + id, this.state.focus)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
+            loader: false
           })
           alert(res.data.message);
           this.getData();
@@ -87,10 +91,12 @@ class Active extends Component {
 
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
       axios.delete(localStorage.getItem('serverAPI') + '/ticket/' + id)
         .then(res => {
           this.setState({
             delete: !this.state.delete,
+            loader: false
           })
           alert(JSON.stringify(res.data));
           this.getData();
@@ -107,6 +113,7 @@ class Active extends Component {
       message = "You still have empty field(s), consider to fill it first.\n" + message;
     }
     if (window.confirm(message)) {
+      this.setState({ loader: true });
       const req = {
         ticket_id: this.state.focus.id,
         from_id: this.Auth.getProfile().id,
@@ -122,6 +129,7 @@ class Active extends Component {
       axios.put(localStorage.getItem('serverAPI') + '/ticket/close/' + this.state.focus.id)
         .then(res => {
           this.setState({
+            loader: false,
             view: !this.state.view,
           })
           alert(res.data.message);
@@ -193,7 +201,7 @@ class Active extends Component {
           sort: 'asc'
         },
         {
-          label: 'Tanggal',
+          label: 'Tanggal Pelanggaran',
           field: 'incident_date',
           sort: 'asc'
         },
@@ -280,10 +288,10 @@ class Active extends Component {
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Aktif</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Created</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Updated</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                       </Row>
                     </Col>
@@ -294,6 +302,7 @@ class Active extends Component {
                     </Col>
                   </ModalBody>
                   <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.message === ""}>Close Ticket</Button>
                     <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
                   </ModalFooter>
@@ -355,7 +364,8 @@ class Active extends Component {
                     <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
+                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)} disabled={this.state.loader} >Save Changes</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
@@ -366,6 +376,7 @@ class Active extends Component {
                     Do you really want to delete this ticket?
                   </ModalBody>
                   <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
                   </ModalFooter>

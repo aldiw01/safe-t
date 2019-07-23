@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
+import Spinner from 'react-spinkit';
 
 class Kendaraan extends Component {
 
@@ -16,6 +17,7 @@ class Kendaraan extends Component {
       view: false,
       edit: false,
       delete: false,
+      loader: false,
       data: [{
         id: '',
         owner: '',
@@ -66,10 +68,12 @@ class Kendaraan extends Component {
 
   handleEdit = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
       axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + id, this.state.focus)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
+            loader: false
           })
           alert(JSON.stringify(res.data));
           this.getData();
@@ -82,10 +86,12 @@ class Kendaraan extends Component {
 
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
       axios.delete(localStorage.getItem('serverAPI') + '/vehicle/' + id)
         .then(res => {
           this.setState({
             delete: !this.state.delete,
+            loader: false
           })
           alert(JSON.stringify(res.data));
           this.getData();
@@ -239,10 +245,10 @@ class Kendaraan extends Component {
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.color}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Created</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
+                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Updated</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
+                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                       </Row>
                     </Col>
@@ -310,6 +316,7 @@ class Kendaraan extends Component {
                     </Form>
                   </ModalBody>
                   <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
                   </ModalFooter>
@@ -321,6 +328,7 @@ class Kendaraan extends Component {
                     Do you really want to delete this vehicle?
                   </ModalBody>
                   <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
                   </ModalFooter>

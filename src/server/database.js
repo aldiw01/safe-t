@@ -1059,7 +1059,7 @@ module.exports = {
 		c.end();
 	},
 	getTicketHistory: function (req, res) {
-		c.query("SELECT * FROM `history` WHERE ticket_id=?", [req.id], { metadata: true, useArray: true }, function (err, rows) {
+		c.query("SELECT t1.id, t1.ticket_id, t2.name, t1.info, t1.message, t1.status, t1.created, t1.updated FROM `history` t1 INNER JOIN `data_admin` t2 ON (t1.from_id=t2.id AND ticket_id=?)", [req.id], { metadata: true, useArray: true }, function (err, rows) {
 			if (err)
 				throw err;
 
@@ -1068,13 +1068,12 @@ module.exports = {
 				data.push({
 					id: items[0],
 					ticket_id: items[1],
-					from_id: items[2],
-					to_id: items[3],
-					info: items[4],
-					message: items[5],
-					status: items[6],
-					created: items[7],
-					updated: items[8]
+					from_name: items[2],
+					info: items[3],
+					message: items[4],
+					status: items[5],
+					created: items[6],
+					updated: items[7]
 				});
 			});
 			if (data.length < 1) {

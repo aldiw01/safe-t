@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Alert, Button, Card, CardBody, CardFooter, CardGroup, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import AuthService from '../../../server/AuthService';
 import axios from 'axios';
+import Spinner from 'react-spinkit';
 
 class LoginAdmin extends Component {
   constructor() {
@@ -15,7 +16,8 @@ class LoginAdmin extends Component {
       isLoggedin: false,
       message: '',
       forgotPassword: false,
-      emailRecovery: ''
+      emailRecovery: '',
+      loader: false
     }
   }
 
@@ -109,8 +111,9 @@ class LoginAdmin extends Component {
                           <Input type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={this.handleChange} required />
                         </InputGroup>
                         <Row>
-                          <Col xs="6">
-                            <Button color="primary" className="px-4">Login Admin</Button>
+                          <Col xs="6" className="d-flex">
+                            <Button color="primary" className="px-4" disabled={this.state.loader}>Login</Button>
+                            {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" className="m-auto" /> : ""}
                           </Col>
                           <Col xs="6" className="text-right">
                             <Button onClick={this.onToggle} color="link" className="px-0">Forgot password?</Button>

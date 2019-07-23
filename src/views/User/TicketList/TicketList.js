@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
+import Spinner from 'react-spinkit';
 
 class TicketList extends Component {
 
@@ -14,6 +15,7 @@ class TicketList extends Component {
     }
     this.state = {
       view: false,
+      loader: false,
       data: [],
       focus: []
     }
@@ -169,10 +171,10 @@ class TicketList extends Component {
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Aktif</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Created</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.created}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Updated</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.updated}</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
                       </Row>
                     </Col>
