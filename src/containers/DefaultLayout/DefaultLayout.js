@@ -44,7 +44,7 @@ class DefaultLayout extends Component {
   render() {
     return (
       <div className="app">
-        {this.Auth.loggedIn() ? "" : <Redirect from="/" to="/login" />}
+        {this.Auth.loggedIn() ? "" : <Redirect from="/" to="/home" />}
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
             <DefaultHeader onLogout={e => this.signOut(e)} />

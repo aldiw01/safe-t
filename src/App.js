@@ -18,6 +18,7 @@ const RegisterAdmin = React.lazy(() => import('./views/Pages/RegisterAdmin'));
 const ResetPassword = React.lazy(() => import('./views/Pages/ResetPassword'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 const Page500 = React.lazy(() => import('./views/Pages/Page500'));
+const LandingPage = React.lazy(() => import('./views/LandingPage/LandingPage'));
 
 class App extends Component {
 
@@ -34,6 +35,7 @@ class App extends Component {
             <Route path="/resetpassword/:token" name="Reset Password" render={props => <ResetPassword {...props} />} />
             <Route exact path="/404" name="Page 404" render={props => <Page404 {...props} />} />
             <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} />
+            <Route exact path="/home" name="Landing Page" render={props => <LandingPage {...props} />} />
             <Route path="/" name="Home" render={props => <DefaultLayout {...props} />} />
           </Switch>
         </React.Suspense>
