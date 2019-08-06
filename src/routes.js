@@ -8,6 +8,8 @@ const Active = React.lazy(() => import('./views/Admin/Tiket/Active'));
 const Closed = React.lazy(() => import('./views/Admin/Tiket/Closed'));
 const List = React.lazy(() => import('./views/Admin/User/List'));
 const Pending = React.lazy(() => import('./views/Admin/User/Pending'));
+const Registered = React.lazy(() => import('./views/Admin/User/Registered'));
+const Archived = React.lazy(() => import('./views/Admin/User/Archived'));
 const DashboardUser = React.lazy(() => import('./views/User/Dashboard'));
 const TicketList = React.lazy(() => import('./views/User/TicketList'));
 const Poin = React.lazy(() => import('./views/User/Poin'));
@@ -26,6 +28,8 @@ const routes = [
   { path: '/admin/user', exact: true, name: 'User', component: List },
   { path: '/admin/user/list', name: 'List', component: List },
   { path: '/admin/user/pending', name: 'Pending', component: Pending },
+  { path: '/admin/user/registered', name: 'Registered', component: Registered },
+  { path: '/admin/user/archived', name: 'Archived', component: Archived },
   { path: '/dashboard', name: 'Dashboard', component: DashboardUser },
   { path: '/tiket', name: 'Ticket List', component: TicketList },
   { path: '/poin', exact: true, name: 'Point', component: Poin },

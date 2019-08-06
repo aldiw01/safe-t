@@ -7,7 +7,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/GammaMatch/safe-t.git"
+    "url": "https://github.com/aldiw01/safe-t.git"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.9",
@@ -22,22 +22,14 @@
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
     "core-js": "^2.6.5",
-    "crypto-js": "^3.1.9-1",
+    "dotenv": "^8.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
-    "express": "^4.16.4",
-    "express-fileupload": "^1.1.4",
-    "express-jwt": "^5.3.1",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
-    "ip": "^1.1.5",
-    "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "mariasql": "^0.2.6",
     "mdbreact": "^4.14.0",
-    "multer": "^1.4.1",
     "node-sass": "^4.11.0",
-    "nodemailer": "^6.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-app-polyfill": "^0.2.2",
@@ -46,6 +38,7 @@
     "react-router-config": "^4.4.0-beta.8",
     "react-router-dom": "~4.3.1",
     "react-spinkit": "^3.0.0",
+    "react-swipeable-views": "^0.13.3",
     "react-test-renderer": "^16.8.5",
     "reactstrap": "^7.1.0",
     "simple-line-icons": "^2.4.1"
@@ -62,7 +55,7 @@
     "eject": "react-scripts eject"
   },
   "bugs": {
-    "url": "https://github.com/GammaMatch/safe-t/issues"
+    "url": "https://github.com/aldiw01/safe-t/issues"
   },
   "eslintConfig": {
     "extends": "react-app"

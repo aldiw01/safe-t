@@ -60,7 +60,7 @@ class Closed extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/ticket')
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/status/1')
       .then(res => {
         this.setState({ data: res.data });
       })
@@ -98,13 +98,9 @@ class Closed extends Component {
 
   toggleView = id => {
     if (id !== this.state.id) {
-      console.log(id)
-      console.log(this.state.id)
-      console.log(this.state.data[id].id)
       axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
         .then(res => {
           this.setState({ history: res.data });
-          console.log(res.data)
         })
         .catch(error => {
           this.setState({
@@ -119,7 +115,6 @@ class Closed extends Component {
               updated: '',
             }]
           });
-          console.log(error);
         });
     }
 
@@ -132,6 +127,7 @@ class Closed extends Component {
 
   toggleDelete = id => {
     this.setState({
+      id: id,
       delete: !this.state.delete,
       focus: this.state.data[id]
     });
@@ -192,7 +188,7 @@ class Closed extends Component {
     let toggleView = this.toggleView;
     let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
-      if (items.status === "1") {
+      if (items.id) {
         rows.push({
           id: parseInt(items.id),
           reporter_id: items.reporter_id,
@@ -304,15 +300,15 @@ class Closed extends Component {
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Tiket</ModalHeader>
+                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete Tiket</ModalHeader>
                   <ModalBody>
                     Do you really want to delete this ticket?
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => this.toggleDelete(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 

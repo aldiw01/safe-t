@@ -14,6 +14,7 @@ class Pending extends Component {
       window.location = '/admin/login';
     }
     this.state = {
+      id: '',
       view: false,
       edit: false,
       delete: false,
@@ -52,7 +53,7 @@ class Pending extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/user')
+    axios.get(localStorage.getItem('serverAPI') + '/user/status/1')
       .then(res => {
         this.setState({ data: res.data });
       })
@@ -79,7 +80,7 @@ class Pending extends Component {
             edit: !this.state.edit,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -97,7 +98,7 @@ class Pending extends Component {
             delete: !this.state.delete,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -115,7 +116,7 @@ class Pending extends Component {
             view: !this.state.view,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -126,6 +127,7 @@ class Pending extends Component {
 
   toggleView = id => {
     this.setState({
+      id: id,
       view: !this.state.view,
       focus: this.state.data[id]
     });
@@ -133,6 +135,7 @@ class Pending extends Component {
 
   toggleEdit = id => {
     this.setState({
+      id: id,
       edit: !this.state.edit,
       focus: this.state.data[id]
     });
@@ -140,6 +143,7 @@ class Pending extends Component {
 
   toggleDelete = id => {
     this.setState({
+      id: id,
       delete: !this.state.delete,
       focus: this.state.data[id]
     });
@@ -201,7 +205,7 @@ class Pending extends Component {
     let toggleEdit = this.toggleEdit;
     let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
-      if (items.status === "0") {
+      if (items.id) {
         rows.push({
           id: parseInt(items.id),
           name: items.name,
@@ -240,8 +244,8 @@ class Pending extends Component {
                 // paginationLabel={["<", ">"]}
                 />
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data User</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data User</ModalHeader>
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
@@ -284,12 +288,12 @@ class Pending extends Component {
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={this.handleVerified}>Verified</Button>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Edit User</ModalHeader>
+                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Edit User</ModalHeader>
                   <ModalBody className="mt-4 mx-4">
                     <Form action="" method="post" className="form-horizontal">
                       <FormGroup row>
@@ -345,19 +349,19 @@ class Pending extends Component {
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete User</ModalHeader>
+                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete User</ModalHeader>
                   <ModalBody>
                     Do you really want to delete this user?
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => this.toggleDelete(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 

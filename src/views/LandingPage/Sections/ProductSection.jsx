@@ -3,9 +3,9 @@ import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
-import Chat from "@material-ui/icons/Chat";
+import ArtificialIntelligence from "assets/img/ArtificialIntelligenceFilled";
 import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Fingerprint from "@material-ui/icons/Fingerprint";
+import OCR from "assets/img/OCR";
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -14,6 +14,8 @@ import InfoArea from "components/InfoArea/InfoArea.jsx";
 import productStyle from "assets/jss/material-kit-react/views/landingPageSections/productStyle.jsx";
 
 import model from "assets/img/model.png";
+import hp1 from "assets/img/demo/hp1.png";
+import hp2 from "assets/img/demo/hp2.png";
 
 class ProductSection extends React.Component {
   render() {
@@ -33,25 +35,27 @@ class ProductSection extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={5}>
-            <img src={model} alt="Safe-t model" className="w-100" />
+          <GridItem xs={12} sm={12} md={6}>
+            {/* <img src={model} alt="Safe-t model" className="w-100" /> */}
+            <img src={hp1} alt="Safe-t model 1" className="w-50 px-2" />
+            <img src={hp2} alt="Safe-t model 2" className="w-50 px-2" />
           </GridItem>
         </GridContainer>
         <div>
           <GridContainer>
             <GridItem xs={12} sm={12} md={4}>
               <InfoArea
-                title="Free Chat"
-                description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-                icon={Chat}
+                title="Artificial Intelligence"
+                description="Aplikasi ini dilengkapi dengan kecerdasan buatan untuk deteksi plat nomor secara otomatis."
+                icon={ArtificialIntelligence}
                 iconColor="info"
                 vertical
               />
             </GridItem>
             <GridItem xs={12} sm={12} md={4}>
               <InfoArea
-                title="Verified Users"
-                description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
+                title="Pengguna Terverifikasi"
+                description="Akun pengguna harus sesuai dengan identitas KTP sehingga keamanan lebih terjamin."
                 icon={VerifiedUser}
                 iconColor="success"
                 vertical
@@ -59,9 +63,9 @@ class ProductSection extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={4}>
               <InfoArea
-                title="Fingerprint"
-                description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-                icon={Fingerprint}
+                title="Optical Character Recognition"
+                description="Dilengkapi dengan teknologi OCR yang mampu megubah gambar menjadi text."
+                icon={OCR}
                 iconColor="danger"
                 vertical
               />

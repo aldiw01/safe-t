@@ -41,7 +41,7 @@ class NavPills extends React.Component {
     const flexContainerClasses = classNames({
       [classes.flexContainer]: true,
       [classes.horizontalDisplay]: horizontal !== undefined
-    });
+    }) + " justify-content-center";
     const tabButtons = (
       <Tabs
         classes={{
@@ -57,7 +57,8 @@ class NavPills extends React.Component {
         {tabs.map((prop, key) => {
           var icon = {};
           if (prop.tabIcon !== undefined) {
-            icon["icon"] = <prop.tabIcon className={classes.tabIcon} />;
+            // icon["icon"] = <prop.tabIcon className={classes.tabIcon} />;
+            icon["icon"] = <img src={prop.tabIcon} alt="Demo Icon" className={classes.tabIcon} />;
           }
           const pillsClasses = classNames({
             [classes.pills]: true,
@@ -71,10 +72,11 @@ class NavPills extends React.Component {
               {...icon}
               classes={{
                 root: pillsClasses,
-                labelContainer: classes.labelContainer,
-                label: classes.label,
+                // labelContainer: classes.labelContainer,
+                // label: classes.label,
                 selected: classes[color]
               }}
+              style={{ outline: "none" }}
             />
           );
         })}
@@ -103,11 +105,11 @@ class NavPills extends React.Component {
         <GridItem {...horizontal.contentGrid}>{tabContent}</GridItem>
       </GridContainer>
     ) : (
-      <div>
-        {tabButtons}
-        {tabContent}
-      </div>
-    );
+        <div>
+          {tabButtons}
+          {tabContent}
+        </div>
+      );
   }
 }
 
@@ -123,7 +125,7 @@ NavPills.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       tabButton: PropTypes.string,
-      tabIcon: PropTypes.func,
+      tabIcon: PropTypes.object,
       tabContent: PropTypes.node
     })
   ).isRequired,

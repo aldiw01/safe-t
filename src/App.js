@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.scss';
 
 // Set API IP address
-localStorage.setItem('serverAPI', 'https://safe-t-api.herokuapp.com/api');
+localStorage.setItem('serverAPI', process.env.REACT_APP_API_PATH);
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers

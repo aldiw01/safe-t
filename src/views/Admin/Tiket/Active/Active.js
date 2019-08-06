@@ -14,6 +14,7 @@ class Active extends Component {
       window.location = '/admin/login';
     }
     this.state = {
+      id: '',
       view: false,
       edit: false,
       delete: false,
@@ -47,7 +48,7 @@ class Active extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/ticket')
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/status/0')
       .then(res => {
         this.setState({ data: res.data });
       })
@@ -143,6 +144,7 @@ class Active extends Component {
 
   toggleView = id => {
     this.setState({
+      id: id,
       view: !this.state.view,
       focus: this.state.data[id],
       message: ''
@@ -151,6 +153,7 @@ class Active extends Component {
 
   toggleEdit = id => {
     this.setState({
+      id: id,
       edit: !this.state.edit,
       focus: this.state.data[id]
     });
@@ -158,6 +161,7 @@ class Active extends Component {
 
   toggleDelete = id => {
     this.setState({
+      id: id,
       delete: !this.state.delete,
       focus: this.state.data[id]
     });
@@ -219,7 +223,7 @@ class Active extends Component {
     let toggleEdit = this.toggleEdit;
     let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
-      if (items.status === "0") {
+      if (items.id) {
         rows.push({
           id: parseInt(items.id),
           reporter_id: items.reporter_id,
@@ -258,8 +262,8 @@ class Active extends Component {
                 // paginationLabel={["<", ">"]}
                 />
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Tiket</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Tiket</ModalHeader>
                   <ModalBody className="modal-body-display d-block">
                     <Col sm="12" lg="12" className="m-auto">
                       <Row>
@@ -304,12 +308,12 @@ class Active extends Component {
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.message === ""}>Close Ticket</Button>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Review Tiket</ModalHeader>
+                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Review Tiket</ModalHeader>
                   <ModalBody className="mt-4 mx-4">
                     <Form action="" method="post" className="form-horizontal">
                       <FormGroup row>
@@ -366,19 +370,19 @@ class Active extends Component {
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)} disabled={this.state.loader} >Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Tiket</ModalHeader>
+                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete Tiket</ModalHeader>
                   <ModalBody>
                     Do you really want to delete this ticket?
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
                     <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
+                    <Button color="secondary" onClick={() => this.toggleDelete(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 

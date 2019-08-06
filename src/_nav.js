@@ -22,7 +22,7 @@ export default {
     {
       name: 'User',
       url: '/admin/user',
-      icon: 'icon-user',
+      icon: 'icon-people',
       children: [
         {
           name: 'Daftar User',
@@ -32,6 +32,16 @@ export default {
         {
           name: 'User Pending',
           url: '/admin/user/pending',
+          icon: 'icon-hourglass',
+        },
+        {
+          name: 'User Terdaftar',
+          url: '/admin/user/registered',
+          icon: 'icon-user-follow',
+        },
+        {
+          name: 'User Non-Aktif',
+          url: '/admin/user/archived',
           icon: 'icon-user-unfollow',
         }
       ]

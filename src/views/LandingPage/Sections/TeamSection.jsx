@@ -33,8 +33,8 @@ class TeamSection extends React.Component {
       classes.imgFluid
     );
     return (
-      <div className={classes.section} id="our-team">
-        <h2 className={classes.title}>Here is our team</h2>
+      <div className={classes.section}>
+        <h2 className={classes.title}>Perkenalkan Tim Kami</h2>
         <div>
           <GridContainer className="justify-content-center">
             <GridItem xs={12} sm={12} md={3}>
@@ -152,7 +152,7 @@ class TeamSection extends React.Component {
                 <h5 className={classes.cardTitle}>
                   Anky Aditya P
                   <br />
-                  <small className={classes.smallTitle}>Android Developer</small>
+                  <small className={classes.smallTitle}>AI/ML Engineer</small>
                 </h5>
                 <CardFooter className={classes.justifyCenter}>
                   <Button
@@ -257,7 +257,7 @@ class TeamSection extends React.Component {
                 <h5 className={classes.cardTitle}>
                   Akhmad Yusuf Nasirudin
                   <br />
-                  <small className={classes.smallTitle}>Android Developer</small>
+                  <small className={classes.smallTitle}>AI/ML Engineer</small>
                 </h5>
                 <CardFooter className={classes.justifyCenter}>
                   <Button

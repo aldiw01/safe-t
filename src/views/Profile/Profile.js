@@ -42,12 +42,12 @@ class Profile extends Component {
           // Address: profile.address,
           // Status: status,
           Previledge_ID: profile.previledge_id,
-          Registered: profile.created,
-          Updated: profile.updated
+          Registered: new Date(profile.created).toLocaleString('en-GB'),
+          Updated: new Date(profile.updated).toLocaleString('en-GB')
         }]
       });
     } else if (profile.user_type === "User") {
-      var status = profile.status === '1' ? 'Verified' : 'Not verified';
+      var status = profile.status === '2' ? 'Verified' : 'Not verified';
       this.setState({
         data: [{
           ID: profile.id,
@@ -59,8 +59,8 @@ class Profile extends Component {
           Address: profile.address,
           Status: status,
           // Previledge_ID: profile.previledge_id,
-          Registered: profile.created,
-          Updated: profile.updated
+          Registered: new Date(profile.created).toLocaleString('en-GB'),
+          Updated: new Date(profile.updated).toLocaleString('en-GB')
         }]
       })
     }
