@@ -30,28 +30,28 @@ class SponsorsSection extends React.Component {
     return (
       <div className={classes.section + " bg-gray"}>
         <GridContainer justify="center">
-          <GridItem cs={12} sm={12} md={8}>
+          <GridItem sm={10} md={8}>
             <h2 className={classes.title + " text-white"}>Didukung oleh</h2>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={6} md={4} className={gridClass}>
+              <GridItem sm={4} md={4} className={gridClass}>
                 <img src={logo1} alt="telu" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={3} className={gridClass}>
+              <GridItem sm={3} md={3} className={gridClass}>
                 <img src={logo2} alt="ristekdikti" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={4} className={gridClass}>
+              <GridItem sm={4} md={4} className={gridClass}>
                 <img src={logo3} alt="imv" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={3} className={gridClass}>
+              <GridItem sm={3} md={3} className={gridClass}>
                 <img src={logo4} alt="cppbt" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={3} className={gridClass}>
+              <GridItem sm={3} md={3} className={gridClass}>
                 <img src={logo5} alt="dishub" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={3} className={gridClass}>
+              <GridItem sm={3} md={3} className={gridClass}>
                 <img src={logo6} alt="polantas" className={imageClasses} />
               </GridItem>
-              <GridItem xs={12} sm={6} md={3} className={gridClass}>
+              <GridItem sm={3} md={3} className={gridClass}>
                 <img src={logo7} alt="adwitech" className={imageClasses} />
               </GridItem>
             </GridContainer>

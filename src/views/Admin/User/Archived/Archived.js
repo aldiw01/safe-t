@@ -19,7 +19,7 @@ class Archived extends Component {
       delete: false,
       loader: false,
       data: [{
-        id: 0,
+        id: '',
         name: '',
         email: '',
         phone: '',
@@ -32,7 +32,7 @@ class Archived extends Component {
         updated: ''
       }],
       focus: [{
-        id: 0,
+        id: '',
         name: '',
         email: '',
         phone: '',
@@ -58,6 +58,21 @@ class Archived extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({
+          data: [{
+            id: '',
+            name: '',
+            email: '',
+            phone: '',
+            citizen_id: '',
+            captured_id: '',
+            gender: '',
+            address: '',
+            status: '',
+            created: '',
+            updated: ''
+          }]
+        });
       });
   }
 

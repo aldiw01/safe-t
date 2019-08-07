@@ -25,7 +25,7 @@ class AboutUsSection extends React.Component {
             <h2 className={classes.title}>Laboratorium IMV</h2>
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={5}>
-                <img src={logo} alt="imv" className={imageClasses} />
+                <img src={logo} alt="imv" className={imageClasses + " p-2"} />
               </GridItem>
               <GridItem xs={12} sm={12} md={6} className="m-auto">
                 <h5 className={classes.description + " text-left"}>

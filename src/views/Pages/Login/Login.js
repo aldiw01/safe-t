@@ -23,7 +23,8 @@ class Login extends Component {
       message: '',
       forgotPassword: false,
       emailRecovery: '',
-      loader: false
+      loader: false,
+      loader2: false
     }
   }
 
@@ -82,6 +83,7 @@ class Login extends Component {
   }
 
   handleForgotPassword = (event) => {
+    this.setState({ loader2: true });
     event.preventDefault();
     const req = { email: this.state.emailRecovery };
     axios.post(localStorage.getItem('serverAPI') + '/forgot-password', req)
@@ -89,7 +91,8 @@ class Login extends Component {
         this.setState({
           forgotPassword: !this.state.forgotPassword,
           isAlertVisible: true,
-          message: res.data.message
+          message: res.data.message,
+          loader2: false
         });
       })
       .catch(error => {
@@ -175,23 +178,24 @@ class Login extends Component {
 
                     <Modal isOpen={this.state.forgotPassword} toggle={this.onToggle} className={'modal-primary'}>
                       <ModalHeader toggle={this.onToggle}>Forgot Password</ModalHeader>
-                      <ModalBody>
-                        <p>Type your email to recover your account.</p>
-                        <Form action="" method="post" className="form-horizontal" onSubmit={this.handleForgotPassword}>
+                      <Form method="post" className="form-horizontal" onSubmit={this.handleForgotPassword}>
+                        <ModalBody>
+                          <p>Type your email to recover your account.</p>
                           <FormGroup row>
                             <Col md="3" className="m-auto">
                               <Label htmlFor="hf-email">Email</Label>
                             </Col>
                             <Col xs="12" md="9">
-                              <Input type="text" onChange={this.handleChange} name="emailRecovery" value={this.state.emailRecovery} />
+                              <Input type="email" onChange={this.handleChange} name="emailRecovery" value={this.state.emailRecovery} required />
                             </Col>
                           </FormGroup>
-                        </Form>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button color="primary" onClick={this.handleForgotPassword}>Recover</Button>{' '}
-                        <Button color="secondary" onClick={this.onToggle}>Cancel</Button>
-                      </ModalFooter>
+                        </ModalBody>
+                        <ModalFooter>
+                          {this.state.loader2 ? <Spinner name='double-bounce' fadeIn="quarter" className="ml-auto" /> : ""}
+                          <Button color="primary" disabled={this.state.loader2}>Recover</Button>{' '}
+                          <Button color="secondary" onClick={this.onToggle}>Cancel</Button>
+                        </ModalFooter>
+                      </Form>
                     </Modal>
 
                   </Col>

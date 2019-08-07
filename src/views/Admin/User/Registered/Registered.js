@@ -20,7 +20,7 @@ class Registered extends Component {
       delete: false,
       loader: false,
       data: [{
-        id: 0,
+        id: '',
         name: '',
         email: '',
         phone: '',
@@ -33,7 +33,7 @@ class Registered extends Component {
         updated: ''
       }],
       focus: [{
-        id: 0,
+        id: '',
         name: '',
         email: '',
         phone: '',
@@ -59,6 +59,21 @@ class Registered extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({
+          data: [{
+            id: '',
+            name: '',
+            email: '',
+            phone: '',
+            citizen_id: '',
+            captured_id: '',
+            gender: '',
+            address: '',
+            status: '',
+            created: '',
+            updated: ''
+          }]
+        });
       });
   }
 
@@ -287,7 +302,7 @@ class Registered extends Component {
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={this.handleVerified}>Verified</Button>
+                    <Button color="primary" onClick={this.handleVerified}>Verify</Button>
                     <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>

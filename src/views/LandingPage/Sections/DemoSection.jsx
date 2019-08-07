@@ -45,14 +45,14 @@ class DemoSection extends React.Component {
                     tabButton: "Browse",
                     tabIcon: browse,
                     tabContent: (
-                      <div className="d-flex">
-                        <GridItem xs={10} sm={12} md={6} className="m-auto">
+                      <GridContainer className="m-auto">
+                        <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
                               Collaboratively administrate empowered markets via
                               plug-and-play networks. Dynamically procrastinate
                               B2C users after installed base benefits.
-                          </p>
+                              </p>
                             <br />
                             <p>
                               Dramatically visualize customer directed convergence
@@ -60,21 +60,21 @@ class DemoSection extends React.Component {
                               administrate empowered markets via plug-and-play
                               networks. Dynamically procrastinate B2C users after
                               installed base benefits.
-                          </p>
+                              </p>
                           </h5>
                         </GridItem>
-                        <GridItem xs={10} sm={12} md={6}>
-                          <img src={hp3} alt="Capture feature" className="w-100 px-5" />
+                        <GridItem xs={12} sm={12} md={4}>
+                          <img src={hp3} alt="Capture feature" className="w-100" />
                         </GridItem>
-                      </div>
+                      </GridContainer>
                     )
                   },
                   {
                     tabButton: "Capture",
                     tabIcon: capture,
                     tabContent: (
-                      <div className="d-flex">
-                        <GridItem xs={10} sm={12} md={6} className="m-auto">
+                      <GridContainer className="m-auto">
+                        <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
                               Collaboratively administrate empowered markets via
@@ -91,18 +91,18 @@ class DemoSection extends React.Component {
                           </p>
                           </h5>
                         </GridItem>
-                        <GridItem xs={10} sm={12} md={6}>
-                          <img src={hp4} alt="Capture feature" className="w-100 px-5" />
+                        <GridItem xs={12} sm={12} md={4}>
+                          <img src={hp4} alt="Capture feature" className="w-100" />
                         </GridItem>
-                      </div>
+                      </GridContainer>
                     )
                   },
                   {
                     tabButton: "Report",
                     tabIcon: report,
                     tabContent: (
-                      <div className="d-flex">
-                        <GridItem xs={10} sm={12} md={6} className="m-auto">
+                      <GridContainer className="m-auto">
+                        <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
                               Collaboratively administrate empowered markets via
@@ -119,18 +119,18 @@ class DemoSection extends React.Component {
                           </p>
                           </h5>
                         </GridItem>
-                        <GridItem xs={10} sm={12} md={6}>
-                          <img src={hp5} alt="Capture feature" className="w-100 px-5" />
+                        <GridItem xs={12} sm={12} md={4}>
+                          <img src={hp5} alt="Capture feature" className="w-100" />
                         </GridItem>
-                      </div>
+                      </GridContainer>
                     )
                   },
                   {
                     tabButton: "Reward",
                     tabIcon: reward,
                     tabContent: (
-                      <div className="d-flex">
-                        <GridItem xs={10} sm={12} md={6} className="m-auto">
+                      <GridContainer className="m-auto">
+                        <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
                               Collaboratively administrate empowered markets via
@@ -147,18 +147,18 @@ class DemoSection extends React.Component {
                           </p>
                           </h5>
                         </GridItem>
-                        <GridItem xs={10} sm={12} md={6}>
-                          <img src={hp6} alt="Capture feature" className="w-100 px-5" />
+                        <GridItem xs={12} sm={12} md={4}>
+                          <img src={hp6} alt="Capture feature" className="w-100" />
                         </GridItem>
-                      </div>
+                      </GridContainer>
                     )
                   },
                   {
                     tabButton: "Manual",
                     tabIcon: manual,
                     tabContent: (
-                      <div className="d-flex">
-                        <GridItem xs={10} sm={12} md={6} className="m-auto">
+                      <GridContainer className="m-auto">
+                        <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
                               Collaboratively administrate empowered markets via
@@ -175,10 +175,10 @@ class DemoSection extends React.Component {
                           </p>
                           </h5>
                         </GridItem>
-                        <GridItem xs={10} sm={12} md={6}>
-                          <img src={hp7} alt="Capture feature" className="w-100 px-5" />
+                        <GridItem xs={12} sm={12} md={4}>
+                          <img src={hp7} alt="Capture feature" className="w-100" />
                         </GridItem>
-                      </div>
+                      </GridContainer>
                     )
                   }
                 ]}

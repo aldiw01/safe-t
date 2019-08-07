@@ -15,7 +15,8 @@ class ResetPassword extends Component {
       isGoodPassword: false,
       isLoggedin: false,
       isPasswordConfirmed: false,
-      status: ''
+      status: '',
+      loader: false
     }
   }
 
