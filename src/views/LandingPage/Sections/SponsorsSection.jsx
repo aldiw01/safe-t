@@ -1,16 +1,10 @@
 import React from "react";
-// nodejs library that concatenates classes
-import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
-// @material-ui/icons
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 
 import workStyle from "assets/jss/material-kit-react/views/landingPageSections/workStyle.jsx";
 
@@ -30,28 +24,28 @@ class SponsorsSection extends React.Component {
     return (
       <div className={classes.section + " bg-gray"}>
         <GridContainer justify="center">
-          <GridItem sm={10} md={8}>
+          <GridItem xs={10} sm={10} md={8}>
             <h2 className={classes.title + " text-white"}>Didukung oleh</h2>
             <GridContainer justify="center">
-              <GridItem sm={4} md={4} className={gridClass}>
+              <GridItem xs={6} sm={4} md={4} className={gridClass}>
                 <img src={logo1} alt="telu" className={imageClasses} />
               </GridItem>
-              <GridItem sm={3} md={3} className={gridClass}>
+              <GridItem xs={6} sm={3} md={3} className={gridClass}>
                 <img src={logo2} alt="ristekdikti" className={imageClasses} />
               </GridItem>
-              <GridItem sm={4} md={4} className={gridClass}>
+              <GridItem xs={6} sm={4} md={4} className={gridClass}>
                 <img src={logo3} alt="imv" className={imageClasses} />
               </GridItem>
-              <GridItem sm={3} md={3} className={gridClass}>
+              <GridItem xs={6} sm={3} md={3} className={gridClass}>
                 <img src={logo4} alt="cppbt" className={imageClasses} />
               </GridItem>
-              <GridItem sm={3} md={3} className={gridClass}>
+              <GridItem xs={6} sm={3} md={3} className={gridClass}>
                 <img src={logo5} alt="dishub" className={imageClasses} />
               </GridItem>
-              <GridItem sm={3} md={3} className={gridClass}>
+              <GridItem xs={6} sm={3} md={3} className={gridClass}>
                 <img src={logo6} alt="polantas" className={imageClasses} />
               </GridItem>
-              <GridItem sm={3} md={3} className={gridClass}>
+              <GridItem xs={6} sm={3} md={3} className={gridClass}>
                 <img src={logo7} alt="adwitech" className={imageClasses} />
               </GridItem>
             </GridContainer>

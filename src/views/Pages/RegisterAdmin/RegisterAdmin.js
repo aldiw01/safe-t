@@ -2,12 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
-
-import Header from "components/Header/Header.jsx";
-import HeaderLinks from "components/Header/HeaderLinks.jsx";
-
-import logo from "assets/img/logo.png";
-import bgImage from "assets/img/landing-bg.jpg";
+import Spinner from 'react-spinkit';
 
 class RegisterAdmin extends Component {
   constructor(props) {
@@ -30,6 +25,7 @@ class RegisterAdmin extends Component {
       isNameClicked: false,
       isPasswordClicked: false,
       isKTPClicked: false,
+      loader: false,
       visible: false,
       message: '',
       badge: 'info'
@@ -141,6 +137,7 @@ class RegisterAdmin extends Component {
   }
 
   handleSubmit = (event) => {
+    this.setState({ loader: true });
     event.preventDefault();
     const data = new FormData();
     data.append('name', this.state.name);
@@ -169,6 +166,7 @@ class RegisterAdmin extends Component {
             isNameClicked: false,
             isPasswordClicked: false,
             isKTPClicked: false,
+            loader: false,
             visible: true,
             message: 'Account registered successfully. Please check your e-mail to activate your account.',
             badge: 'success'
@@ -177,6 +175,7 @@ class RegisterAdmin extends Component {
           // window.location.reload();
         } else {
           this.setState({
+            loader: false,
             visible: true,
             message: res.data.message,
             badge: 'warning'
@@ -251,7 +250,9 @@ class RegisterAdmin extends Component {
                         <InputGroup className="mb-4 input-group border rounded p-1">
                           <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
                         </InputGroup>
-                        <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.fileImage} >Create Account</Button>
+                        <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >
+                          {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" className="m-auto" /> : "Create Account"}
+                        </Button>
                         <Link to="/admin/login">
                           <Button color="primary" className="w-100 mt-4" active tabIndex={-1}>Login Admin</Button>
                         </Link>

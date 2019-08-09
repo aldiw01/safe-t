@@ -253,7 +253,7 @@ class Kendaraan extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src='/assets/guide/zhiyong-li-24s.jpg' alt='KTP' />
+                      <img className="d-block w-100" src='/assets/guide/test.jpg' alt='KTP' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>

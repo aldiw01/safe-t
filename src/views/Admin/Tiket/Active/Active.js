@@ -300,7 +300,7 @@ class Active extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="12" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                      <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
 
                       <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control mt-3 border-primary" rows="2" placeholder="Mohon isi respon untuk menutup tiket"></textarea>
                     </Col>
@@ -365,7 +365,7 @@ class Active extends Component {
                         </Col>
                       </FormGroup>
                     </Form>
-                    <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                    <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}

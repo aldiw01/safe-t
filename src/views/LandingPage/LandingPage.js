@@ -20,14 +20,12 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.jsx";
 import TeamSection from "./Sections/TeamSection.jsx";
-import WorkSection from "./Sections/WorkSection.jsx";
 import DemoSection from "./Sections/DemoSection";
 import AboutUsSection from "./Sections/AboutUsSection";
 import SponsorsSection from "./Sections/SponsorsSection";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
-import model from "assets/img/model.png";
 
 const dashboardRoutes = ["home"];
 
@@ -48,7 +46,7 @@ class LandingPage extends React.Component {
           }}
           {...rest}
         />
-        <Parallax filter image={require("assets/img/nbb.png")}>
+        <Parallax filter image={require("assets/img/landing-bg.jpg")}>
           <div className={classes.container} id="home">
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
@@ -71,12 +69,6 @@ class LandingPage extends React.Component {
                   <i className="fab fa-google-play" /> Google Playstore
                 </Button>
               </GridItem>
-
-              {/* <GridItem xs={12} sm={12} md={1}>
-              </GridItem>
-              <GridItem xs={12} sm={12} md={5}>
-                <img src={model} alt="Safe-t model" className="w-100" />
-              </GridItem> */}
             </GridContainer>
           </div>
         </Parallax>

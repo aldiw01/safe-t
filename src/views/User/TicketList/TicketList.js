@@ -3,7 +3,6 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
-import Spinner from 'react-spinkit';
 
 class TicketList extends Component {
 
@@ -15,7 +14,6 @@ class TicketList extends Component {
     }
     this.state = {
       view: false,
-      loader: false,
       data: [],
       focus: []
     }

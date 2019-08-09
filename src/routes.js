@@ -17,7 +17,7 @@ const Profile = React.lazy(() => import('./views/Profile/Profile'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'Home', component: Dashboard },
   { path: '/admin', exact: true, name: 'Admin', component: Dashboard },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },

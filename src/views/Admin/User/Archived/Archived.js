@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../../server/AuthService';
@@ -250,7 +250,7 @@ class Archived extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/user/' + this.state.focus.captured_id} alt='KTP' />
+                      <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/user/' + this.state.focus.captured_id} alt='KTP' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>

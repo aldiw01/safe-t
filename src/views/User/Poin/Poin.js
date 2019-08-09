@@ -3,7 +3,6 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
-import Spinner from 'react-spinkit';
 
 class Poin extends Component {
 
@@ -16,7 +15,6 @@ class Poin extends Component {
     this.state = {
       view: false,
       point: 0,
-      loader: false,
       data: [],
       focus: []
     }

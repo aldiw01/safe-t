@@ -261,7 +261,9 @@ class Closed extends Component {
                         <Col xs="3">Updated</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col><img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' /></Col>
+                        <Col>
+                          <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                        </Col>
                         <div className="w-100 py-3"></div>
                       </Row>
 

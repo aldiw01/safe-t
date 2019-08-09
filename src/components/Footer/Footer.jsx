@@ -41,15 +41,7 @@ function Footer({ ...props }) {
           </List>
         </div>
         <div className={classes.right}>
-          Safe-T &copy; {new Date().getFullYear()} IMV Laboratory,
-          Developed by{" "}
-          <a
-            // href=""
-            className={aClasses}
-            target="_blank"
-          >
-            Aldi Wiranata
-          </a>
+          Safe-T &copy; {new Date().getFullYear()} IMV Laboratory
         </div>
       </div>
     </footer>

@@ -297,7 +297,7 @@ class Registered extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/user/' + this.state.focus.captured_id} alt='KTP' />
+                      <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/user/' + this.state.focus.captured_id} alt='KTP' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>
