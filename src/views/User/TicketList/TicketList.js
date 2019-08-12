@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFo
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
+import History from 'components/History/History';
 
 class TicketList extends Component {
 
@@ -13,9 +14,20 @@ class TicketList extends Component {
       window.location = '/login';
     }
     this.state = {
-      view: false,
       data: [],
-      focus: []
+      focus: [],
+      id: '',
+      view: false,
+      history: [{
+        id: '',
+        ticket_id: '',
+        from_name: '',
+        info: '',
+        message: '',
+        status: '',
+        created: '',
+        updated: '',
+      }]
     }
   }
 
@@ -43,7 +55,29 @@ class TicketList extends Component {
   }
 
   toggleView = id => {
+    if (id !== this.state.id) {
+      axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
+        .then(res => {
+          this.setState({ history: res.data });
+        })
+        .catch(error => {
+          this.setState({
+            history: [{
+              id: '',
+              ticket_id: '',
+              from_name: '',
+              info: '',
+              message: '',
+              status: '',
+              created: '',
+              updated: '',
+            }]
+          });
+        });
+    }
+
     this.setState({
+      id: id,
       view: !this.state.view,
       focus: this.state.data[id]
     });
@@ -102,7 +136,7 @@ class TicketList extends Component {
 
     var rows = [];
     let toggleView = this.toggleView;
-    var status = ["Active", "Closed"];
+    var status = ["Active", "Closed", "", "", "", "", "", "", "", "Archived"];
     data.rows.forEach(function (items, i) {
       rows.push({
         id: items.id,
@@ -110,7 +144,7 @@ class TicketList extends Component {
         violator_id: items.violator_id,
         vehicle_id: items.vehicle_id,
         violation_type: items.violation_type,
-        incident_date: items.incident_date,
+        incident_date: new Date(items.incident_date).toLocaleDateString('en-GB'),
         status: status[items.status],
         actions: <React.Fragment>
           <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
@@ -139,8 +173,8 @@ class TicketList extends Component {
                 // paginationLabel={["<", ">"]}
                 />
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Tiket</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Tiket</ModalHeader>
                   <ModalBody className="modal-body-display d-block">
                     <Col sm="12" lg="12" className="m-auto">
                       <Row>
@@ -166,7 +200,10 @@ class TicketList extends Component {
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Status</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Aktif</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>
+                          {this.state.focus.status === "0" ? "Active" :
+                            this.state.focus.status === "1" ? "Closed" : "Archived"}
+                        </Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Created</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
@@ -174,14 +211,21 @@ class TicketList extends Component {
                         <Col xs="3">Updated</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
+                        <Col xs="12">
+                          <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                        </Col>
+                        <div className="w-100 py-2"></div>
+                        <Col xs="12">
+                          <History history={this.state.history} />
+                        </Col>
+                        <Col xs="12">
+                          <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control border-primary" rows="2" placeholder="Mohon isi respon untuk menutup tiket"></textarea>
+                        </Col>
                       </Row>
-                    </Col>
-                    <Col sm="12" lg="12" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 

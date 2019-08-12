@@ -60,6 +60,11 @@ export default {
           name: 'Tiket Closed',
           url: '/admin/tiket/closed',
           icon: 'icon-check',
+        },
+        {
+          name: 'Tiket Non-Aktif',
+          url: '/admin/tiket/archived',
+          icon: 'icon-close',
         }
       ]
     }

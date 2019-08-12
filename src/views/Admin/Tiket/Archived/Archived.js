@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Button, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../../server/AuthService';
 import Spinner from 'react-spinkit';
 import History from 'components/History/History';
 
-class Active extends Component {
+class Archived extends Component {
 
   constructor(props) {
     super(props);
@@ -15,11 +15,9 @@ class Active extends Component {
       window.location = '/admin/login';
     }
     this.state = {
-      id: '',
       view: false,
-      edit: false,
       delete: false,
-      message: '',
+      id: '',
       loader: false,
       data: [{
         id: '',
@@ -30,6 +28,8 @@ class Active extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        created: '',
+        updated: '',
       }],
       focus: {
         id: '',
@@ -40,6 +40,8 @@ class Active extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        created: '',
+        updated: '',
       },
       history: [{
         id: '',
@@ -59,7 +61,7 @@ class Active extends Component {
   }
 
   getData = () => {
-    axios.get(localStorage.getItem('serverAPI') + '/ticket/status/0')
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/status/9')
       .then(res => {
         this.setState({ data: res.data });
       })
@@ -74,31 +76,7 @@ class Active extends Component {
         ...this.state.focus,
         [event.target.name]: event.target.value
       }
-    });
-  }
-
-  handleChangeEvent = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
-
-  handleEdit = id => {
-    if (window.confirm("You will create change(s) on database. Are you sure?")) {
-      this.setState({ loader: true });
-      axios.put(localStorage.getItem('serverAPI') + '/ticket/' + id, this.state.focus)
-        .then(res => {
-          this.setState({
-            edit: !this.state.edit,
-            loader: false
-          })
-          alert(res.data.message);
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
+    })
   }
 
   handleDelete = id => {
@@ -109,40 +87,6 @@ class Active extends Component {
           this.setState({
             delete: !this.state.delete,
             loader: false
-          })
-          alert(JSON.stringify(res.data));
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
-  }
-
-  handleCloseTicket = () => {
-    var message = "You will close this ticket. Are you sure?";
-    if (Object.values(this.state.focus).includes("")) {
-      message = "You still have empty field(s), consider to fill it first.\n" + message;
-    }
-    if (window.confirm(message)) {
-      this.setState({ loader: true });
-      const req = {
-        ticket_id: this.state.focus.id,
-        from_id: this.Auth.getProfile().id,
-        to_id: this.state.focus.reporter_id,
-        info: "telah menutup status tiket anda",
-        message: this.state.message
-      }
-      axios.post(localStorage.getItem('serverAPI') + '/history', req)
-        .catch(error => {
-          alert(error);
-        });
-
-      axios.put(localStorage.getItem('serverAPI') + '/ticket/close/' + this.state.focus.id)
-        .then(res => {
-          this.setState({
-            loader: false,
-            view: !this.state.view,
           })
           alert(res.data.message);
           this.getData();
@@ -178,15 +122,6 @@ class Active extends Component {
     this.setState({
       id: id,
       view: !this.state.view,
-      focus: this.state.data[id],
-      message: ''
-    });
-  }
-
-  toggleEdit = id => {
-    this.setState({
-      id: id,
-      edit: !this.state.edit,
       focus: this.state.data[id]
     });
   }
@@ -237,7 +172,7 @@ class Active extends Component {
           sort: 'asc'
         },
         {
-          label: 'Tanggal Pelanggaran',
+          label: 'Tanggal',
           field: 'incident_date',
           sort: 'asc'
         },
@@ -252,7 +187,6 @@ class Active extends Component {
 
     var rows = [];
     let toggleView = this.toggleView;
-    let toggleEdit = this.toggleEdit;
     let toggleDelete = this.toggleDelete;
     data.rows.forEach(function (items, i) {
       if (items.id) {
@@ -263,10 +197,9 @@ class Active extends Component {
           vehicle_id: items.vehicle_id,
           violation_type: items.violation_type,
           detail: items.detail,
-          incident_date: new Date(items.incident_date).toLocaleDateString('en-GB'),
+          incident_date: items.incident_date,
           actions: <React.Fragment>
             <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
-            <button title="Edit Data" className="px-3 py-1 mr-1 btn btn-warning" onClick={() => toggleEdit(i)}><i className="fa fa-pencil"></i></button>
             <button title="Delete Data" className="px-3 py-1 mr-1 btn btn-danger" onClick={() => toggleDelete(i)}><i className="fa fa-minus-circle"></i></button>
           </React.Fragment>
         });
@@ -283,7 +216,7 @@ class Active extends Component {
           <Col xs="12" xl="12">
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Data Tiket Aktif</strong>
+                <i className="fa fa-align-justify"></i><strong>Data Tiket Archived</strong>
               </CardHeader>
               <CardBody>
                 <MDBDataTable
@@ -317,12 +250,11 @@ class Active extends Component {
                         <Col xs="3">Detail</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.detail}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col xs="3">Tanggal Pelanggaran</Col>
-                        {/* <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col> */}
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.incident_date).toLocaleDateString('en-GB')}</Col>
+                        <Col xs="3">Tanggal</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Status</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Aktif</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Archived</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Created</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
@@ -337,85 +269,18 @@ class Active extends Component {
                         <Col xs="12">
                           <History history={this.state.history} />
                         </Col>
-                        <Col xs="12">
-                          <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control border-primary" rows="2" placeholder="Mohon isi respon untuk menutup tiket"></textarea>
-                        </Col>
                       </Row>
                     </Col>
                   </ModalBody>
                   <ModalFooter>
-                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.message === ""}>Close Ticket</Button>
                     <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Review Tiket</ModalHeader>
-                  <ModalBody className="mt-4 mx-4">
-                    <Form action="" method="post" className="form-horizontal">
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-email">Reporter ID</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="reporter_id" value={this.state.focus.reporter_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Violator ID</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="violator_id" value={this.state.focus.violator_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">No Kendaraan</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="vehicle_id" value={this.state.focus.vehicle_id} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Jenis Pelanggaran</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="violation_type" value={this.state.focus.violation_type} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Detail</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="detail" value={this.state.focus.detail} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">Tanggal Pelanggaran</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="date" onChange={this.handleChange} name="incident_date" value={this.state.focus.incident_date} />
-                        </Col>
-                      </FormGroup>
-                    </Form>
-                    <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
-                  </ModalBody>
-                  <ModalFooter>
-                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)} disabled={this.state.loader} >Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
                 <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
                   <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete Tiket</ModalHeader>
                   <ModalBody>
-                    Do you really want to reject this ticket?
+                    Do you really want to delete this ticket FOREVER?
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
@@ -433,4 +298,4 @@ class Active extends Component {
   }
 }
 
-export default Active;
+export default Archived;

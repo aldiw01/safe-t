@@ -13,10 +13,11 @@ class Poin extends Component {
       window.location = '/login';
     }
     this.state = {
-      view: false,
-      point: 0,
       data: [],
-      focus: []
+      focus: [],
+      id: '',
+      point: '-',
+      view: false
     }
   }
 
@@ -28,8 +29,7 @@ class Poin extends Component {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/user/' + this.Auth.getProfile().id)
       .then(res => {
         this.setState({
-          data: res.data,
-          // point: res.data.length * 10
+          data: res.data
         });
       })
       .catch(error => {
@@ -55,55 +55,10 @@ class Poin extends Component {
     })
   }
 
-  handleEdit = id => {
-    if (window.confirm("You will create change(s) on database. Are you sure?")) {
-      axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + id, this.state.focus)
-        .then(res => {
-          this.setState({
-            edit: !this.state.edit,
-          })
-          alert(JSON.stringify(res.data));
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
-  }
-
-  handleDelete = id => {
-    if (window.confirm("You will create change(s) on database. Are you sure?")) {
-      axios.delete(localStorage.getItem('serverAPI') + '/vehicle/' + id)
-        .then(res => {
-          this.setState({
-            delete: !this.state.delete,
-          })
-          alert(JSON.stringify(res.data));
-          this.getData();
-        })
-        .catch(error => {
-          alert(error);
-        });
-    }
-  }
-
   toggleView = id => {
     this.setState({
+      id: id,
       view: !this.state.view,
-      focus: this.state.data[id]
-    });
-  }
-
-  toggleEdit = id => {
-    this.setState({
-      edit: !this.state.edit,
-      focus: this.state.data[id]
-    });
-  }
-
-  toggleDelete = id => {
-    this.setState({
-      delete: !this.state.delete,
       focus: this.state.data[id]
     });
   }
@@ -126,6 +81,11 @@ class Poin extends Component {
           sort: 'asc'
         },
         {
+          label: 'Status',
+          field: 'status',
+          sort: 'asc'
+        },
+        {
           label: 'Tanggal',
           field: 'created',
           sort: 'asc'
@@ -141,11 +101,13 @@ class Poin extends Component {
 
     var rows = [];
     let toggleView = this.toggleView;
+    var status = ["Active", "Closed", "", "", "", "", "", "", "", "Archived"];
     data.rows.forEach(function (items, i) {
       rows.push({
         id: items.id,
         point: 10,
-        created: items.created,
+        status: status[items.status],
+        created: new Date(items.updated).toLocaleString('en-GB'),
         actions: <React.Fragment>
           <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
         </React.Fragment>
@@ -179,16 +141,22 @@ class Poin extends Component {
                   />
                 </Col>
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Poin</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Poin</ModalHeader>
                   <ModalBody className="modal-body-display">
-                    <Col sm="12" lg="5" className="m-auto">
+                    <Col xs="12" className="m-auto">
                       <Row>
                         <Col xs="5">Ticket ID</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Point</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>10</Col>
+                        <div className="w-100 py-2"></div>
+                        <Col xs="5">Status</Col>
+                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>
+                          {this.state.focus.status === "0" ? "Active" :
+                            this.state.focus.status === "1" ? "Closed" : "Archived"}
+                        </Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Created</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.created).toLocaleString('en-GB')}</Col>
@@ -198,12 +166,9 @@ class Poin extends Component {
                         <div className="w-100 py-2"></div>
                       </Row>
                     </Col>
-                    <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src={localStorage.getItem('serverAPI') + '/uploads/ticket/' + this.state.focus.documentation} alt='Ticket' />
-                    </Col>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 

@@ -4,6 +4,7 @@ import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../../server/AuthService';
 import Spinner from 'react-spinkit';
+import History from 'components/History/History';
 
 class Closed extends Component {
 
@@ -87,7 +88,7 @@ class Closed extends Component {
             delete: !this.state.delete,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
@@ -261,40 +262,14 @@ class Closed extends Component {
                         <Col xs="3">Updated</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{new Date(this.state.focus.updated).toLocaleString('en-GB')}</Col>
                         <div className="w-100 py-2"></div>
-                        <Col>
+                        <Col xs="12">
                           <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
                         </Col>
-                        <div className="w-100 py-3"></div>
-                      </Row>
-
-                      <Row>
+                        <div className="w-100 py-2"></div>
                         <Col xs="12">
-                          <Card>
-                            <CardHeader>
-                              <i className="fa fa-history"></i><strong>Ticket History</strong>
-                            </CardHeader>
-                            <CardBody>
-                              <ListGroup>
-                                {this.state.history[0].id ?
-                                  this.state.history.map(item =>
-                                    <ListGroupItem action key={item.id}>
-                                      <div className="d-flex w-100 justify-content-between">
-                                        <ListGroupItemHeading>{item.from_name}</ListGroupItemHeading>
-                                        <small>{new Date(item.created).toLocaleString('en-GB')}</small>
-                                      </div>
-                                      <ListGroupItemText>
-                                        {item.from_name + " " + item.info + " : "}
-                                        <span className="font-weight-bold">{item.message}</span>
-                                      </ListGroupItemText>
-                                    </ListGroupItem>
-                                  ) : "No record found"
-                                }
-                              </ListGroup>
-                            </CardBody>
-                          </Card>
+                          <History history={this.state.history} />
                         </Col>
                       </Row>
-
                     </Col>
                   </ModalBody>
                   <ModalFooter>
