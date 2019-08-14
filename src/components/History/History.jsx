@@ -20,8 +20,8 @@ class History extends Component {
                         <small>{new Date(item.created).toLocaleString('en-GB')}</small>
                       </div>
                       <ListGroupItemText>
-                        {item.from_name + " " + item.info + " : "}
-                        <span className="font-weight-bold">{item.message}</span>
+                        {item.from_name + " " + item.info}
+                        {item.message ? <span className="font-weight-bold">{" : " + item.message}</span> : ""}
                       </ListGroupItemText>
                     </ListGroupItem>
                   ) : "No record found"

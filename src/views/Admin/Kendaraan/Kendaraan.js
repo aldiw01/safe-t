@@ -21,7 +21,6 @@ class Kendaraan extends Component {
       data: [{
         id: '',
         owner: '',
-        vehicle_id: '',
         brand: '',
         type: '',
         build_year: '',
@@ -32,7 +31,6 @@ class Kendaraan extends Component {
       focus: [{
         id: '',
         owner: '',
-        vehicle_id: '',
         brand: '',
         type: '',
         build_year: '',
@@ -131,18 +129,13 @@ class Kendaraan extends Component {
     const data = {
       columns: [
         {
-          label: 'ID',
+          label: 'No Kendaraan',
           field: 'id',
           sort: 'asc'
         },
         {
           label: 'Owner',
           field: 'owner',
-          sort: 'asc'
-        },
-        {
-          label: 'No Kendaraan',
-          field: 'vehicle_id',
           sort: 'asc'
         },
         {
@@ -183,7 +176,6 @@ class Kendaraan extends Component {
         rows.push({
           id: items.id,
           owner: items.owner,
-          vehicle_id: items.vehicle_id,
           brand: items.brand,
           type: items.type,
           build_year: items.build_year,
@@ -223,14 +215,11 @@ class Kendaraan extends Component {
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
-                        <Col xs="5">ID</Col>
+                        <Col xs="5">No Kendaraan</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Owner</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.owner}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="5">No Kendaraan</Col>
-                        <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="5">Merk</Col>
                         <Col xs="7" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.brand}</Col>
@@ -271,14 +260,6 @@ class Kendaraan extends Component {
                         </Col>
                         <Col xs="12" md="9">
                           <Input type="text" onChange={this.handleChange} name="owner" value={this.state.focus.owner} />
-                        </Col>
-                      </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          <Label htmlFor="hf-username">No Kendaraan</Label>
-                        </Col>
-                        <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="vehicle_id" value={this.state.focus.vehicle_id} />
                         </Col>
                       </FormGroup>
                       <FormGroup row>

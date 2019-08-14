@@ -204,7 +204,7 @@ class List extends Component {
     data.rows.forEach(function (items, i) {
       if (items.id) {
         rows.push({
-          id: parseInt(items.id),
+          id: items.id,
           name: items.name,
           email: items.email,
           phone: items.phone,

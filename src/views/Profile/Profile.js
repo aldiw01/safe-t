@@ -29,41 +29,22 @@ class Profile extends Component {
   componentDidMount() {
     console.log(this.Auth.getProfile())
     const profile = this.Auth.getProfile();
-    if (profile.user_type === "Admin") {
-      // var status = res.data[0].status === '1' ? 'Verified' : 'Not verified';
-      this.setState({
-        data: [{
-          ID: profile.id,
-          Name: profile.name,
-          Email: profile.email,
-          // Phone: profile.phone,
-          Citizen_ID: profile.citizen_id,
-          // Gender: profile.gender,
-          // Address: profile.address,
-          // Status: status,
-          Previledge_ID: profile.previledge_id,
-          Registered: new Date(profile.created).toLocaleString('en-GB'),
-          Updated: new Date(profile.updated).toLocaleString('en-GB')
-        }]
-      });
-    } else if (profile.user_type === "User") {
-      var status = profile.status === '2' ? 'Verified' : 'Not verified';
-      this.setState({
-        data: [{
-          ID: profile.id,
-          Name: profile.name,
-          Email: profile.email,
-          Phone: profile.phone,
-          Citizen_ID: profile.citizen_id,
-          Gender: profile.gender,
-          Address: profile.address,
-          Status: status,
-          // Previledge_ID: profile.previledge_id,
-          Registered: new Date(profile.created).toLocaleString('en-GB'),
-          Updated: new Date(profile.updated).toLocaleString('en-GB')
-        }]
-      })
-    }
+    const statusID = ["Unverified", "Pending", "Verified", "Super Admin", "", "", "", "", "", "Inactive"];
+    var status = statusID[profile.status];
+    this.setState({
+      data: [{
+        ID: profile.id,
+        Name: profile.name,
+        Email: profile.email,
+        Phone: profile.phone,
+        Citizen_ID: profile.citizen_id,
+        Gender: profile.gender,
+        Address: profile.address,
+        Status: status,
+        Registered: new Date(profile.created).toLocaleString('en-GB'),
+        Updated: new Date(profile.updated).toLocaleString('en-GB')
+      }]
+    })
   }
 
   render() {

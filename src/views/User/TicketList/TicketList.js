@@ -101,11 +101,6 @@ class TicketList extends Component {
           sort: 'asc'
         },
         {
-          label: 'Violator ID',
-          field: 'violator_id',
-          sort: 'asc'
-        },
-        {
           label: 'No Kendaraan',
           field: 'vehicle_id',
           sort: 'asc'
@@ -141,7 +136,6 @@ class TicketList extends Component {
       rows.push({
         id: items.id,
         reporter_id: items.reporter_id,
-        violator_id: items.violator_id,
         vehicle_id: items.vehicle_id,
         violation_type: items.violation_type,
         incident_date: new Date(items.incident_date).toLocaleDateString('en-GB'),
@@ -183,9 +177,6 @@ class TicketList extends Component {
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Reporter ID</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.reporter_id}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="3">Violator ID</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.violator_id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">No Kendaraan</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>

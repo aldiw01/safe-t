@@ -54,11 +54,15 @@ class DefaultHeader extends Component {
               <i className="icon-bell"></i><Badge pill color="danger">5</Badge>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>Notifications</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>
-              <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>
+              <DropdownItem header tag="div" className="text-center"><strong>Tickets</strong></DropdownItem>
+              <DropdownItem><i className="icon-notebook"></i> Active<Badge color="info">42</Badge></DropdownItem>
+              <DropdownItem><i className="icon-check"></i> Closed<Badge color="primary">42</Badge></DropdownItem>
+              <DropdownItem><i className="icon-check"></i> Archived<Badge color="dark">42</Badge></DropdownItem>
+              <DropdownItem header tag="div" className="text-center"><strong>Users</strong></DropdownItem>
+              <DropdownItem><i className="icon-user-following"></i> Active<Badge color="success">42</Badge></DropdownItem>
+              <DropdownItem><i className="icon-hourglass"></i> Pending<Badge color="warning">42</Badge></DropdownItem>
+              <DropdownItem><i className="icon-user-following"></i> Registered<Badge color="danger">42</Badge></DropdownItem>
+              <DropdownItem><i className="icon-user-following"></i> Inactive<Badge color="dark">42</Badge></DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
           <NavItem className="px-3 border-right border-secondary">

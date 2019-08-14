@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { Alert, Button, ButtonDropdown, Card, CardBody, CardFooter, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
 import Spinner from 'react-spinkit';
@@ -98,7 +98,6 @@ class Register extends Component {
     this.setState({ [event.target.name]: event.target.value })
     let validate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    console.log(validate.test(event.target.value))
     if (validate.test(event.target.value)) {
       this.setState({
         isGoodEmail: true
@@ -152,7 +151,6 @@ class Register extends Component {
 
   handleCheckKTP = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value.length)
     if (event.target.value.length === 16 && !isNaN(event.target.value)) {
       this.setState({
         isGoodKTP: true
@@ -166,7 +164,6 @@ class Register extends Component {
 
   handleCheckCaptureKTP = (event) => {
     this.setState({ [event.target.name]: event.target.files[0] })
-    console.log(event.target.files[0])
   }
 
   handleSubmit = (event) => {
@@ -216,8 +213,6 @@ class Register extends Component {
             passwordVal: '',
             phone: ''
           })
-          // alert('Account registered successfully. Please check your e-mail to activate your account.');
-          // window.location.reload();
         } else {
           this.setState({
             badgeVisible: true,
@@ -305,11 +300,6 @@ class Register extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
 
-                          {/* <select name="gender">
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                        </select> */}
-
                           <ButtonDropdown isOpen={this.state.dropdown} toggle={this.toggle} style={{ flex: "auto" }}>
                             <DropdownToggle className="text-left">
                               {this.state.gender}
@@ -319,8 +309,6 @@ class Register extends Component {
                               <DropdownItem onClick={() => this.setState({ gender: "Female", isGoodGender: true })}>Female</DropdownItem>
                             </DropdownMenu>
                           </ButtonDropdown>
-
-                          {/* <Input type="text" placeholder="Gender" name="gender" className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} required /> */}
                         </InputGroup>
 
                         <InputGroup className="mb-3">

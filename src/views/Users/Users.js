@@ -7,21 +7,27 @@ function UserRow(props) {
   const user = props.user
 
   const getRole = (id) => {
-    return id === '2' ? 'Super Admin' :
-      id === '1' ? 'Staff' :
-        'Inactive'
+    return id === '3' ? 'Super Admin' :
+      id === '2' ? 'Staff' :
+        id === '1' ? 'Pending' :
+          id === '0' ? 'Unverified' :
+            'Inactive'
   }
 
   const getBadge = (id) => {
-    return id === '2' ? 'primary' :
-      id === '1' ? 'success' :
-        'warning'
+    return id === '3' ? 'primary' :
+      id === '2' ? 'success' :
+        id === '1' ? 'warning' :
+          id === '0' ? 'danger' :
+            'dark'
   }
 
   const getStatus = (id) => {
-    return id === '2' ? 'Super' :
-      id === '1' ? 'Active' :
-        'Pending'
+    return id === '3' ? 'Super' :
+      id === '2' ? 'Active' :
+        id === '1' ? 'Pending' :
+          id === '0' ? 'Unverified' :
+            'Inactive'
   }
   console.log(new Date(user.created).toLocaleDateString())
   if (user !== undefined)
@@ -30,9 +36,9 @@ function UserRow(props) {
         <th scope="row">{user.id}</th>
         <td>{user.name}</td>
         <td>{user.email}</td>
-        <td>{getRole(user.privilege_id)}</td>
+        <td>{getRole(user.status)}</td>
         <td>{new Date(user.created).toLocaleDateString('en-GB')}</td>
-        <td><Badge color={getBadge(user.privilege_id)}>{getStatus(user.privilege_id)}</Badge></td>
+        <td><Badge color={getBadge(user.status)}>{getStatus(user.status)}</Badge></td>
       </tr>
     )
 }
@@ -68,7 +74,7 @@ class Users extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xl={6}>
+          <Col xl={12}>
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i> Admin List

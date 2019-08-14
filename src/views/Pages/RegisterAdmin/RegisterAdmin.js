@@ -1,47 +1,64 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, ButtonDropdown, Card, CardBody, CardFooter, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
+import AuthService from '../../../server/AuthService';
 import Spinner from 'react-spinkit';
 
 class RegisterAdmin extends Component {
   constructor(props) {
     super(props);
+    this.Auth = new AuthService();
     this.state = {
+      address: '',
+      badge: 'info',
+      badgeVisible: false,
+      citizen_id: '',
+      dropdown: false,
+      email: '',
+      fileImage: '',
+      gender: "Select Gender",
+      isAddressClicked: false,
+      isEmailClicked: false,
+      isGoodAddress: false,
+      isGoodEmail: false,
+      isGoodGender: false,
+      isGoodKTP: false,
+      isGoodName: false,
+      isGoodPassword: false,
+      isGoodPhone: false,
+      isLoggedin: false,
+      isKTPClicked: false,
+      isNameClicked: false,
+      isPasswordClicked: false,
+      isPasswordConfirmed: false,
+      isPhoneClicked: false,
+      isRegisteredEmail: false,
+      loader: false,
+      message: '',
       name: '',
       password: '',
       passwordVal: '',
-      email: '',
-      citizen_id: '',
-      fileImage: '',
-      isLoggedin: false,
-      isPasswordConfirmed: false,
-      isRegisteredEmail: false,
-      isGoodName: false,
-      isGoodEmail: false,
-      isGoodPassword: false,
-      isGoodKTP: false,
-      isEmailClicked: false,
-      isNameClicked: false,
-      isPasswordClicked: false,
-      isKTPClicked: false,
-      loader: false,
-      visible: false,
-      message: '',
-      badge: 'info'
+      phone: ''
     }
   }
 
   componentDidMount() {
-    if (localStorage.getItem('id_token')) {
+    if (this.Auth.loggedIn()) {
       this.setState({
         isLoggedin: true
       })
     }
   }
 
+  toggle = () => {
+    this.setState({
+      dropdown: !this.state.dropdown
+    });
+  }
+
   onDismiss = () => {
-    this.setState({ visible: false });
+    this.setState({ badgeVisible: false });
   }
 
   handleCheckUsername = (event) => {
@@ -60,7 +77,6 @@ class RegisterAdmin extends Component {
 
   handleCheckPassword = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value.length)
     if (event.target.value.length > 5) {
       this.setState({
         isGoodPassword: true
@@ -82,7 +98,6 @@ class RegisterAdmin extends Component {
     this.setState({ [event.target.name]: event.target.value })
     let validate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    console.log(validate.test(event.target.value))
     if (validate.test(event.target.value)) {
       this.setState({
         isGoodEmail: true
@@ -94,7 +109,6 @@ class RegisterAdmin extends Component {
 
       axios.post(localStorage.getItem('serverAPI') + '/check-admin-registered', data, {
       }).then(res => {
-        console.log(res.data);
         if (res.data.success) {
           this.setState({ isRegisteredEmail: true });
         } else {
@@ -117,9 +131,26 @@ class RegisterAdmin extends Component {
     }
   }
 
+  handleCheckPhone = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+    if (event.target.value.length > 5) {
+      this.setState({ isGoodPhone: true });
+    } else {
+      this.setState({ isGoodPhone: false });
+    }
+  }
+
+  handleCheckAddress = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+    if (event.target.value.length > 5) {
+      this.setState({ isGoodAddress: true });
+    } else {
+      this.setState({ isGoodAddress: false });
+    }
+  }
+
   handleCheckKTP = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    console.log(event.target.value.length)
     if (event.target.value.length === 16 && !isNaN(event.target.value)) {
       this.setState({
         isGoodKTP: true
@@ -133,7 +164,6 @@ class RegisterAdmin extends Component {
 
   handleCheckCaptureKTP = (event) => {
     this.setState({ [event.target.name]: event.target.files[0] })
-    console.log(event.target.files[0])
   }
 
   handleSubmit = (event) => {
@@ -143,40 +173,50 @@ class RegisterAdmin extends Component {
     data.append('name', this.state.name);
     data.append('email', this.state.email);
     data.append('password', this.state.password);
+    data.append('phone', this.state.phone);
+    data.append('gender', this.state.gender);
+    data.append('address', this.state.address);
     data.append('citizen_id', this.state.citizen_id);
     data.append('fileImage', this.state.fileImage);
     axios.post(localStorage.getItem('serverAPI') + '/admin', data)
       .then(res => {
         if (res.data.success) {
           this.setState({
+            address: '',
+            badge: 'success',
+            badgeVisible: true,
+            citizen_id: '',
+            dropdown: false,
+            email: '',
+            fileImage: '',
+            gender: "Select Gender",
+            isAddressClicked: false,
+            isEmailClicked: false,
+            isGoodAddress: false,
+            isGoodEmail: false,
+            isGoodGender: false,
+            isGoodKTP: false,
+            isGoodName: false,
+            isGoodPassword: false,
+            isGoodPhone: false,
+            isLoggedin: false,
+            isKTPClicked: false,
+            isNameClicked: false,
+            isPasswordClicked: false,
+            isPasswordConfirmed: false,
+            isPhoneClicked: false,
+            isRegisteredEmail: false,
+            loader: false,
+            message: 'Account registered successfully. Please check your e-mail to activate your account.',
             name: '',
             password: '',
             passwordVal: '',
-            email: '',
-            citizen_id: '',
-            fileImage: '',
-            isLoggedin: false,
-            isPasswordConfirmed: false,
-            isRegisteredEmail: false,
-            isGoodName: false,
-            isGoodEmail: false,
-            isGoodPassword: false,
-            isGoodKTP: false,
-            isEmailClicked: false,
-            isNameClicked: false,
-            isPasswordClicked: false,
-            isKTPClicked: false,
-            loader: false,
-            visible: true,
-            message: 'Account registered successfully. Please check your e-mail to activate your account.',
-            badge: 'success'
+            phone: ''
           })
-          // alert('Account registered successfully. Please check your e-mail to activate your account.');
-          // window.location.reload();
         } else {
           this.setState({
             loader: false,
-            visible: true,
+            badgeVisible: true,
             message: res.data.message,
             badge: 'warning'
           })
@@ -193,11 +233,11 @@ class RegisterAdmin extends Component {
     return (
       this.state.isLoggedin ? <Redirect to="/admin" /> :
         <React.Fragment>
-          <div className="app flex-row align-items-center">
+          <div className="app align-items-center mt-4">
             <Container>
-              <Row className="w-50 m-auto">
+              <Row className="w-75 m-auto">
                 <Col xs="12">
-                  <Alert color={this.state.badge} isOpen={this.state.visible} toggle={this.onDismiss}>
+                  <Alert color={this.state.badge} isOpen={this.state.badgeVisible} toggle={this.onDismiss}>
                     {this.state.message}
                   </Alert>
                 </Col>
@@ -209,6 +249,7 @@ class RegisterAdmin extends Component {
                       <Form method="post" encType="multipart/form-data" onSubmit={this.handleSubmit}>
                         <h1>Register Admin</h1>
                         <p className="text-muted">Create your account</p>
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -217,12 +258,14 @@ class RegisterAdmin extends Component {
                           </InputGroupAddon>
                           <Input type="text" placeholder="Full Name" autoComplete="name" name="name" value={this.state.name} className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
                         </InputGroup>
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>@</InputGroupText>
                           </InputGroupAddon>
                           <Input type="email" placeholder="Email" autoComplete="email" name="email" value={this.state.email} className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
                         </InputGroup>
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -231,6 +274,7 @@ class RegisterAdmin extends Component {
                           </InputGroupAddon>
                           <Input type="password" placeholder="Password" autoComplete="new-password" name="password" value={this.state.password} className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
                         </InputGroup>
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -239,6 +283,43 @@ class RegisterAdmin extends Component {
                           </InputGroupAddon>
                           <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="passwordVal" value={this.state.passwordVal} className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
                         </InputGroup>
+
+                        <InputGroup className="mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-phone"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input type="phone" placeholder="Phone" name="phone" value={this.state.phone} className={!this.state.isPhoneClicked ? "" : this.state.isGoodPhone ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPhoneClicked: true })} onChange={this.handleCheckPhone} required />
+                        </InputGroup>
+
+                        <InputGroup className="mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="fa fa-venus-mars"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+
+                          <ButtonDropdown isOpen={this.state.dropdown} toggle={this.toggle} style={{ flex: "auto" }}>
+                            <DropdownToggle className="text-left">
+                              {this.state.gender}
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem onClick={() => this.setState({ gender: "Male", isGoodGender: true })}>Male</DropdownItem>
+                              <DropdownItem onClick={() => this.setState({ gender: "Female", isGoodGender: true })}>Female</DropdownItem>
+                            </DropdownMenu>
+                          </ButtonDropdown>
+                        </InputGroup>
+
+                        <InputGroup className="mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-location-pin"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input type="text" placeholder="Address" name="address" value={this.state.address} className={!this.state.isAddressClicked ? "" : this.state.isGoodAddress ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isAddressClicked: true })} onChange={this.handleCheckAddress} required />
+                        </InputGroup>
+
                         <InputGroup className="mb-1">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -250,7 +331,8 @@ class RegisterAdmin extends Component {
                         <InputGroup className="mb-4 input-group border rounded p-1">
                           <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
                         </InputGroup>
-                        <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >
+
+                        <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodAddress || !this.state.isGoodGender || !this.state.isGoodPhone || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >
                           {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" className="m-auto" /> : "Create Account"}
                         </Button>
                         <Link to="/admin/login">

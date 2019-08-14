@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
@@ -126,20 +126,22 @@ class Poin extends Component {
               <CardHeader>
                 <i className="fa fa-align-justify"></i><strong>Data Poin</strong>
               </CardHeader>
-              <CardBody className="d-flex">
-                <Col sm="12" lg="4" className="m-auto">
-                  <img className="d-block w-100" src="/assets/img/medal.svg" alt='Medal' />
-                  <div className="border rounded text-center m-4 h1">{this.state.point}</div>
-                </Col>
-                <Col xs="8" xl="8" sm="12">
-                  <MDBDataTable
-                    striped
-                    bordered
-                    small
-                    data={dataFix}
-                  // paginationLabel={["<", ">"]}
-                  />
-                </Col>
+              <CardBody>
+                <Row>
+                  <Col xs="12" sm="12" md="3" lg="4" className="m-auto">
+                    <img className="d-block w-100" src="/assets/img/medal.svg" alt='Medal' />
+                    <div className="border rounded text-center m-4 h1">{this.state.point}</div>
+                  </Col>
+                  <Col xs="12" sm="12" md="9" lg="8">
+                    <MDBDataTable
+                      striped
+                      bordered
+                      small
+                      data={dataFix}
+                    // paginationLabel={["<", ">"]}
+                    />
+                  </Col>
+                </Row>
 
                 <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary ' + this.props.className}>
                   <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Poin</ModalHeader>

@@ -22,7 +22,6 @@ class Archived extends Component {
       data: [{
         id: '',
         reporter_id: '',
-        violator_id: '',
         vehicle_id: '',
         violation_type: '',
         detail: '',
@@ -34,7 +33,6 @@ class Archived extends Component {
       focus: {
         id: '',
         reporter_id: '',
-        violator_id: '',
         vehicle_id: '',
         violation_type: '',
         detail: '',
@@ -66,6 +64,19 @@ class Archived extends Component {
         this.setState({ data: res.data });
       })
       .catch(error => {
+        this.setState({
+          data: [{
+            id: '',
+            reporter_id: '',
+            vehicle_id: '',
+            violation_type: '',
+            detail: '',
+            incident_date: '',
+            documentation: '',
+            created: '',
+            updated: '',
+          }]
+        })
         console.log(error);
       });
   }
@@ -82,7 +93,7 @@ class Archived extends Component {
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      axios.delete(localStorage.getItem('serverAPI') + '/ticket/' + id)
+      axios.delete(localStorage.getItem('serverAPI') + '/ticket/ever/' + id)
         .then(res => {
           this.setState({
             delete: !this.state.delete,
@@ -152,11 +163,6 @@ class Archived extends Component {
           sort: 'asc'
         },
         {
-          label: 'Violator ID',
-          field: 'violator_id',
-          sort: 'asc'
-        },
-        {
           label: 'No Kendaraan',
           field: 'vehicle_id',
           sort: 'asc'
@@ -191,9 +197,8 @@ class Archived extends Component {
     data.rows.forEach(function (items, i) {
       if (items.id) {
         rows.push({
-          id: parseInt(items.id),
+          id: items.id,
           reporter_id: items.reporter_id,
-          violator_id: items.violator_id,
           vehicle_id: items.vehicle_id,
           violation_type: items.violation_type,
           detail: items.detail,
@@ -237,9 +242,6 @@ class Archived extends Component {
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Reporter ID</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.reporter_id}</Col>
-                        <div className="w-100 py-2"></div>
-                        <Col xs="3">Violator ID</Col>
-                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.violator_id}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">No Kendaraan</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>
