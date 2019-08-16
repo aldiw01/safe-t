@@ -97,6 +97,18 @@ class Active extends Component {
   handleEdit = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
+      const req = {
+        ticket_id: this.state.focus.id,
+        from_id: this.Auth.getProfile().id,
+        to_id: this.state.focus.reporter_id,
+        info: "telah mengubah tiket anda",
+        message: this.state.message
+      }
+      axios.post(localStorage.getItem('serverAPI') + '/history', req)
+        .catch(error => {
+          alert(error);
+        });
+
       axios.put(localStorage.getItem('serverAPI') + '/ticket/' + id, this.state.focus)
         .then(res => {
           this.setState({
@@ -115,6 +127,18 @@ class Active extends Component {
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
+      const req = {
+        ticket_id: this.state.focus.id,
+        from_id: this.Auth.getProfile().id,
+        to_id: this.state.focus.reporter_id,
+        info: "telah mengarsipkan tiket anda",
+        message: this.state.message
+      }
+      axios.post(localStorage.getItem('serverAPI') + '/history', req)
+        .catch(error => {
+          alert(error);
+        });
+
       axios.delete(localStorage.getItem('serverAPI') + '/ticket/' + id)
         .then(res => {
           this.setState({
@@ -198,7 +222,8 @@ class Active extends Component {
     this.setState({
       id: id,
       edit: !this.state.edit,
-      focus: this.state.data[id]
+      focus: this.state.data[id],
+      message: ''
     });
   }
 
@@ -206,7 +231,8 @@ class Active extends Component {
     this.setState({
       id: id,
       delete: !this.state.delete,
-      focus: this.state.data[id]
+      focus: this.state.data[id],
+      message: ''
     });
   }
 
@@ -347,7 +373,7 @@ class Active extends Component {
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.message === ""}>Close Ticket</Button>
+                    <Button color="primary" onClick={this.handleCloseTicket} disabled={this.state.loader || this.state.message === ""}>Close Ticket</Button>
                     <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
@@ -396,12 +422,21 @@ class Active extends Component {
                           <Input type="date" onChange={this.handleChange} name="incident_date" value={this.state.focus.incident_date} />
                         </Col>
                       </FormGroup>
+                      <FormGroup row>
+                        <Col xs="12">
+                          <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col xs="12">
+                          <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control border-primary" rows="2" placeholder="Mohon isi respon untuk mengubah tiket"></textarea>
+                        </Col>
+                      </FormGroup>
                     </Form>
-                    <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)} disabled={this.state.loader} >Save Changes</Button>{' '}
+                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)} disabled={this.state.loader || this.state.message === ""} >Save Changes</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
@@ -409,11 +444,12 @@ class Active extends Component {
                 <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
                   <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete Tiket</ModalHeader>
                   <ModalBody>
-                    Do you really want to reject this ticket?
+                    Do you really want to reject this ticket?. Why?
+                    <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control border-primary mt-2" rows="2" placeholder="Mohon isi respon untuk mengarsipkan tiket"></textarea>
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
+                    <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)} disabled={this.state.loader || this.state.message === ""} >Delete</Button>{' '}
                     <Button color="secondary" onClick={() => this.toggleDelete(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>

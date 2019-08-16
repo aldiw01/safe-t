@@ -14,6 +14,7 @@ class Kendaraan extends Component {
       window.location = '/admin/login';
     }
     this.state = {
+      id: '',
       view: false,
       edit: false,
       delete: false,
@@ -46,6 +47,7 @@ class Kendaraan extends Component {
   }
 
   getData = () => {
+    console.log("getData")
     axios.get(localStorage.getItem('serverAPI') + '/vehicle')
       .then(res => {
         this.setState({ data: res.data });
@@ -67,17 +69,20 @@ class Kendaraan extends Component {
   handleEdit = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
+      console.log(id)
+      console.log(this.state.focus)
       axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + id, this.state.focus)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
           alert(error);
+          console.log(error);
         });
     }
   }
@@ -85,23 +90,27 @@ class Kendaraan extends Component {
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
+      console.log(id)
+      console.log(this.state.focus)
       axios.delete(localStorage.getItem('serverAPI') + '/vehicle/' + id)
         .then(res => {
           this.setState({
             delete: !this.state.delete,
             loader: false
           })
-          alert(JSON.stringify(res.data));
+          alert(res.data.message);
           this.getData();
         })
         .catch(error => {
           alert(error);
+          console.log(error);
         });
     }
   }
 
   toggleView = id => {
     this.setState({
+      id: id,
       view: !this.state.view,
       focus: this.state.data[id]
     });
@@ -109,6 +118,7 @@ class Kendaraan extends Component {
 
   toggleEdit = id => {
     this.setState({
+      id: id,
       edit: !this.state.edit,
       focus: this.state.data[id]
     });
@@ -116,6 +126,7 @@ class Kendaraan extends Component {
 
   toggleDelete = id => {
     this.setState({
+      id: id,
       delete: !this.state.delete,
       focus: this.state.data[id]
     });
@@ -210,8 +221,8 @@ class Kendaraan extends Component {
                 // paginationLabel={["<", ">"]}
                 />
 
-                <Modal isOpen={this.state.view} toggle={() => this.toggleView(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleView(0)}>Data Kendaraan</ModalHeader>
+                <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Kendaraan</ModalHeader>
                   <ModalBody className="modal-body-display">
                     <Col sm="12" lg="5" className="m-auto">
                       <Row>
@@ -246,14 +257,22 @@ class Kendaraan extends Component {
                     </Col>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="secondary" onClick={() => this.toggleView(0)}>Close</Button>
+                    <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(0)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(0)}>Edit Kendaraan</ModalHeader>
+                <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Edit Kendaraan</ModalHeader>
                   <ModalBody className="mt-4 mx-4">
                     <Form action="" method="post" className="form-horizontal">
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-email">No Kendaraan</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChange} name="id" value={this.state.focus.id} />
+                        </Col>
+                      </FormGroup>
                       <FormGroup row>
                         <Col md="3">
                           <Label htmlFor="hf-email">Owner</Label>
@@ -298,20 +317,20 @@ class Kendaraan extends Component {
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.focus.id)}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(0)}>Cancel</Button>
+                    <Button color="primary" onClick={() => this.handleEdit(this.state.data[this.state.id].id)}>Save Changes</Button>{' '}
+                    <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(0)} className={'modal-danger modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleDelete(0)}>Delete Kendaraan</ModalHeader>
+                <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
+                  <ModalHeader toggle={() => this.toggleDelete(this.state.id)}>Delete Kendaraan</ModalHeader>
                   <ModalBody>
                     Do you really want to delete this vehicle?
                   </ModalBody>
                   <ModalFooter>
                     {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="danger" onClick={() => this.handleDelete(this.state.focus.id)}>Delete</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleDelete(0)}>Cancel</Button>
+                    <Button color="danger" onClick={() => this.handleDelete(this.state.data[this.state.id].id)}>Delete</Button>{' '}
+                    <Button color="secondary" onClick={() => this.toggleDelete(this.state.id)}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
