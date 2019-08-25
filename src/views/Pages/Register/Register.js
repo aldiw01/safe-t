@@ -5,6 +5,12 @@ import axios from 'axios';
 import AuthService from '../../../server/AuthService';
 import Spinner from 'react-spinkit';
 
+import Header from "components/Header/Header.jsx";
+import HeaderLinks from "components/Header/HeaderLinks.jsx";
+
+import logo from "assets/img/logo.png";
+import bgImage from "assets/img/landing-bg.jpg";
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -233,120 +239,132 @@ class Register extends Component {
     return (
       this.state.isLoggedin ? <Redirect to="/dashboard" /> :
         <React.Fragment>
-          <div className="app align-items-center mt-4">
-            <Container>
-              <Row className="w-75 m-auto">
-                <Col xs="12">
-                  <Alert color={this.state.badge} isOpen={this.state.badgeVisible} toggle={this.onDismiss}>
-                    {this.state.message}
-                  </Alert>
-                </Col>
-              </Row>
-              <Row className="justify-content-center">
-                <Col md="9" lg="7" xl="6">
-                  <Card className="mx-4">
-                    <CardBody className="p-4">
-                      <Form method="post" encType="multipart/form-data" onSubmit={this.handleSubmit}>
-                        <h1>Register</h1>
-                        <p className="text-muted">Create your account</p>
+          <Header
+            color="transparent"
+            // brand={logo}
+            rightLinks={<HeaderLinks />}
+            fixed
+            changeColorOnScroll={{
+              height: 400,
+              color: "white"
+            }}
+          />
+          <div style={{ backgroundImage: "url('" + bgImage + "')", backgroundSize: "cover" }}>
+            <div className="app align-items-center">
+              <Container>
+                <Row className="w-75 m-auto">
+                  <Col xs="12">
+                    <Alert color={this.state.badge} isOpen={this.state.badgeVisible} toggle={this.onDismiss}>
+                      {this.state.message}
+                    </Alert>
+                  </Col>
+                </Row>
+                <Row className="justify-content-center">
+                  <Col md="9" lg="7" xl="6">
+                    <Card className="mx-4">
+                      <CardBody className="p-4">
+                        <Form method="post" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+                          <h1>Register</h1>
+                          <p className="text-muted">Create your account</p>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-user"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="Full Name" autoComplete="name" name="name" value={this.state.name} className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-user"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="text" placeholder="Full Name" autoComplete="name" name="name" value={this.state.name} className={!this.state.isNameClicked ? "" : this.state.isGoodName ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isNameClicked: true })} onChange={this.handleCheckUsername} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>@</InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="email" placeholder="Email" autoComplete="email" name="email" value={this.state.email} className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>@</InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="email" placeholder="Email" autoComplete="email" name="email" value={this.state.email} className={!this.state.isEmailClicked ? "" : this.state.isGoodEmail && !this.state.isRegisteredEmail ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isEmailClicked: true })} onChange={this.handleChangeAndCheckEmail} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="Password" autoComplete="new-password" name="password" value={this.state.password} className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-lock"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="password" placeholder="Password" autoComplete="new-password" name="password" value={this.state.password} className={!this.state.isPasswordClicked ? "" : this.state.isGoodPassword ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPasswordClicked: true })} onChange={this.handleCheckPassword} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="passwordVal" value={this.state.passwordVal} className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-lock"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="password" placeholder="Repeat password" autoComplete="new-password" name="passwordVal" value={this.state.passwordVal} className={!this.state.isPasswordClicked ? "" : this.state.isPasswordConfirmed ? "is-valid" : "is-invalid"} onChange={this.handleConfirmPassword} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-phone"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="phone" placeholder="Phone" name="phone" value={this.state.phone} className={!this.state.isPhoneClicked ? "" : this.state.isGoodPhone ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPhoneClicked: true })} onChange={this.handleCheckPhone} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-phone"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="phone" placeholder="Phone" name="phone" value={this.state.phone} className={!this.state.isPhoneClicked ? "" : this.state.isGoodPhone ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isPhoneClicked: true })} onChange={this.handleCheckPhone} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="fa fa-venus-mars"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="fa fa-venus-mars"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
 
-                          <ButtonDropdown isOpen={this.state.dropdown} toggle={this.toggle} style={{ flex: "auto" }}>
-                            <DropdownToggle className="text-left">
-                              {this.state.gender}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem onClick={() => this.setState({ gender: "Male", isGoodGender: true })}>Male</DropdownItem>
-                              <DropdownItem onClick={() => this.setState({ gender: "Female", isGoodGender: true })}>Female</DropdownItem>
-                            </DropdownMenu>
-                          </ButtonDropdown>
-                        </InputGroup>
+                            <ButtonDropdown isOpen={this.state.dropdown} toggle={this.toggle} style={{ flex: "auto" }}>
+                              <DropdownToggle className="text-left">
+                                {this.state.gender}
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem onClick={() => this.setState({ gender: "Male", isGoodGender: true })}>Male</DropdownItem>
+                                <DropdownItem onClick={() => this.setState({ gender: "Female", isGoodGender: true })}>Female</DropdownItem>
+                              </DropdownMenu>
+                            </ButtonDropdown>
+                          </InputGroup>
 
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-location-pin"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="Address" name="address" value={this.state.address} className={!this.state.isAddressClicked ? "" : this.state.isGoodAddress ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isAddressClicked: true })} onChange={this.handleCheckAddress} required />
-                        </InputGroup>
+                          <InputGroup className="mb-3">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="icon-location-pin"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="text" placeholder="Address" name="address" value={this.state.address} className={!this.state.isAddressClicked ? "" : this.state.isGoodAddress ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isAddressClicked: true })} onChange={this.handleCheckAddress} required />
+                          </InputGroup>
 
-                        <InputGroup className="mb-1">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="fa fa-id-card-o"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="No. KTP" name="citizen_id" value={this.state.citizen_id} className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
-                        </InputGroup>
-                        <InputGroup className="mb-4 input-group border rounded p-1">
-                          <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
-                        </InputGroup>
+                          <InputGroup className="mb-1">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>
+                                <i className="fa fa-id-card-o"></i>
+                              </InputGroupText>
+                            </InputGroupAddon>
+                            <Input type="text" placeholder="No. KTP" name="citizen_id" value={this.state.citizen_id} className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
+                          </InputGroup>
+                          <InputGroup className="mb-4 input-group border rounded p-1">
+                            <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
+                          </InputGroup>
 
-                        <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodAddress || !this.state.isGoodGender || !this.state.isGoodPhone || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >
-                          {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" className="m-auto" /> : "Create Account"}
-                        </Button>
-                        <Link to="/login">
-                          <Button color="primary" className="w-100 mt-4" active tabIndex={-1}>Login</Button>
-                        </Link>
-                      </Form>
-                    </CardBody>
-                    <CardFooter>
-                      <span className="float-right"><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; {new Date().getFullYear()} IMV Laboratory</span>
-                    </CardFooter>
-                  </Card>
-                </Col>
-              </Row>
-            </Container>
+                          <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodAddress || !this.state.isGoodGender || !this.state.isGoodPhone || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >
+                            {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" className="m-auto" /> : "Create Account"}
+                          </Button>
+                          <Link to="/login">
+                            <Button color="primary" className="w-100 mt-4" active tabIndex={-1}>Login</Button>
+                          </Link>
+                        </Form>
+                      </CardBody>
+                      <CardFooter>
+                        <span className="float-right"><a href="mailto:imvlaboratory@gmail.com" target="_blank" rel="noopener noreferrer">Safe-T</a> &copy; {new Date().getFullYear()} IMV Laboratory</span>
+                      </CardFooter>
+                    </Card>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
           </div>
         </React.Fragment>
     );

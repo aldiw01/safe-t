@@ -106,7 +106,7 @@ class Login extends Component {
         <React.Fragment>
           <Header
             color="transparent"
-            brand={logo}
+            // brand={logo}
             rightLinks={<HeaderLinks />}
             fixed
             changeColorOnScroll={{

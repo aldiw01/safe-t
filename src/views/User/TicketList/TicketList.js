@@ -209,9 +209,6 @@ class TicketList extends Component {
                         <Col xs="12">
                           <History history={this.state.history} />
                         </Col>
-                        <Col xs="12">
-                          <textarea name="message" value={this.state.message} onChange={this.handleChangeEvent} className="form-control border-primary" rows="2" placeholder="Mohon isi respon untuk menutup tiket"></textarea>
-                        </Col>
                       </Row>
                     </Col>
                   </ModalBody>

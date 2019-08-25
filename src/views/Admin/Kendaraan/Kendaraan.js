@@ -15,6 +15,7 @@ class Kendaraan extends Component {
     }
     this.state = {
       id: '',
+      add: false,
       view: false,
       edit: false,
       delete: false,
@@ -29,7 +30,7 @@ class Kendaraan extends Component {
         created: '',
         updated: ''
       }],
-      focus: [{
+      focus: {
         id: '',
         owner: '',
         brand: '',
@@ -38,7 +39,15 @@ class Kendaraan extends Component {
         color: '',
         created: '',
         updated: ''
-      }]
+      },
+      new: {
+        id: '',
+        owner: '',
+        brand: '',
+        type: '',
+        build_year: '',
+        color: ''
+      }
     }
   }
 
@@ -47,7 +56,6 @@ class Kendaraan extends Component {
   }
 
   getData = () => {
-    console.log("getData")
     axios.get(localStorage.getItem('serverAPI') + '/vehicle')
       .then(res => {
         this.setState({ data: res.data });
@@ -66,11 +74,37 @@ class Kendaraan extends Component {
     })
   }
 
+  handleChangeNew = event => {
+    this.setState({
+      new: {
+        ...this.state.new,
+        [event.target.name]: event.target.value
+      }
+    })
+  }
+
+  handleAdd = () => {
+    if (window.confirm("You will create change(s) on database. Are you sure?")) {
+      this.setState({ loader: true });
+      axios.post(localStorage.getItem('serverAPI') + '/vehicle', this.state.new)
+        .then(res => {
+          this.setState({
+            add: !this.state.add,
+            loader: false
+          })
+          alert(res.data.message);
+          this.getData();
+        })
+        .catch(error => {
+          alert(error);
+          console.log(error);
+        });
+    }
+  }
+
   handleEdit = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      console.log(id)
-      console.log(this.state.focus)
       axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + id, this.state.focus)
         .then(res => {
           this.setState({
@@ -90,8 +124,6 @@ class Kendaraan extends Component {
   handleDelete = id => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      console.log(id)
-      console.log(this.state.focus)
       axios.delete(localStorage.getItem('serverAPI') + '/vehicle/' + id)
         .then(res => {
           this.setState({
@@ -106,6 +138,12 @@ class Kendaraan extends Component {
           console.log(error);
         });
     }
+  }
+
+  toggleAdd = () => {
+    this.setState({
+      add: !this.state.add,
+    });
   }
 
   toggleView = id => {
@@ -211,6 +249,10 @@ class Kendaraan extends Component {
             <Card>
               <CardHeader>
                 <i className="fa fa-align-justify"></i><strong>Data Kendaraan</strong>
+                <Button color="success" className="float-right" onClick={this.toggleAdd}>
+                  Tambah{' '}
+                  <i className="fa fa-plus"></i>
+                </Button>
               </CardHeader>
               <CardBody>
                 <MDBDataTable
@@ -220,6 +262,67 @@ class Kendaraan extends Component {
                   data={dataFix}
                 // paginationLabel={["<", ">"]}
                 />
+
+                <Modal isOpen={this.state.add} toggle={this.toggleAdd} className={'modal-success modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleAdd}>Kendaraan Baru</ModalHeader>
+                  <ModalBody className="mt-4 mx-4">
+                    <Form action="" method="post" className="form-horizontal">
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-email">No Kendaraan</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="id" value={this.state.new.id} className="text-uppercase" />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-email">Owner</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="owner" value={this.state.new.owner} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-username">Merk</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="brand" value={this.state.new.brand} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-username">Jenis</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="type" value={this.state.new.type} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-username">Tahun Pembuatan</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="build_year" value={this.state.new.build_year} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="hf-username">Warna</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChangeNew} name="color" value={this.state.new.color} />
+                        </Col>
+                      </FormGroup>
+                    </Form>
+                  </ModalBody>
+                  <ModalFooter>
+                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
+                    <Button color="success" onClick={this.handleAdd}>Tambah</Button>{' '}
+                    <Button color="secondary" onClick={this.toggleAdd}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
 
                 <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
                   <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Kendaraan</ModalHeader>
