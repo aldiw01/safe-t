@@ -11,6 +11,10 @@
   display: flex;
 }
 
+.custom-file-label:after {
+  color: initial !important;
+}
+
 @media (max-width: 992px) {
   .modal-body-display {
     display: block !important;

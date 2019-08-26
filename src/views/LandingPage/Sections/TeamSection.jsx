@@ -51,6 +51,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -58,6 +62,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Instagram"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-instagram"} />
                   </Button>
@@ -65,6 +73,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Facebook"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-facebook"} />
                   </Button>
@@ -86,6 +98,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -93,6 +109,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="LinkedIn"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-linkedin"} />
                   </Button>
@@ -114,6 +134,7 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Mail"
                     href="mailto:aldiw01@gmail.com"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -124,6 +145,7 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Github"
                     href="https://github.com/aldiw01"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -134,6 +156,7 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="LinkedIn"
                     href="https://www.linkedin.com/in/aldiw01/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -158,6 +181,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -165,6 +192,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Instagram"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-instagram"} />
                   </Button>
@@ -172,6 +203,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Facebook"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-facebook"} />
                   </Button>
@@ -193,6 +228,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -200,6 +239,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Instagram"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-instagram"} />
                   </Button>
@@ -207,6 +250,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Facebook"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-facebook"} />
                   </Button>
@@ -228,6 +275,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -235,6 +286,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Instagram"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-instagram"} />
                   </Button>
@@ -242,6 +297,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Facebook"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-facebook"} />
                   </Button>
@@ -263,6 +322,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Twitter"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-twitter"} />
                   </Button>
@@ -270,6 +333,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Instagram"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-instagram"} />
                   </Button>
@@ -277,6 +344,10 @@ class TeamSection extends React.Component {
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                    title="Facebook"
+                    href=""
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fab fa-facebook"} />
                   </Button>
