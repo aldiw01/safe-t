@@ -3,9 +3,9 @@
   "name": "Safe-t - Smart IoT Applications for Orderly Traffic",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
-      "sizes": "100x100",
-      "type": "image/png"
+      "src": "favicon.ico",
+      "sizes": "128x128",
+      "type": "image/x-icon"
     }
   ],
   "start_url": ".",

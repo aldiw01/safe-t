@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Alert, Button, ButtonDropdown, Card, CardBody, CardFooter, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Alert, Button, ButtonDropdown, Card, CardBody, CardFooter, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Row } from 'reactstrap';
 import axios from 'axios';
 import AuthService from '../../../server/AuthService';
 import Spinner from 'react-spinkit';
@@ -346,7 +346,10 @@ class RegisterAdmin extends Component {
                             <Input type="text" placeholder="No. KTP" name="citizen_id" value={this.state.citizen_id} className={!this.state.isKTPClicked ? "" : this.state.isGoodKTP ? "is-valid" : "is-invalid"} onFocus={() => this.setState({ isKTPClicked: true })} onChange={this.handleCheckKTP} required />
                           </InputGroup>
                           <InputGroup className="mb-4 input-group border rounded p-1">
-                            <Input type="file" id="file-input" name="fileImage" required onChange={this.handleCheckCaptureKTP} />
+                            <div className="custom-file">
+                              <Input type="file" className="custom-file-input" name="fileImage" onChange={this.handleCheckCaptureKTP} required />
+                              <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.fileImage ? this.state.fileImage.name : ""} </Label>
+                            </div>
                           </InputGroup>
 
                           <Button color="success" block type="submit" disabled={!this.state.isGoodName || !this.state.isGoodPassword || this.state.isRegisteredEmail || !this.state.isPasswordConfirmed || !this.state.isGoodAddress || !this.state.isGoodGender || !this.state.isGoodPhone || !this.state.isGoodKTP || !this.state.fileImage || this.state.loader} >

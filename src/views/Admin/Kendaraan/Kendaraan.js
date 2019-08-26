@@ -20,6 +20,7 @@ class Kendaraan extends Component {
       edit: false,
       delete: false,
       loader: false,
+      fileImage: '',
       data: [{
         id: '',
         owner: '',
@@ -27,6 +28,7 @@ class Kendaraan extends Component {
         type: '',
         build_year: '',
         color: '',
+        documentation: '',
         created: '',
         updated: ''
       }],
@@ -37,6 +39,7 @@ class Kendaraan extends Component {
         type: '',
         build_year: '',
         color: '',
+        documentation: '',
         created: '',
         updated: ''
       },
@@ -46,7 +49,8 @@ class Kendaraan extends Component {
         brand: '',
         type: '',
         build_year: '',
-        color: ''
+        color: '',
+        fileImage: ''
       }
     }
   }
@@ -65,7 +69,7 @@ class Kendaraan extends Component {
       });
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       focus: {
         ...this.state.focus,
@@ -74,7 +78,7 @@ class Kendaraan extends Component {
     })
   }
 
-  handleChangeNew = event => {
+  handleChangeNew = (event) => {
     this.setState({
       new: {
         ...this.state.new,
@@ -83,14 +87,47 @@ class Kendaraan extends Component {
     })
   }
 
-  handleAdd = () => {
+  handleChangeNewFile = (event) => {
+    this.setState({
+      new: {
+        ...this.state.new,
+        [event.target.name]: event.target.files[0]
+      }
+    })
+  }
+
+  handleChangeEditFile = (event) => {
+    this.setState({
+      fileImage: event.target.files[0]
+    })
+  }
+
+  handleAdd = (event) => {
+    event.preventDefault();
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      axios.post(localStorage.getItem('serverAPI') + '/vehicle', this.state.new)
+      const data = new FormData();
+      data.append('id', this.state.new.id);
+      data.append('owner', this.state.new.owner);
+      data.append('brand', this.state.new.brand);
+      data.append('type', this.state.new.type);
+      data.append('build_year', this.state.new.build_year);
+      data.append('color', this.state.new.color);
+      data.append('fileImage', this.state.fileImage);
+      axios.post(localStorage.getItem('serverAPI') + '/vehicle', data)
         .then(res => {
           this.setState({
             add: !this.state.add,
-            loader: false
+            loader: false,
+            new: {
+              id: '',
+              owner: '',
+              brand: '',
+              type: '',
+              build_year: '',
+              color: '',
+              fileImage: ''
+            }
           })
           alert(res.data.message);
           this.getData();
@@ -102,14 +139,24 @@ class Kendaraan extends Component {
     }
   }
 
-  handleEdit = id => {
+  handleEdit = (event) => {
+    event.preventDefault();
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + id, this.state.focus)
+      const data = new FormData();
+      data.append('id', this.state.focus.id);
+      data.append('owner', this.state.focus.owner);
+      data.append('brand', this.state.focus.brand);
+      data.append('type', this.state.focus.type);
+      data.append('build_year', this.state.focus.build_year);
+      data.append('color', this.state.focus.color);
+      data.append('fileImage', this.state.fileImage);
+      axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + this.state.data[this.state.id].id, data)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
-            loader: false
+            loader: false,
+            fileImage: ''
           })
           alert(res.data.message);
           this.getData();
@@ -121,7 +168,7 @@ class Kendaraan extends Component {
     }
   }
 
-  handleDelete = id => {
+  handleDelete = (id) => {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
       axios.delete(localStorage.getItem('serverAPI') + '/vehicle/' + id)
@@ -146,7 +193,7 @@ class Kendaraan extends Component {
     });
   }
 
-  toggleView = id => {
+  toggleView = (id) => {
     this.setState({
       id: id,
       view: !this.state.view,
@@ -154,7 +201,7 @@ class Kendaraan extends Component {
     });
   }
 
-  toggleEdit = id => {
+  toggleEdit = (id) => {
     this.setState({
       id: id,
       edit: !this.state.edit,
@@ -162,7 +209,7 @@ class Kendaraan extends Component {
     });
   }
 
-  toggleDelete = id => {
+  toggleDelete = (id) => {
     this.setState({
       id: id,
       delete: !this.state.delete,
@@ -264,64 +311,75 @@ class Kendaraan extends Component {
                 />
 
                 <Modal isOpen={this.state.add} toggle={this.toggleAdd} className={'modal-success modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleAdd}>Kendaraan Baru</ModalHeader>
-                  <ModalBody className="mt-4 mx-4">
-                    <Form action="" method="post" className="form-horizontal">
+                  <Form onSubmit={this.handleAdd} method="post" encType="multipart/form-data" className="form-horizontal">
+                    <ModalHeader toggle={this.toggleAdd}>Kendaraan Baru</ModalHeader>
+                    <ModalBody className="mt-4 mx-4">
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-email">No Kendaraan</Label>
+                          No Kendaraan
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="id" value={this.state.new.id} className="text-uppercase" />
+                          <Input type="text" onChange={this.handleChangeNew} name="id" value={this.state.new.id} className="text-uppercase" required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-email">Owner</Label>
+                          Owner
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="owner" value={this.state.new.owner} />
+                          <Input type="text" onChange={this.handleChangeNew} name="owner" value={this.state.new.owner} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Merk</Label>
+                          Merk
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="brand" value={this.state.new.brand} />
+                          <Input type="text" onChange={this.handleChangeNew} name="brand" value={this.state.new.brand} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Jenis</Label>
+                          Jenis
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="type" value={this.state.new.type} />
+                          <Input type="text" onChange={this.handleChangeNew} name="type" value={this.state.new.type} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Tahun Pembuatan</Label>
+                          Tahun Pembuatan
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="build_year" value={this.state.new.build_year} />
+                          <Input type="number" onChange={this.handleChangeNew} name="build_year" value={this.state.new.build_year} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Warna</Label>
+                          Warna
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChangeNew} name="color" value={this.state.new.color} />
+                          <Input type="text" onChange={this.handleChangeNew} name="color" value={this.state.new.color} required />
                         </Col>
                       </FormGroup>
-                    </Form>
-                  </ModalBody>
-                  <ModalFooter>
-                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="success" onClick={this.handleAdd}>Tambah</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleAdd}>Cancel</Button>
-                  </ModalFooter>
+                      <FormGroup row>
+                        <Col md="3">
+                          Dokumentasi
+                        </Col>
+                        <Col xs="12" md="9">
+                          <div className="custom-file">
+                            <Input type="file" className="custom-file-input" name="fileImage" onChange={this.handleChangeNewFile} required />
+                            <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.new.fileImage ? this.state.new.fileImage.name : ""} </Label>
+                          </div>
+                        </Col>
+                      </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                      {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
+                      <Button color="success" type="submit" >Tambah</Button>{' '}
+                      <Button color="secondary" onClick={this.toggleAdd}>Cancel</Button>
+                    </ModalFooter>
+                  </Form>
                 </Modal>
 
                 <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
@@ -356,7 +414,7 @@ class Kendaraan extends Component {
                       </Row>
                     </Col>
                     <Col sm="12" lg="7" className="m-auto">
-                      <img className="d-block w-100" src='/assets/guide/test.jpg' alt='KTP' />
+                      <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/vehicle/' + this.state.focus.documentation} alt='Kendaraan' />
                     </Col>
                   </ModalBody>
                   <ModalFooter>
@@ -365,64 +423,75 @@ class Kendaraan extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.edit} toggle={() => this.toggleEdit(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Edit Kendaraan</ModalHeader>
-                  <ModalBody className="mt-4 mx-4">
-                    <Form action="" method="post" className="form-horizontal">
+                  <Form onSubmit={this.handleEdit} method="post" encType="multipart/form-data" className="form-horizontal">
+                    <ModalHeader toggle={() => this.toggleEdit(this.state.id)}>Edit Kendaraan</ModalHeader>
+                    <ModalBody className="mt-4 mx-4">
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-email">No Kendaraan</Label>
+                          No Kendaraan
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="id" value={this.state.focus.id} />
+                          <Input type="text" onChange={this.handleChange} name="id" value={this.state.focus.id} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-email">Owner</Label>
+                          Owner
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="owner" value={this.state.focus.owner} />
+                          <Input type="text" onChange={this.handleChange} name="owner" value={this.state.focus.owner} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Merk</Label>
+                          Merk
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="brand" value={this.state.focus.brand} />
+                          <Input type="text" onChange={this.handleChange} name="brand" value={this.state.focus.brand} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Jenis</Label>
+                          Jenis
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="type" value={this.state.focus.type} />
+                          <Input type="text" onChange={this.handleChange} name="type" value={this.state.focus.type} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Tahun Pembuatan</Label>
+                          Tahun Pembuatan
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="build_year" value={this.state.focus.build_year} />
+                          <Input type="text" onChange={this.handleChange} name="build_year" value={this.state.focus.build_year} required />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
                         <Col md="3">
-                          <Label htmlFor="hf-username">Warna</Label>
+                          Warna
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="color" value={this.state.focus.color} />
+                          <Input type="text" onChange={this.handleChange} name="color" value={this.state.focus.color} required />
                         </Col>
                       </FormGroup>
-                    </Form>
-                  </ModalBody>
-                  <ModalFooter>
-                    {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
-                    <Button color="primary" onClick={() => this.handleEdit(this.state.data[this.state.id].id)}>Save Changes</Button>{' '}
-                    <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
-                  </ModalFooter>
+                      <FormGroup row>
+                        <Col md="3">
+                          Dokumentasi
+                        </Col>
+                        <Col xs="12" md="9">
+                          <div className="custom-file">
+                            <Input type="file" className="custom-file-input" name="documentation" onChange={this.handleChangeEditFile} />
+                            <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.fileImage ? this.state.fileImage.name : ""} </Label>
+                          </div>
+                        </Col>
+                      </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                      {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
+                      <Button color="primary" type="submit" >Save Changes</Button>{' '}
+                      <Button color="secondary" onClick={() => this.toggleEdit(this.state.id)}>Cancel</Button>
+                    </ModalFooter>
+                  </Form>
                 </Modal>
 
                 <Modal isOpen={this.state.delete} toggle={() => this.toggleDelete(this.state.id)} className={'modal-danger modal-sm ' + this.props.className}>
