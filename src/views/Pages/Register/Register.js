@@ -8,7 +8,6 @@ import Spinner from 'react-spinkit';
 import Header from "components/Header/Header.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 
-import logo from "assets/img/logo.png";
 import bgImage from "assets/img/landing-bg.jpg";
 
 class Register extends Component {
@@ -102,7 +101,7 @@ class Register extends Component {
 
   handleChangeAndCheckEmail = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-    let validate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let validate = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (validate.test(event.target.value)) {
       this.setState({

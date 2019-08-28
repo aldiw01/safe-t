@@ -8,7 +8,6 @@ import Spinner from 'react-spinkit';
 import Header from "components/Header/Header.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 
-import logo from "assets/img/logo.png";
 import bgImage from "assets/img/landing-bg.jpg";
 
 class LoginAdmin extends Component {

@@ -49,18 +49,8 @@ class DemoSection extends React.Component {
                         <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
-                              Collaboratively administrate empowered markets via
-                              plug-and-play networks. Dynamically procrastinate
-                              B2C users after installed base benefits.
-                              </p>
-                            <br />
-                            <p>
-                              Dramatically visualize customer directed convergence
-                              without revolutionary ROI. Collaboratively
-                              administrate empowered markets via plug-and-play
-                              networks. Dynamically procrastinate B2C users after
-                              installed base benefits.
-                              </p>
+                              Pengguna dapat mengambil gambar/video melalui gallery handphone.
+                            </p>
                           </h5>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>
@@ -77,18 +67,8 @@ class DemoSection extends React.Component {
                         <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
-                              Collaboratively administrate empowered markets via
-                              plug-and-play networks. Dynamically procrastinate
-                              B2C users after installed base benefits.
-                          </p>
-                            <br />
-                            <p>
-                              Dramatically visualize customer directed convergence
-                              without revolutionary ROI. Collaboratively
-                              administrate empowered markets via plug-and-play
-                              networks. Dynamically procrastinate B2C users after
-                              installed base benefits.
-                          </p>
+                              Pengguna dapat mengambil gambar/video melalui kamera handphone secara real-time.
+                            </p>
                           </h5>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>
@@ -105,18 +85,8 @@ class DemoSection extends React.Component {
                         <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
-                              Collaboratively administrate empowered markets via
-                              plug-and-play networks. Dynamically procrastinate
-                              B2C users after installed base benefits.
-                          </p>
-                            <br />
-                            <p>
-                              Dramatically visualize customer directed convergence
-                              without revolutionary ROI. Collaboratively
-                              administrate empowered markets via plug-and-play
-                              networks. Dynamically procrastinate B2C users after
-                              installed base benefits.
-                          </p>
+                              Pengguna dapat melihat history laporan yang pernah dikirim ke server.
+                            </p>
                           </h5>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>
@@ -133,18 +103,8 @@ class DemoSection extends React.Component {
                         <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
-                              Collaboratively administrate empowered markets via
-                              plug-and-play networks. Dynamically procrastinate
-                              B2C users after installed base benefits.
-                          </p>
-                            <br />
-                            <p>
-                              Dramatically visualize customer directed convergence
-                              without revolutionary ROI. Collaboratively
-                              administrate empowered markets via plug-and-play
-                              networks. Dynamically procrastinate B2C users after
-                              installed base benefits.
-                          </p>
+                              Pengguna dapat melihat kalkulasi point yang telah dikumpulkan sesuai pelanggaran yang dilaporkan.
+                            </p>
                           </h5>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>
@@ -161,18 +121,8 @@ class DemoSection extends React.Component {
                         <GridItem xs={12} sm={12} md={7} className="m-auto">
                           <h5>
                             <p>
-                              Collaboratively administrate empowered markets via
-                              plug-and-play networks. Dynamically procrastinate
-                              B2C users after installed base benefits.
-                          </p>
-                            <br />
-                            <p>
-                              Dramatically visualize customer directed convergence
-                              without revolutionary ROI. Collaboratively
-                              administrate empowered markets via plug-and-play
-                              networks. Dynamically procrastinate B2C users after
-                              installed base benefits.
-                          </p>
+                              Pengguna dapat melihat deskripsi fitur yang dapat digunakan pada aplikasi.
+                            </p>
                           </h5>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>

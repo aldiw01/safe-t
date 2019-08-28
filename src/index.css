@@ -15,14 +15,70 @@
   color: initial !important;
 }
 
+.video-safet {
+	background: rgba(0, 0, 0, 0) url("assets/img/macbook-pro.png") no-repeat scroll center 100% / 100% auto;
+	margin: 0 auto;
+	max-width: 700px;
+	padding: 70px 0 60px;
+	position: relative;
+	z-index: 10;
+}
+
+.video-safet video {
+	border: medium none;
+  width: 520px;
+  outline: none;
+}
+
+@media (max-width:1200px ) {
+	.video-safet video {
+	  display: inline-block;
+	  margin-left: auto;
+    width: 460px;
+    height: 260px;
+	}
+}
+
+@media (width:1200px ) {
+	.video-safet video {
+    border: medium none;
+    width: 520px;
+    height: 320px;
+	}
+}
+
 @media (max-width: 992px) {
   .modal-body-display {
     display: block !important;
   }
+	.video-safet video {
+    border: medium none;
+    width: 330px;
+    height: 180px;
+	}
 }
 
 @media (width: 992px) {
   .modal-body-display {
     display: flex !important;
   }
+	.video-safet video {
+	  display: inline-block;
+	  margin-left: auto;
+    width: 460px;
+    height: 260px;
+	}
+}
+
+@media (max-width:960px ) {
+	.video-safet {
+	  background: none;
+	  text-align: center;
+	}
+	.video-safet video {
+	  display: inline-block;
+	  margin-left: auto;
+    width: 100%;
+    height: auto;
+	}
 }

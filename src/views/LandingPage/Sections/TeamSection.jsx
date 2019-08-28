@@ -15,8 +15,8 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
-import team1 from "assets/img/faces/suryo.jpg";
-import team2 from "assets/img/faces/risa.jpg";
+import team1 from "assets/img/faces/risa.jpg";
+import team2 from "assets/img/faces/suryo.jpg";
 import team3 from "assets/img/faces/aldi.jpg";
 import team4 from "assets/img/faces/anky.jpg";
 import team5 from "assets/img/faces/fakhri.jpg";
@@ -42,9 +42,9 @@ class TeamSection extends React.Component {
                   <img src={team1} alt="..." className={imageClasses} />
                 </GridItem>
                 <h5 className={classes.cardTitle}>
-                  Suryo Adhi Wibowo
+                  Rissa Rahmania
                   <br />
-                  <small className={classes.smallTitle}>Team Leader</small>
+                  <small className={classes.smallTitle}>Founder</small>
                 </h5>
                 <CardFooter className={classes.justifyCenter}>
                   <Button
@@ -89,9 +89,9 @@ class TeamSection extends React.Component {
                   <img src={team2} alt="..." className={imageClasses} />
                 </GridItem>
                 <h5 className={classes.cardTitle}>
-                  Rissa Rahmania
+                  Suryo Adhi Wibowo
                   <br />
-                  <small className={classes.smallTitle}>Project Manager</small>
+                  <small className={classes.smallTitle}>Co-Founder</small>
                 </h5>
                 <CardFooter className={classes.justifyCenter}>
                   <Button
@@ -140,17 +140,6 @@ class TeamSection extends React.Component {
                     rel="noopener noreferrer"
                   >
                     <i className={classes.socials + " fas fa-at"} />
-                  </Button>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                    title="Github"
-                    href="https://github.com/aldiw01"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className={classes.socials + " fab fa-github"} />
                   </Button>
                   <Button
                     justIcon

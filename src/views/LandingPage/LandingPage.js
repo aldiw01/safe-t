@@ -21,6 +21,8 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import ProductSection from "./Sections/ProductSection.jsx";
 import TeamSection from "./Sections/TeamSection.jsx";
 import DemoSection from "./Sections/DemoSection";
+import AboutProductSection from "./Sections/AboutProductSection";
+import TimelineSection from "./Sections/TimelineSection";
 import AboutUsSection from "./Sections/AboutUsSection";
 import SponsorsSection from "./Sections/SponsorsSection";
 
@@ -52,11 +54,9 @@ class LandingPage extends React.Component {
               <GridItem xs={12} sm={12} md={6}>
                 <h1 className={classes.title}>Safe-t</h1>
                 <h4>
-                  Smart IoT Applications for Orderly Traffic.
-                <br />
-                  Safe-t is an online e-ticketing mobile app.
-                  Easy to use, supported by artificial intelligence technology,
-                  and can be used for everyone with legal ID card.
+                  <q>Lets be smart people for your safety and others</q>
+                  <br />
+                  Smart application untuk ketertiban lalu lintas berbasis artificial intelligence.
                 </h4>
                 <br />
                 <Button
@@ -76,6 +76,8 @@ class LandingPage extends React.Component {
           <div className={classes.container} style={{ color: "initial" }}>
             <ProductSection />
             <DemoSection />
+            <AboutProductSection />
+            <TimelineSection />
             <TeamSection />
             <AboutUsSection />
           </div>

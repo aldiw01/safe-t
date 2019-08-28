@@ -21,15 +21,13 @@ class ProductSection extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.section}>
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={8}>
-            <h2 className={classes.title}>Apa itu Safe-t?</h2>
+        <GridContainer justify="center" className="mb-4">
+          <GridItem xs={12} sm={12} md={10}>
+            <h2 className={classes.title}>Apa itu Safe-T?</h2>
             <h5 className={classes.description}>
-              This is the paragraph where you can write more details about your
-              product. Keep you user engaged by providing meaningful
-              information. Remember that by this time, the user is curious,
-              otherwise he wouldn't scroll to get here. Add a button if you want
-              the user to see more.
+              Safe-T adalah singkatan dari Smart IoT Applications for Orderly Traffic.
+               <br />
+              Safe-T adalah sebuah aplikasi mobile untuk ticketing online. Mudah untuk digunakan, dilengkapi oleh teknologi artificial intelligence (AI), dan dapat digunakan oleh semua orang dengan kartu KTP yang berlaku.
             </h5>
           </GridItem>
         </GridContainer>
