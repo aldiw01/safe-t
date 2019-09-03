@@ -84,7 +84,7 @@ class TimelineSection extends React.Component {
           <GridItem xs={12} sm={12} md={8}>
             <h2 className={classes.title}>Timeline Pengembangan Produk</h2>
             <h5 className={classes.description}>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
+              kita memulai project ini pada awal tahun 2018 dan akan terus berkembang hingga menjadi project yang besar.
             </h5>
           </GridItem>
           <Row>

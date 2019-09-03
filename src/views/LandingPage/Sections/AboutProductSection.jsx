@@ -19,7 +19,7 @@ class AboutProductSection extends React.Component {
           <GridItem xs={12} sm={12} md={8}>
             <h2 className={classes.title}>Mengenal Safe-T lebih jauh</h2>
             <h5 className={classes.description}>
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
+              Smart application untuk lalu lintas yang lebih baik. Penasaran? check it out!
             </h5>
           </GridItem>
         </GridContainer>
