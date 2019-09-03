@@ -50,7 +50,7 @@ class Kendaraan extends Component {
         type: '',
         build_year: '',
         color: '',
-        fileImage: ''
+        //fileImage: ''
       }
     }
   }
@@ -113,7 +113,7 @@ class Kendaraan extends Component {
       data.append('type', this.state.new.type);
       data.append('build_year', this.state.new.build_year);
       data.append('color', this.state.new.color);
-      data.append('fileImage', this.state.fileImage);
+      //data.append('fileImage', this.state.fileImage);
       axios.post(localStorage.getItem('serverAPI') + '/vehicle', data)
         .then(res => {
           this.setState({
@@ -126,7 +126,7 @@ class Kendaraan extends Component {
               type: '',
               build_year: '',
               color: '',
-              fileImage: ''
+              //fileImage: ''
             }
           })
           alert(res.data.message);
@@ -150,13 +150,13 @@ class Kendaraan extends Component {
       data.append('type', this.state.focus.type);
       data.append('build_year', this.state.focus.build_year);
       data.append('color', this.state.focus.color);
-      data.append('fileImage', this.state.fileImage);
+      //data.append('fileImage', this.state.fileImage);
       axios.put(localStorage.getItem('serverAPI') + '/vehicle/' + this.state.data[this.state.id].id, data)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
             loader: false,
-            fileImage: ''
+            //fileImage: ''
           })
           alert(res.data.message);
           this.getData();
@@ -362,17 +362,7 @@ class Kendaraan extends Component {
                           <Input type="text" onChange={this.handleChangeNew} name="color" value={this.state.new.color} required />
                         </Col>
                       </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          Dokumentasi
-                        </Col>
-                        <Col xs="12" md="9">
-                          <div className="custom-file">
-                            <Input type="file" className="custom-file-input" name="fileImage" onChange={this.handleChangeNewFile} required />
-                            <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.new.fileImage ? this.state.new.fileImage.name : ""} </Label>
-                          </div>
-                        </Col>
-                      </FormGroup>
+                      
                     </ModalBody>
                     <ModalFooter>
                       {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
@@ -474,17 +464,7 @@ class Kendaraan extends Component {
                           <Input type="text" onChange={this.handleChange} name="color" value={this.state.focus.color} required />
                         </Col>
                       </FormGroup>
-                      <FormGroup row>
-                        <Col md="3">
-                          Dokumentasi
-                        </Col>
-                        <Col xs="12" md="9">
-                          <div className="custom-file">
-                            <Input type="file" className="custom-file-input" name="documentation" onChange={this.handleChangeEditFile} />
-                            <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.fileImage ? this.state.fileImage.name : ""} </Label>
-                          </div>
-                        </Col>
-                      </FormGroup>
+                      
                     </ModalBody>
                     <ModalFooter>
                       {this.state.loader ? <Spinner name='double-bounce' fadeIn="quarter" /> : ""}
