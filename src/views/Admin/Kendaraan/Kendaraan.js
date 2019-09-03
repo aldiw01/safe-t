@@ -20,7 +20,7 @@ class Kendaraan extends Component {
       edit: false,
       delete: false,
       loader: false,
-      fileImage: '',
+      //fileImage: '',
       data: [{
         id: '',
         owner: '',
@@ -98,7 +98,7 @@ class Kendaraan extends Component {
 
   handleChangeEditFile = (event) => {
     this.setState({
-      fileImage: event.target.files[0]
+      //fileImage: event.target.files[0]
     })
   }
 
