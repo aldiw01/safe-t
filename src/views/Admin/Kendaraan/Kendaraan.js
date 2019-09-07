@@ -91,7 +91,7 @@ class Kendaraan extends Component {
     this.setState({
       new: {
         ...this.state.new,
-        [event.target.name]: event.target.files[0]
+        fileImage: event.target.files[0]
       }
     })
   }
@@ -114,12 +114,7 @@ class Kendaraan extends Component {
       data.append('build_year', this.state.new.build_year);
       data.append('color', this.state.new.color);
       data.append('fileImage', this.state.fileImage);
-      const config = {
-          headers: {
-              'content-type': 'multipart/form-data'
-          }
-      }
-      axios.post(localStorage.getItem('serverAPI') + '/vehicle', data, config)
+      axios.post(localStorage.getItem('serverAPI') + '/vehicle', data)
         .then(res => {
           this.setState({
             add: !this.state.add,
