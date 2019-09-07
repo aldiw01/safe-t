@@ -179,7 +179,7 @@ class Active extends Component {
             loader: false,
             view: !this.state.view,
           })
-          console.log(res);
+          console.log(res.data.message);
           alert(res.data.message);
           this.getData();
         })
