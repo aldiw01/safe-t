@@ -20,7 +20,7 @@ class GuideSection extends React.Component {
           <GridItem cs={12} sm={12} md={12}>
             <h2 className={classes.title}>Apa saja yang dapat dilakukan dengan Safe-T</h2>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={5}>
+              <GridItem xs={12} sm={12} md={6}>
                 <img src={logo} alt="imv" className={imageClasses + " p-2"} />
               </GridItem>
               <GridItem xs={12} sm={12} md={6} className="m-auto">
