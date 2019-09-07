@@ -21,7 +21,7 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import ProductSection from "./Sections/ProductSection.jsx";
 import TeamSection from "./Sections/TeamSection.jsx";
 import DemoSection from "./Sections/DemoSection";
-import SponsorsSection from "./Sections/GuideSection";
+import GuideSection from "./Sections/GuideSection";
 import AboutProductSection from "./Sections/AboutProductSection";
 import TimelineSection from "./Sections/TimelineSection";
 import AboutUsSection from "./Sections/AboutUsSection";
@@ -29,7 +29,6 @@ import SponsorsSection from "./Sections/SponsorsSection";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
-import GuideSection from "./Sections/GuideSection";
 
 const dashboardRoutes = ["home"];
 

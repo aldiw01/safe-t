@@ -10,7 +10,7 @@ import workStyle from "assets/jss/material-kit-react/views/landingPageSections/w
 
 import logo from "assets/img/user_manual.png";
 
-class AboutUsSection extends React.Component {
+class GuideSection extends React.Component {
   render() {
     const { classes } = this.props;
     const imageClasses = "w-100 px-5";
@@ -40,4 +40,4 @@ class AboutUsSection extends React.Component {
   }
 }
 
-export default withStyles(workStyle)(AboutUsSection);
+export default withStyles(workStyle)(GuideSection);
