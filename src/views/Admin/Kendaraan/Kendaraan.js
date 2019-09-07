@@ -89,10 +89,7 @@ class Kendaraan extends Component {
 
   handleChangeNewFile = (event) => {
     this.setState({
-      new: {
-        ...this.state.new,
-        fileImage: event.target.files[0]
-      }
+      fileImage: event.target.files[0]
     })
   }
 
@@ -368,7 +365,7 @@ class Kendaraan extends Component {
                         </Col>
                         <Col xs="12" md="9">
                           <div className="custom-file">
-                            <Input type="file" className="custom-file-input" name="fileImage" onChange={this.handleChangeNewFile} required />
+                            <Input type="file" className="custom-file-input" name="fileImage" onChange={this.handleChangeEditFile} required />
                             <Label className="custom-file-label" htmlFor="customFileLang" style={{ overflow: "hidden" }} >{this.state.new.fileImage ? this.state.new.fileImage.name : ""} </Label>
                           </div>
                         </Col>
