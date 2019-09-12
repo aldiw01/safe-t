@@ -27,6 +27,7 @@ class Closed extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        violance_address: '',
         created: '',
         updated: '',
       }],
@@ -38,6 +39,7 @@ class Closed extends Component {
         detail: '',
         incident_date: '',
         documentation: '',
+        violance_address: '',
         created: '',
         updated: '',
       },
@@ -73,6 +75,7 @@ class Closed extends Component {
             detail: '',
             incident_date: '',
             documentation: '',
+            violance_address: '',
             created: '',
             updated: '',
           }]
@@ -123,6 +126,7 @@ class Closed extends Component {
               info: '',
               message: '',
               status: '',
+              violance_address: '',
               created: '',
               updated: '',
             }]
@@ -251,6 +255,9 @@ class Closed extends Component {
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Detail</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.detail}</Col>
+                        <div className="w-100 py-2"></div>
+                        <Col xs="3">TKP</Col>
+                        <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.violance_address}</Col>
                         <div className="w-100 py-2"></div>
                         <Col xs="3">Tanggal</Col>
                         <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col>
