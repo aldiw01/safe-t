@@ -63,7 +63,7 @@ class LandingPage extends React.Component {
                 <Button
                   color="danger"
                   size="lg"
-                  href="#"
+                  href="https://play.google.com/store/apps/details?id=com.imv.www.safe_t"
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
