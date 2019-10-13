@@ -68,7 +68,7 @@ class Parkir extends Component {
         parking_name: this.state.focus.parking_name,
         parking_slot: this.state.focus.parking_slot,
       }
-      axios.put(localStorage.getItem('serverAPI') + '/parking/update/' + this.state.vehicle_id, req)
+      axios.put(localStorage.getItem('serverAPI') + '/parking/update/' + this.state.data[this.state.vehicle_id].vehicle_id, req)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
