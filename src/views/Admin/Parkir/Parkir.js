@@ -63,11 +63,12 @@ class Parkir extends Component {
     event.preventDefault();
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      var data = new FormData();
-      data.append('vehicle_id', this.state.focus.vehicle_id);
-      data.append('parking_name', this.state.focus.parking_name);
-      data.append('parking_slot', this.state.focus.parking_slot);
-      axios.put(localStorage.getItem('serverAPI') + '/parking/update/' + this.state.data[this.state.vehicle_id].vehicle_id, data)
+      const req = {
+        vehicle_id: this.state.focus.vehicle_id,
+        parking_name: this.state.focus.parking_name,
+        parking_slot: this.state.focus.parking_slot,
+      }
+      axios.put(localStorage.getItem('serverAPI') + '/parking/update/' + this.state.vehicle_id, req)
         .then(res => {
           this.setState({
             edit: !this.state.edit,
