@@ -67,6 +67,23 @@ export default {
           icon: 'icon-close',
         }
       ]
-    }
+    },
+    {
+      name: 'Parkir',
+      url: '/admin/parkir',
+      icon: 'fa fa-product-hunt',
+      children: [
+        {
+          name: 'Lokasi Parkir',
+          url: '/admin/parkir/lokasi',
+          icon: 'icon-map',
+        },
+        {
+          name: 'List Parkir',
+          url: '/admin/parkir/list',
+          icon: 'icon-directions',
+        }
+      ]
+    },
   ]
 };

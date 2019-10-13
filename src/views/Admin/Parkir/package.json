@@ -1,0 +1,6 @@
+{
+  "name": "Parkir",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Parkir.js"
+}
