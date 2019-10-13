@@ -63,7 +63,7 @@ class Parkir extends Component {
     event.preventDefault();
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      const data = new FormData();
+      var data = new FormData();
       data.append('vehicle_id', this.state.focus.vehicle_id);
       data.append('parking_name', this.state.focus.parking_name);
       data.append('parking_slot', this.state.focus.parking_slot);
