@@ -139,6 +139,11 @@ class Parkir extends Component {
           label: 'Slot Parkir',
           field: 'parking_slot',
           sort: 'asc'
+        },
+        {
+          label: 'Actions',
+          field: 'actions',
+          sort: 'asc'
         }
       ],
       rows: this.state.data
