@@ -67,7 +67,7 @@ class Parkir extends Component {
       data.append('vehicle_id', this.state.focus.vehicle_id);
       data.append('parking_name', this.state.focus.parking_name);
       data.append('parking_slot', this.state.focus.parking_slot);
-      window.message(this.state.focus.vehicle_id + this.state.focus.parking_name + this.state.focus.parking_slot);
+      window.alert(this.state.focus.vehicle_id + this.state.focus.parking_name + this.state.focus.parking_slot);
       axios.put(localStorage.getItem('serverAPI') + '/parking/update/' + this.state.data[this.state.vehicle_id].vehicle_id, data)
         .then(res => {
           this.setState({
