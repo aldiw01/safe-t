@@ -74,8 +74,8 @@ class Lokasi extends Component {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
       const data = {
-        vehicle_id: this.state.new.parking_name,
-        parking_name: this.state.new.max_slot,
+        parking_name: this.state.new.parking_name,
+        max_slot: this.state.new.max_slot,
       }
       axios.post(localStorage.getItem('serverAPI') + '/parking/lokasi/add', data)
         .then(res => {
@@ -102,6 +102,7 @@ class Lokasi extends Component {
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
       const req = {
+        id: this.state.focus.id,
         parking_name: this.state.focus.parking_name,
         max_slot: this.state.focus.max_slot,
       }
