@@ -283,7 +283,7 @@ class Lokasi extends Component {
                           Lokasi Parkir
                         </Col>
                         <Col xs="12" md="9">
-                          <Input type="text" onChange={this.handleChange} name="parking_name" value={this.state.focus.parking_name} required />
+                          <Input type="text" onChange={this.handleChange} name="parking_name" value={this.state.focus.parking_name} disabled />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
