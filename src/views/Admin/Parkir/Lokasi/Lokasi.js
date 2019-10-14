@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader, Label, Form, FormGroup, Input } from 'reactstrap';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
-import AuthService from '../../../server/AuthService';
+import AuthService from '../../../../server/AuthService';
 import Spinner from 'react-spinkit';
 
 class Lokasi extends Component {
