@@ -232,6 +232,7 @@ class Lokasi extends Component {
                   small
                   data={dataFix}
                 // paginationLabel={["<", ">"]}
+                //test
                 />
 
                 <Modal isOpen={this.state.add} toggle={this.toggleAdd} className={'modal-success modal-lg ' + this.props.className}>
