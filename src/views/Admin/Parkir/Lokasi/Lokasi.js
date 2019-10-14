@@ -73,9 +73,10 @@ class Lokasi extends Component {
     event.preventDefault();
     if (window.confirm("You will create change(s) on database. Are you sure?")) {
       this.setState({ loader: true });
-      var data = new FormData();
-      data.append('parking_name', this.state.new.parking_name);
-      data.append('max_slot', this.state.new.max_slot);
+      const data = {
+        vehicle_id: this.state.new.parking_name,
+        parking_name: this.state.new.max_slot,
+      }
       axios.post(localStorage.getItem('serverAPI') + '/parking/lokasi/add', data)
         .then(res => {
           this.setState({
