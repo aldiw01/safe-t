@@ -147,19 +147,19 @@ class Lokasi extends Component {
     });
   }
 
-  toggleEdit = (vehicle_id) => {
+  toggleEdit = (id) => {
     this.setState({
-      vehicle_id: vehicle_id,
+      id: id,
       edit: !this.state.edit,
-      focus: this.state.data[vehicle_id]
+      focus: this.state.data[id]
     });
   }
 
-  toggleDelete = (vehicle_id) => {
+  toggleDelete = (id) => {
     this.setState({
-      vehicle_id: vehicle_id,
+      id: id,
       delete: !this.state.delete,
-      focus: this.state.data[vehicle_id]
+      focus: this.state.data[id]
     });
   }
 
