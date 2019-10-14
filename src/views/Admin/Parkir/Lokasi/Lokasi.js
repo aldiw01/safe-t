@@ -270,6 +270,14 @@ class Lokasi extends Component {
                     <ModalBody className="mt-4 mx-4">
                       <FormGroup row>
                         <Col md="3">
+                          ID Lokasi Parkir
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="text" onChange={this.handleChange} name="id" value={this.state.focus.id} disabled />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
                           Lokasi Parkir
                         </Col>
                         <Col xs="12" md="9">
