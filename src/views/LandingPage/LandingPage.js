@@ -69,6 +69,15 @@ class LandingPage extends React.Component {
                 >
                   <i className="fab fa-google-play" /> Google Playstore
                 </Button>
+                <Button
+                  color="warning"
+                  size="lg"
+                  href="#"
+                  // target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fab fa-warning" /> Violation Data
+                </Button>
               </GridItem>
             </GridContainer>
           </div>
