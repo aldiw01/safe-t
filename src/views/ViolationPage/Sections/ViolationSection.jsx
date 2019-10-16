@@ -194,7 +194,7 @@ class ViolationSection extends React.Component {
                   <img src={team1} alt="..." className={imageClasses} />
                 </GridItem>
                 <h5 className={classes.cardTitle}>
-                  {data.reporter_id}
+                  coba{reporter_id}
                   <br />
                   <small className={classes.smallTitle}>Founder</small>
                 </h5>
