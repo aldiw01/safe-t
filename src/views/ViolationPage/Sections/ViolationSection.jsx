@@ -173,7 +173,7 @@ class ViolationSection extends React.Component {
 
     var rows = [];
     let toggleView = this.toggleView;
-    data.rows.forEach(function (items, i) {
+    /*data.rows.forEach(function (items, i) {
       if (items.id) {
         rows.push({
           id: items.id,
@@ -189,7 +189,7 @@ class ViolationSection extends React.Component {
     const dataFix = {
       columns: data.columns,
       rows: rows
-    }
+    }*/
 
     return (
       <div className={classes.section}>
