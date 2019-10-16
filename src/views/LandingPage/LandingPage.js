@@ -75,10 +75,11 @@ class LandingPage extends React.Component {
                 <Button
                   color="warning"
                   size="lg"
+                  href="/violation"
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Link to="/violation"> </Link>
+                  {/* <Link to="/violation"> </Link> */}
                   <i className="fab fa-warning" /> Violation Data
                 </Button>
               </GridItem>
