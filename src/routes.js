@@ -15,14 +15,14 @@ const Parkir = React.lazy(() => import('./views/Admin/Parkir/Parkir'));
 const Lokasi = React.lazy(() => import('./views/Admin/Parkir/Lokasi'));
 const DashboardUser = React.lazy(() => import('./views/User/Dashboard'));
 const TicketList = React.lazy(() => import('./views/User/TicketList'));
-const ViolationData = React.lazy(() => import('./views/ViolationPage'));
+const ViolationPage = React.lazy(() => import('./views/ViolationPage'));
 const Poin = React.lazy(() => import('./views/User/Poin'));
 const Profile = React.lazy(() => import('./views/Profile/Profile'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home', component: Dashboard },
-  { path: '/violation', exact: true, name: 'Violation', component: ViolationData },
+  { path: '/violation', exact: true, name: 'ViolationPage', component: ViolationPage },
   { path: '/admin', exact: true, name: 'Admin', component: Dashboard },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
