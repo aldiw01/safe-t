@@ -12,6 +12,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import axios from 'axios';
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
@@ -23,7 +24,7 @@ import team5 from "assets/img/faces/fakhri.jpg";
 import team6 from "assets/img/faces/vivian.jpg";
 import team7 from "assets/img/faces/yusuf.jpg";
 
-class TeamSection extends React.Component {
+class ViolationSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -120,6 +121,13 @@ class TeamSection extends React.Component {
     var viewStyle = {
       overflowWrap: 'break-word'
     }
+
+    const { classes } = this.props;
+    const imageClasses = classNames(
+      classes.imgRaised,
+      classes.imgRoundedCircle,
+      classes.imgFluid
+    );
 
     const data = {
       columns: [
@@ -500,4 +508,4 @@ class TeamSection extends React.Component {
   }
 }
 
-export default withStyles(teamStyle)(TeamSection);
+export default withStyles(teamStyle)(ViolationSection);
