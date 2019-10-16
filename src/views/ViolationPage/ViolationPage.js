@@ -32,7 +32,7 @@ import logo from "assets/img/logo.png";
 
 const dashboardRoutes = ["home"];
 
-class LandingPage extends React.Component {
+class ViolationPage extends React.Component {
   render() {
     const { classes, ...rest } = this.props;
     return (
@@ -73,10 +73,10 @@ class LandingPage extends React.Component {
                 <Button
                   color="warning"
                   size="lg"
+                  href="#"
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Link to="/violation"> </Link>
                   <i className="fab fa-warning" /> Violation Data
                 </Button>
               </GridItem>
@@ -101,4 +101,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default withStyles(landingPageStyle)(LandingPage);
+export default withStyles(landingPageStyle)(ViolationPage);
