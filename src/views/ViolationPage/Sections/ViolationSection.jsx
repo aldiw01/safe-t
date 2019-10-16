@@ -61,6 +61,7 @@ class ViolationSection extends React.Component {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/status/1')
       .then(res => {
         this.setState({ data: res.data });
+        console.log("get data: "+data)
       })
       .catch(error => {
         this.setState({
@@ -163,6 +164,7 @@ class ViolationSection extends React.Component {
       ],
       rows: this.state.data
     }
+    console.log("get rows: "+rows)
 
     var rows = [];
     let toggleView = this.toggleView;
@@ -178,6 +180,7 @@ class ViolationSection extends React.Component {
         });
       }
     });
+    console.log("get data rows: "+data.rows)
     const dataFix = {
       columns: data.columns,
       rows: rows
@@ -194,7 +197,7 @@ class ViolationSection extends React.Component {
                   <img src={team1} alt="..." className={imageClasses} />
                 </GridItem>
                 <h5 className={classes.cardTitle}>
-                  {console.log("reporter :"+this.state.data.reporter_id)}
+                  {console.log("reporter last:"+this.state.data.reporter_id)}
                   coba{this.state.data.reporter_id}
                   <br />
                   <small className={classes.smallTitle}>Founder</small>
