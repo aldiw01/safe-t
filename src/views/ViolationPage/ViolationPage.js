@@ -30,7 +30,7 @@ import SponsorsSection from "./Sections/SponsorsSection";
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
 
-const dashboardRoutes = ["home"];
+const dashboardRoutes = ["violation"];
 
 class ViolationPage extends React.Component {
   render() {
@@ -50,7 +50,7 @@ class ViolationPage extends React.Component {
           {...rest}
         />
         <Parallax filter image={require("assets/img/landing-bg.jpg")}>
-          <div className={classes.container} id="home">
+          <div className={classes.container} id="violation">
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
                 <h1 className={classes.title}>Safe-t</h1>
