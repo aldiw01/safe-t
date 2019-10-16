@@ -15,7 +15,7 @@ const Parkir = React.lazy(() => import('./views/Admin/Parkir/Parkir'));
 const Lokasi = React.lazy(() => import('./views/Admin/Parkir/Lokasi'));
 const DashboardUser = React.lazy(() => import('./views/User/Dashboard'));
 const TicketList = React.lazy(() => import('./views/User/TicketList'));
-const ViolationPage = React.lazy(() => import('./views/ViolationPage'));
+const ViolationPage = React.lazy(() => import('./views/ViolationPage/ViolationPage.js'));
 const Poin = React.lazy(() => import('./views/User/Poin'));
 const Profile = React.lazy(() => import('./views/Profile/Profile'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
