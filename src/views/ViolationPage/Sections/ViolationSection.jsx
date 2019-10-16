@@ -60,7 +60,7 @@ class ViolationSection extends React.Component {
   getData = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
-        this.setState({ data: res.data });
+        this.setState({ data: res }); // res.data => res
         console.log("get data: "+res)
         console.log("data.reporter_id =  " + res.reporter_id)
         console.log("data.vehicle_id =  " + res.vehicle_id)
