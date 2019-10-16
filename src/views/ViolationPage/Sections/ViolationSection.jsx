@@ -198,41 +198,6 @@ class ViolationSection extends React.Component {
                   <br />
                   <small className={classes.smallTitle}>Founder</small>
                 </h5>
-                <CardFooter className={classes.justifyCenter}>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                    title="Twitter"
-                    href=""
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className={classes.socials + " fab fa-twitter"} />
-                  </Button>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                    title="Instagram"
-                    href=""
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className={classes.socials + " fab fa-instagram"} />
-                  </Button>
-                  <Button
-                    justIcon
-                    color="transparent"
-                    className={classes.margin5}
-                    title="Facebook"
-                    href=""
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className={classes.socials + " fab fa-facebook"} />
-                  </Button>
-                </CardFooter>
               </Card>
             </GridItem>
           </GridContainer>
