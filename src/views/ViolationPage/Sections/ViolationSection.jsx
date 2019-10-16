@@ -198,7 +198,7 @@ class ViolationSection extends React.Component {
                 </GridItem>
                 <h5 className={classes.cardTitle}>
                   {console.log("reporter last:"+this.state.data.reporter_id)}
-                  coba:{res.reporter_id}
+                  coba{this.state.data.reporter_id}
                   <br />
                   <small className={classes.smallTitle}>Founder</small>
                 </h5>
