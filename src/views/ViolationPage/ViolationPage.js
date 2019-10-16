@@ -18,14 +18,7 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
-import ProductSection from "./Sections/ProductSection.jsx";
-import TeamSection from "./Sections/TeamSection.jsx";
-import DemoSection from "./Sections/DemoSection";
-import GuideSection from "./Sections/GuideSection";
-import AboutProductSection from "./Sections/AboutProductSection";
-import TimelineSection from "./Sections/TimelineSection";
-import AboutUsSection from "./Sections/AboutUsSection";
-import SponsorsSection from "./Sections/SponsorsSection";
+import ViolationSection from "./Sections/ViolationSection.jsx";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
@@ -73,7 +66,7 @@ class ViolationPage extends React.Component {
                 <Button
                   color="warning"
                   size="lg"
-                  href="#"
+                  href="/violation"
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -85,15 +78,8 @@ class ViolationPage extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)} style={{ backgroundImage: "url('" + bgImage + "')" }}>
           <div className={classes.container} style={{ color: "initial" }}>
-            <ProductSection />
-            <GuideSection />
-            <DemoSection />
-            <AboutProductSection />
-            <TimelineSection />
-            <TeamSection />
-            <AboutUsSection />
+            <ViolationSection />
           </div>
-          <SponsorsSection />
         </div>
         <Footer />
       </div>
