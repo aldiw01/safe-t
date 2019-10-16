@@ -62,6 +62,8 @@ class ViolationSection extends React.Component {
       .then(res => {
         this.setState({ data: res }); // res.data => res
         console.log("get data: "+res)
+        console.log("get data Values: "+Object.values(res))
+        console.log("get data Entries: "+Object.entries(res))
         console.log("data.reporter_id =  " + res.reporter_id)
         console.log("data.vehicle_id =  " + res.vehicle_id)
         console.log("data.violation_type =  " + res.violation_type)
