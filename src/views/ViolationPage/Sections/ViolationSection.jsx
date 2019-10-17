@@ -129,7 +129,7 @@ class ViolationSection extends React.Component {
 
   paginate = (counter) => {
     var newItems = []
-    const menuItems = this.mapToAlphaGrid();
+    const menuItems = this.mapToAlphaGrid()
     for (let index = 12 * (counter - 1); index < (12 * counter); index++) {
       console.log("menu items index"+menuItems[index])
       newItems.push(
@@ -147,8 +147,8 @@ class ViolationSection extends React.Component {
       classes.imgRoundedCircle,
       classes.imgFluid
     );
-    const currentItems = this.paginate(counter);
     var counter = 1
+    const currentItems = this.paginate(counter);
     var allpage = this.state.data.length / 12 + 1
     console.log("mappping _result: " + currentItems);
     return Object.keys(currentItems).map(key => {
