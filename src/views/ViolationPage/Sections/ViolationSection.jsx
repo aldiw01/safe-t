@@ -111,9 +111,9 @@ class ViolationSection extends React.Component {
     });
   }
 
-  mapToAlphaGrid = () => {
+  mapToAlphaGrid = (allarr) => {
 
-    return this.state.data.sort((a, b) => b.created - a.created)
+    return allarr.sort((a, b) => b.created - a.created)
       .reduce((menu, item) => {
         if (menu[item.id.charAt(0)]) {
           // Add to existing menu item
@@ -122,7 +122,6 @@ class ViolationSection extends React.Component {
           // Create new menu item
           menu[item.id.charAt(0)] = [item];
         }
-        console.log("menu"+menu)
         return menu;
       }, {});
 
@@ -130,15 +129,12 @@ class ViolationSection extends React.Component {
 
   paginate = (counter) => {
     var newItems = []
-    const menuItems = this.mapToAlphaGrid()
-    Object.keys(menuItems).map(key => {
-      console.log("key :"+key)
-      if(key >= 12 * (counter - 1) && key <= (12 * counter)) {
-        newItems.push(
-          menuItems[key]
-        )
-      }
-    })
+    
+    for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
+      newItems.push(
+        this.state.data[index]
+      )
+    }
     console.log("new items"+newItems)
     return newItems
   }
@@ -150,14 +146,12 @@ class ViolationSection extends React.Component {
       classes.imgRoundedCircle,
       classes.imgFluid
     );
-    const menuItems = this.mapToAlphaGrid()
+    // const menuItems = this.mapToAlphaGrid()
     var counter = 1
-    const currentItems = this.paginate(counter);
+    const currentItems = this.mapToAlphaGrid(this.paginate(counter));
     var allpage = this.state.data.length / 12 + 1
-    console.log("mappping _result: " + currentItems);
-    return Object.keys(menuItems).map(key => {
-      console.log("key :"+key)
-      const items = menuItems[key];
+    return Object.keys(currentItems).map(key => {
+      const items = currentItems[key];
       return (
         <GridContainer className="justify-content-center">
           {items.map(item => {
