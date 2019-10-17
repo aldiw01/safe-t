@@ -80,7 +80,7 @@ class LandingPage extends React.Component {
                   rel="noopener noreferrer"
                 >
                   {/* <Link to="/violation"> </Link> */}
-                  <i className="fab fa-warning" /> Violation Data
+                  <i className="fab fa-car-crash" /> Violation Data
                 </Button>
               </GridItem>
             </GridContainer>
