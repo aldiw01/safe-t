@@ -91,7 +91,6 @@ class ViolationSection extends React.Component {
   }
 
   toggleView = id => {
-    console.log("id:"+id)
     if (id !== this.state.id) {
       axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
         .then(res => {
@@ -151,7 +150,7 @@ class ViolationSection extends React.Component {
       const items = menuItems[key];
       return (
         <GridContainer className="justify-content-center">
-          {items.map(item => {
+          {items.map(item,i => {
             return (
 
               <GridItem xs={12} sm={12} md={3}>
@@ -173,7 +172,6 @@ class ViolationSection extends React.Component {
                     <br />
                     <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i>Detail</button>
                     {console.log("item.id: "+item.id)}
-                    {i++}
                   </h5>
                 </Card>
               </GridItem>
