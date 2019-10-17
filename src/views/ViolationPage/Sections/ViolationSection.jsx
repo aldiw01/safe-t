@@ -131,6 +131,7 @@ class ViolationSection extends React.Component {
     var newItems = []
     
     for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
+      console.log("index ke "+index+" = "+this.state.data[index])
       newItems.push(
         this.state.data[index]
       )
