@@ -192,7 +192,7 @@ class ViolationSection extends React.Component {
                         width: "183px", height: "183px"
                       }
                     } /> */}
-                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  />
+                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
                   </GridItem>
                   <h5 className={classes.cardTitle}>
                     {item.vehicle_id}
@@ -208,10 +208,6 @@ class ViolationSection extends React.Component {
         </GridContainer>
       )
     });
-  };
-
-  trueRender(currentItems) {
-    
   }
 
   render() {
