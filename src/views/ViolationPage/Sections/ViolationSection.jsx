@@ -61,7 +61,6 @@ class ViolationSection extends React.Component {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
         this.setState({ data: res.data });
-        console.log("get data: "+res.data)
       })
       .catch(error => {
         this.setState({
@@ -112,11 +111,42 @@ class ViolationSection extends React.Component {
     });
   }
 
-  render() {
-    var viewStyle = {
-      overflowWrap: 'break-word'
-    }
+  renderAll = () => {
+    const menuItems = this.state.data;
+    return Object.keys(menuItems).map(key => {
+      const items = menuItems[key];
+      return ( 
+        <div>
+          <span>{key}</span> 
+          <ul> 
+            {items.map(item => {
+              return <li><a href={item.path}>{item.name}</a></li >
+            })} 
+          </ul> 
+        </div>
+      )
+    });
+  };
 
+  // <div>
+  //   <GridContainer className="justify-content-center">
+  //     <GridItem xs={12} sm={12} md={3}>
+  //       <Card plain>
+  //         <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
+  //           <img src={team1} alt="..." className={imageClasses} />
+  //         </GridItem>
+  //         <h5 className={classes.cardTitle}>
+  //           {console.log("reporter last:"+this.state.data[0])}
+  //           coba{this.state.data[0].reporter_id}
+  //           <br />
+  //           <small className={classes.smallTitle}>Founder</small>
+  //         </h5>
+  //       </Card>
+  //     </GridItem>
+  //   </GridContainer>
+  // </div>
+  
+  render() {
     const { classes } = this.props;
     const imageClasses = classNames(
       classes.imgRaised,
@@ -124,87 +154,13 @@ class ViolationSection extends React.Component {
       classes.imgFluid
     );
 
-    const data = {
-      columns: [
-        {
-          label: 'ID',
-          field: 'id',
-          sort: 'asc'
-        },
-        {
-          label: 'Reporter ID',
-          field: 'reporter_id',
-          sort: 'asc'
-        },
-        {
-          label: 'No Kendaraan',
-          field: 'vehicle_id',
-          sort: 'asc'
-        },
-        {
-          label: 'Jenis Pelanggaran',
-          field: 'violation_type',
-          sort: 'asc'
-        },
-        {
-          label: 'Detail',
-          field: 'detail',
-          sort: 'asc'
-        },
-        {
-          label: 'Tanggal',
-          field: 'incident_date',
-          sort: 'asc'
-        },
-        {
-          label: 'Actions',
-          field: 'actions',
-          sort: 'asc'
-        }
-      ],
-      rows: this.state.data
-    }
-    console.log("get rows: "+rows)
-
-    var rows = [];
-    let toggleView = this.toggleView;
-    /*data.rows.forEach(function (items, i) {
-      if (items.id) {
-        rows.push({
-          id: items.id,
-          reporter_id: items.reporter_id,
-          vehicle_id: items.vehicle_id,
-          violation_type: items.violation_type,
-          detail: items.detail,
-          incident_date: items.incident_date,
-        });
-      }
-    });
-    console.log("get data rows: "+data.rows)
-    const dataFix = {
-      columns: data.columns,
-      rows: rows
-    }*/
-
     return (
       <div className={classes.section}>
         <h2 className={classes.title}>Perkenalkan Tim Kami</h2>
         <div>
-          <GridContainer className="justify-content-center">
-            <GridItem xs={12} sm={12} md={3}>
-              <Card plain>
-                <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                  <img src={team1} alt="..." className={imageClasses} />
-                </GridItem>
-                <h5 className={classes.cardTitle}>
-                  {console.log("reporter last:"+this.state.data[0])}
-                  coba{this.state.data[0].reporter_id}
-                  <br />
-                  <small className={classes.smallTitle}>Founder</small>
-                </h5>
-              </Card>
-            </GridItem>
-          </GridContainer>
+          {
+            this.renderAll()
+          }
         </div>
       </div >
     );
