@@ -159,6 +159,37 @@ class ViolationSection extends React.Component {
         if(items.length > 1) {
           var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
           console.log("currentItems from items : " + currentItems);
+          
+          return Object.keys(currentItems).map(key => {
+            const items = currentItems[key];
+            return (
+              <GridContainer className="justify-content-center">
+                {items.map(item => {
+                  return (
+                    <GridItem xs={12} sm={12} md={3}>
+                      <Card plain>
+                        <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
+                          <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
+                            {
+                              width: "183px", height: "183px"
+                            }
+                          } />
+                          {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
+                        </GridItem>
+                        <h5 className={classes.cardTitle}>
+                          {item.vehicle_id}
+                          <br />
+                          <small className={classes.smallTitle}>{item.violance_address}</small>
+                          <br />
+                          <small className={classes.smallTitle}>{item.created}</small>
+                        </h5>
+                      </Card>
+                    </GridItem>
+                  )
+                })}
+              </GridContainer>
+            )
+          });
         }
       })
     }
@@ -166,36 +197,6 @@ class ViolationSection extends React.Component {
     var allpage = this.state.data.length / 12 + 1
     console.log("allpage = " + allpage)
     
-    return Object.keys(currentItems).map(key => {
-      const items = currentItems[key];
-      return (
-        <GridContainer className="justify-content-center">
-          {items.map(item => {
-            return (
-              <GridItem xs={12} sm={12} md={3}>
-                <Card plain>
-                  <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
-                      {
-                        width: "183px", height: "183px"
-                      }
-                    } />
-                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
-                  </GridItem>
-                  <h5 className={classes.cardTitle}>
-                    {item.vehicle_id}
-                    <br />
-                    <small className={classes.smallTitle}>{item.violance_address}</small>
-                    <br />
-                    <small className={classes.smallTitle}>{item.created}</small>
-                  </h5>
-                </Card>
-              </GridItem>
-            )
-          })}
-        </GridContainer>
-      )
-    });
   };
 
   render() {
