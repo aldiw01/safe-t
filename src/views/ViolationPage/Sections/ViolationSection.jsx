@@ -176,7 +176,8 @@ class ViolationSection extends React.Component {
     var allpage = this.state.data.length / 12 + 1
     console.log("allpage = " + allpage)
     
-    return Object.keys(this.mapToAlphaGrid(this.state.paginatedData)).map(key => {
+    var currentItems = this.mapToAlphaGrid(this.state.paginatedData)
+    return Object.keys(currentItems).map(key => {
       const items = currentItems[key];
       console.log("itemss from currenItems = " + items);
       return (
