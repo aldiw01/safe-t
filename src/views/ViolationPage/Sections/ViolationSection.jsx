@@ -91,28 +91,6 @@ class ViolationSection extends React.Component {
   }
 
   toggleView = id => {
-    if (id !== this.state.id) {
-      axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
-        .then(res => {
-          this.setState({ history: res.data });
-        })
-        .catch(error => {
-          this.setState({
-            history: [{
-              id: '',
-              ticket_id: '',
-              from_name: '',
-              info: '',
-              message: '',
-              status: '',
-              violance_address: '',
-              created: '',
-              updated: '',
-            }]
-          });
-        });
-    }
-
     this.setState({
       id: id,
       view: !this.state.view,
@@ -136,7 +114,6 @@ class ViolationSection extends React.Component {
   };
 
   renderAll = () => {
-    var i=0
     const { classes } = this.props;
     let toggleView = this.toggleView;
     const imageClasses = classNames(
@@ -150,7 +127,7 @@ class ViolationSection extends React.Component {
       const items = menuItems[key];
       return (
         <GridContainer className="justify-content-center">
-          {items.map(item,i => {
+          {items.map(item => {
             return (
 
               <GridItem xs={12} sm={12} md={3}>
