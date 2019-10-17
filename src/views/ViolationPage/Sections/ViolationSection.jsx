@@ -192,6 +192,8 @@ class ViolationSection extends React.Component {
   render() {
     const { classes } = this.props;
 
+    console.log("all_this_staet_data = " + this.state.data)
+
     return (
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
