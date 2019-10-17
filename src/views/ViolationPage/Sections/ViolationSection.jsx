@@ -151,6 +151,7 @@ class ViolationSection extends React.Component {
     //const currentItems = this.mapToAlphaGrid(this.paginate(counter));
     Object.keys(this.mapToAlphaGrid(this.state.data)).map(key => {
       const items = currentItems[key];
+      console.log("items.length ? = "+items.length);
       var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
       console.log("currentItems from items : " + currentItems);
     })
