@@ -137,6 +137,7 @@ class ViolationSection extends React.Component {
 
   renderAll = () => {
     const { classes } = this.props;
+    let toggleView = this.toggleView;
     const imageClasses = classNames(
       classes.imgRaised,
       classes.imgRoundedCircle,
@@ -181,6 +182,9 @@ class ViolationSection extends React.Component {
 
   render() {
     const { classes } = this.props;
+    var viewStyle = {
+      overflowWrap: 'break-word'
+    }
     return (
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
