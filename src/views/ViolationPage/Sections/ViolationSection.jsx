@@ -173,7 +173,7 @@ class ViolationSection extends React.Component {
                     <br />
                     <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i>Detail</button>
                     {console.log("item.id: "+item.id)}
-                    i++
+                    {i++}
                   </h5>
                 </Card>
               </GridItem>
