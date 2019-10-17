@@ -155,6 +155,7 @@ class ViolationSection extends React.Component {
     var allpage = this.state.data.length / 12 + 1
     console.log("mappping _result: " + currentItems);
     return Object.keys(currentItems).map(key => {
+      console.log("key :"+key)
       const items = currentItems[key];
       return (
         <GridContainer className="justify-content-center">
