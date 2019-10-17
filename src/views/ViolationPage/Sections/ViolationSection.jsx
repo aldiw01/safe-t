@@ -139,7 +139,7 @@ class ViolationSection extends React.Component {
     return Object.keys(menuItems).map(key => {
       const items = menuItems[key];
       return (
-        <div>
+        <GridContainer className="justify-content-center">
           {items.map(item => {
             return (
 
@@ -158,7 +158,7 @@ class ViolationSection extends React.Component {
 
             )
           })}
-        </div>
+        </GridContainer>
       )
     });
   };
@@ -170,11 +170,11 @@ class ViolationSection extends React.Component {
       <div className={classes.section}>
         <h2 className={classes.title}>Perkenalkan Tim Kami</h2>
         <div>
-          <GridContainer className="justify-content-center">
+          
             {
               this.renderAll()
             }
-          </GridContainer>
+          
         </div>
       </div >
     );
