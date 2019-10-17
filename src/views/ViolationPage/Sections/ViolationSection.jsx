@@ -122,7 +122,6 @@ class ViolationSection extends React.Component {
           // Create new menu item
           menu[item.id.charAt(0)] = [item];
         }
-        console.log("menu"+menu)
         return menu;
       }, {});
 
@@ -134,6 +133,7 @@ class ViolationSection extends React.Component {
     Object.keys(menuItems).map(key => {
 
       if(key >= 12 * (counter - 1) && key <= (12 * counter)) {
+        console.log(menuItems[key])
         newItems.push(
           menuItems[key]
         )
