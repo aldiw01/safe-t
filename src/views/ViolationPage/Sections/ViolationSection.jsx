@@ -38,18 +38,6 @@ class ViolationSection extends React.Component {
         created: '',
         updated: '',
       }],
-      paginatedData: [{
-        id: '',
-        reporter_id: '',
-        vehicle_id: '',
-        violation_type: '',
-        detail: '',
-        incident_date: '',
-        documentation: '',
-        violance_address: '',
-        created: '',
-        updated: '',
-      }],
       focus: {
         id: '',
         reporter_id: '',
@@ -123,9 +111,9 @@ class ViolationSection extends React.Component {
     });
   }
 
-  mapToAlphaGrid = (allarr) => {
+  mapToAlphaGrid = () => {
 
-    return allarr.sort((a, b) => b.created - a.created)
+    return this.state.data.sort((a, b) => b.created - a.created)
       .reduce((menu, item) => {
         if (menu[item.id.charAt(0)]) {
           // Add to existing menu item
@@ -136,20 +124,8 @@ class ViolationSection extends React.Component {
         }
         return menu;
       }, {});
-  };
 
-  paginate = (counter, currenArr) => {
-    var newItems = []
-    
-    for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
-      console.log("index ke "+index+" = "+currenArr[index])
-      newItems.push(
-        currenArr[index]
-      )
-    }
-    console.log("new items"+newItems)
-    return newItems
-  }
+  };
 
   renderAll = () => {
     const { classes } = this.props;
@@ -158,40 +134,23 @@ class ViolationSection extends React.Component {
       classes.imgRoundedCircle,
       classes.imgFluid
     );
-    // const menuItems = this.mapToAlphaGrid()
-    var counter = 1
-    //const currentItems = this.mapToAlphaGrid(this.paginate(counter));
-    if(this.state.data.length > 1) {
-
-      const menuItems = this.mapToAlphaGrid(this.state.data);
-      Object.keys(menuItems).map(key => {
-        const items = menuItems[key];
-  
-        if(items.length > 1) {
-          this.setState({ paginatedData: this.paginate(counter, items) });
-        }
-      })
-    }
-    
-    var allpage = this.state.data.length / 12 + 1
-    console.log("allpage = " + allpage)
-    
-    var currentItems = this.mapToAlphaGrid(this.state.paginatedData)
-    return Object.keys(currentItems).map(key => {
-      const items = currentItems[key];
-      console.log("itemss from currenItems = " + items);
+    const menuItems = this.mapToAlphaGrid();
+    console.log("mappping _result: " + menuItems);
+    return Object.keys(menuItems).map(key => {
+      const items = menuItems[key];
       return (
         <GridContainer className="justify-content-center">
           {items.map(item => {
             return (
+
               <GridItem xs={12} sm={12} md={3}>
                 <Card plain>
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
+                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
                       {
-                        width: "183px", height: "183px"
+                        width:"183px",height:"183px"
                       }
-                    } /> */}
+                    }  />
                     {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
                   </GridItem>
                   <h5 className={classes.cardTitle}>
@@ -203,12 +162,13 @@ class ViolationSection extends React.Component {
                   </h5>
                 </Card>
               </GridItem>
+
             )
           })}
         </GridContainer>
       )
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -217,9 +177,9 @@ class ViolationSection extends React.Component {
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
         <div>
-          {
-            this.renderAll()
-          }
+            {
+              this.renderAll()
+            }
         </div>
       </div >
     );
