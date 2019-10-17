@@ -128,6 +128,12 @@ class ViolationSection extends React.Component {
   };
 
   renderAll = () => {
+    const { classes } = this.props;
+    const imageClasses = classNames(
+      classes.imgRaised,
+      classes.imgRoundedCircle,
+      classes.imgFluid
+    );
     const menuItems = this.mapToAlphaGrid();
     console.log("mappping _result: " + menuItems);
     return Object.keys(menuItems).map(key => {
@@ -156,14 +162,9 @@ class ViolationSection extends React.Component {
       )
     });
   };
-  
+
   render() {
     const { classes } = this.props;
-    const imageClasses = classNames(
-      classes.imgRaised,
-      classes.imgRoundedCircle,
-      classes.imgFluid
-    );
 
     return (
       <div className={classes.section}>
