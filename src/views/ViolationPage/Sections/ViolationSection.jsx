@@ -170,6 +170,7 @@ class ViolationSection extends React.Component {
                     <small className={classes.smallTitle}>{item.incident_date}</small>
                     <br />
                     <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(item.id)}><i className="fa fa-search"></i>Detail</button>
+                    {console.log("item.id: "+item.id)}
                   </h5>
                 </Card>
               </GridItem>
