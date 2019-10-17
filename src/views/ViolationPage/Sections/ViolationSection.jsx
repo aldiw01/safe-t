@@ -148,7 +148,7 @@ class ViolationSection extends React.Component {
     const currentItems = this.paginate(counter);
     var counter = 1
     var allpage = this.state.data.length / 12 + 1
-    console.log("mappping _result: " + menuItems);
+    console.log("mappping _result: " + currentItems);
     return Object.keys(currentItems).map(key => {
       const items = currentItems[key];
       return (
