@@ -111,8 +111,26 @@ class ViolationSection extends React.Component {
     });
   }
 
+  mapToAlphaGrid = () => {
+
+    return this.state.data.sort((a, b) => a.id - b.id)
+      .reduce((menu, item) => {
+        if (menu[item.id.charAt(0)]) {
+          // Add to existing menu item
+          menu[item.id.charAt(0)].push(item)
+        } else {
+          // Create new menu item
+          menu[item.id.charAt(0)] = [item];
+        }
+        return menu;
+      }, {});
+
+  };
+
   renderAll = () => {
-    const menuItems = this.state.data;
+    const menuItems = this.mapToAlphaGrid();
+    console.log("mappping _result: " + menuItems);
+    console.log("mappping _result.entries: " + Object.entries(menuItems[0]));
     return Object.keys(menuItems).map(key => {
       const items = menuItems[key];
       return ( 
