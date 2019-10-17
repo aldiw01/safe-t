@@ -154,14 +154,13 @@ class ViolationSection extends React.Component {
       const menuItems = this.mapToAlphaGrid(this.state.data);
       Object.keys(menuItems).map(key => {
         const items = menuItems[key];
-        console.log("items.length ? = "+items.length);
   
         if(items.length > 1) {
           var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
-          console.log("currentItems from items : " + currentItems);
           
           return Object.keys(currentItems).map(key => {
             const items = currentItems[key];
+            console.log("itemss from currenItems = " + items);
             return (
               <GridContainer className="justify-content-center">
                 {items.map(item => {
