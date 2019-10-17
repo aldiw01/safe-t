@@ -113,7 +113,7 @@ class ViolationSection extends React.Component {
 
   mapToAlphaGrid = () => {
 
-    return this.state.data.sort((a, b) => b.create - a.created)
+    return this.state.data.sort((a, b) => b.created - a.created)
       .reduce((menu, item) => {
         if (menu[item.id.charAt(0)]) {
           // Add to existing menu item
@@ -127,6 +127,17 @@ class ViolationSection extends React.Component {
 
   };
 
+  paginate = (counter) => {
+    var newItems = []
+    const menuItems = this.mapToAlphaGrid();
+    for (let index = 12 * (counter - 1); index < (12 * counter); index++) {
+      newItems.push(
+        menuItems[index]
+      )
+    }
+    return newItems
+  }
+
   renderAll = () => {
     const { classes } = this.props;
     const imageClasses = classNames(
@@ -134,10 +145,12 @@ class ViolationSection extends React.Component {
       classes.imgRoundedCircle,
       classes.imgFluid
     );
-    const menuItems = this.mapToAlphaGrid();
+    const currentItems = this.paginate(counter);
+    var counter = 1
+    var allpage = this.state.data.length / 12 + 1
     console.log("mappping _result: " + menuItems);
-    return Object.keys(menuItems).map(key => {
-      const items = menuItems[key];
+    return Object.keys(currentItems).map(key => {
+      const items = currentItems[key];
       return (
         <GridContainer className="justify-content-center">
           {items.map(item => {
@@ -148,15 +161,16 @@ class ViolationSection extends React.Component {
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
                     <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
                       {
-                        width:"183px",height:"183px"
+                        width: "183px", height: "183px"
                       }
-                    }  />
+                    } />
                     {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
                   </GridItem>
                   <h5 className={classes.cardTitle}>
                     {item.vehicle_id}
                     <br />
                     <small className={classes.smallTitle}>{item.violance_address}</small>
+                    <br />
                     <small className={classes.smallTitle}>{item.created}</small>
                   </h5>
                 </Card>
@@ -176,9 +190,9 @@ class ViolationSection extends React.Component {
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
         <div>
-            {
-              this.renderAll()
-            }
+          {
+            this.renderAll()
+          }
         </div>
       </div >
     );
