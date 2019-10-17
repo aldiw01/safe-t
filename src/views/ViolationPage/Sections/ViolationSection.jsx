@@ -149,45 +149,44 @@ class ViolationSection extends React.Component {
     // const menuItems = this.mapToAlphaGrid()
     var counter = 1
     //const currentItems = this.mapToAlphaGrid(this.paginate(counter));
-    Object.keys(this.mapToAlphaGrid(this.state.data)).map(key => {
-      const items = currentItems[key];
+    const menuItems = this.mapToAlphaGrid(this.state.data); 
+    Object.keys(menuItems).map(key => {
+      const items = menuItems[key];
       console.log("items.length ? = "+items.length);
       var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
       console.log("currentItems from items : " + currentItems);
     })
     var allpage = this.state.data.length / 12 + 1
-    // return Object.keys(currentItems).map(key => {
-    //   const items = currentItems[key];
-    //   return (
-    //     <GridContainer className="justify-content-center">
-    //       {items.map(item => {
-    //         return (
-
-    //           <GridItem xs={12} sm={12} md={3}>
-    //             <Card plain>
-    //               <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-    //                 <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
-    //                   {
-    //                     width: "183px", height: "183px"
-    //                   }
-    //                 } />
-    //                 {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
-    //               </GridItem>
-    //               <h5 className={classes.cardTitle}>
-    //                 {item.vehicle_id}
-    //                 <br />
-    //                 <small className={classes.smallTitle}>{item.violance_address}</small>
-    //                 <br />
-    //                 <small className={classes.smallTitle}>{item.created}</small>
-    //               </h5>
-    //             </Card>
-    //           </GridItem>
-
-    //         )
-    //       })}
-    //     </GridContainer>
-    //   )
-    // });
+    return Object.keys(menuItems).map(key => {
+      const items = menuItems[key];
+      return (
+        <GridContainer className="justify-content-center">
+          {items.map(item => {
+            return (
+              <GridItem xs={12} sm={12} md={3}>
+                <Card plain>
+                  <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
+                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
+                      {
+                        width: "183px", height: "183px"
+                      }
+                    } />
+                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
+                  </GridItem>
+                  <h5 className={classes.cardTitle}>
+                    {item.vehicle_id}
+                    <br />
+                    <small className={classes.smallTitle}>{item.violance_address}</small>
+                    <br />
+                    <small className={classes.smallTitle}>{item.created}</small>
+                  </h5>
+                </Card>
+              </GridItem>
+            )
+          })}
+        </GridContainer>
+      )
+    });
   };
 
   render() {
