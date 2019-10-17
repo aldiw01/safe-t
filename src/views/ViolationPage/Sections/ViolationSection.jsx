@@ -122,6 +122,7 @@ class ViolationSection extends React.Component {
           // Create new menu item
           menu[item.id.charAt(0)] = [item];
         }
+        console.log("menu"+menu)
         return menu;
       }, {});
 
