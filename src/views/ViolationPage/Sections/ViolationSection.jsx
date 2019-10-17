@@ -91,6 +91,28 @@ class ViolationSection extends React.Component {
   }
 
   toggleView = id => {
+    if (id !== this.state.id) {
+      axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
+        .then(res => {
+          this.setState({ history: res.data });
+        })
+        .catch(error => {
+          this.setState({
+            history: [{
+              id: '',
+              ticket_id: '',
+              from_name: '',
+              info: '',
+              message: '',
+              status: '',
+              violance_address: '',
+              created: '',
+              updated: '',
+            }]
+          });
+        });
+    }
+
     this.setState({
       id: id,
       view: !this.state.view,
@@ -127,9 +149,8 @@ class ViolationSection extends React.Component {
       const items = menuItems[key];
       return (
         <GridContainer className="justify-content-center">
-          {items.map(item => {
+          {items.map((item,i) => {
             return (
-
               <GridItem xs={12} sm={12} md={3}>
                 <Card plain>
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
@@ -147,8 +168,8 @@ class ViolationSection extends React.Component {
                     <br />
                     <small className={classes.smallTitle}>{item.incident_date}</small>
                     <br />
-                    <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(item.id)}><i className="fa fa-search"></i>Detail</button>
-                    {console.log("item.id: "+item.id)}
+                    <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i>Detail</button>
+                    {console.log("i: "+i)}
                   </h5>
                 </Card>
               </GridItem>
