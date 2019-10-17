@@ -130,7 +130,7 @@ class ViolationSection extends React.Component {
   paginate = (counter) => {
     var newItems = []
     
-    console.log("all data : "+Object.getOwnPropertyNames(this.state.data))
+    console.log("all data : "+Object.getOwnPropertyNames(this.state.data[0]))
     console.log("mapped all data : "+Object.getOwnPropertyNames(this.mapToAlphaGrid(this.state.data)))
     for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
       console.log("index ke "+index+" = "+this.state.data[index])
