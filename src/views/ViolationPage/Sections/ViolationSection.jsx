@@ -60,9 +60,10 @@ class ViolationSection extends React.Component {
   getData = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
-        this.setState({ data: res.data });
         console.log("api result: " + res.data);
         console.log("api result(data): " + this.state.data);
+        
+        this.setState({ data: res.data });
       })
       .catch(error => {
         this.setState({
@@ -133,7 +134,7 @@ class ViolationSection extends React.Component {
     var newItems = []
     
     console.log("all data : "+Object.getOwnPropertyNames(this.state.data[0]))
-    console.log("mapped all data : "+Object.getOwnPropertyNames(this.mapToAlphaGrid(this.state.data)))
+    console.log("data data : "+this.state.data[0].vehicle_id)
     for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
       console.log("index ke "+index+" = "+this.state.data[index])
       newItems.push(
@@ -191,8 +192,6 @@ class ViolationSection extends React.Component {
 
   render() {
     const { classes } = this.props;
-
-    console.log("all_this_staet_data = " + this.state.data)
 
     return (
       <div className={classes.section}>
