@@ -60,9 +60,6 @@ class ViolationSection extends React.Component {
   getData = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
-        console.log("api result: " + res.data);
-        console.log("api result(data): " + this.state.data);
-        
         this.setState({ data: res.data });
       })
       .catch(error => {
@@ -127,14 +124,11 @@ class ViolationSection extends React.Component {
         }
         return menu;
       }, {});
-
   };
 
   paginate = (counter) => {
     var newItems = []
     
-    console.log("all data : "+Object.getOwnPropertyNames(this.state.data[0]))
-    console.log("data data : "+this.state.data[0].vehicle_id)
     for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
       console.log("index ke "+index+" = "+this.state.data[index])
       newItems.push(
@@ -154,7 +148,13 @@ class ViolationSection extends React.Component {
     );
     // const menuItems = this.mapToAlphaGrid()
     var counter = 1
-    const currentItems = this.mapToAlphaGrid(this.paginate(counter));
+    //const currentItems = this.mapToAlphaGrid(this.paginate(counter));
+    const currentItems = this.mapToAlphaGrid(this.state.data);
+    console.log("keys of currentitems = " + Object.keys(currentItems));
+    Object.keys(currentItems).map(key => {
+      const items = currentItems[key];
+      console.log("items = " + items);
+    })
     var allpage = this.state.data.length / 12 + 1
     return Object.keys(currentItems).map(key => {
       const items = currentItems[key];
