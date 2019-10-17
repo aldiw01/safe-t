@@ -130,7 +130,6 @@ class ViolationSection extends React.Component {
   renderAll = () => {
     const menuItems = this.mapToAlphaGrid();
     console.log("mappping _result: " + menuItems);
-    console.log("mappping _result.entries: " + Object.entries(menuItems[0]));
     return Object.keys(menuItems).map(key => {
       const items = menuItems[key];
       return ( 
