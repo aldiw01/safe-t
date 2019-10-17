@@ -131,12 +131,14 @@ class ViolationSection extends React.Component {
   paginate = (counter) => {
     var newItems = []
     const menuItems = this.mapToAlphaGrid()
-    for (let index = 12 * (counter - 1); index < (12 * counter); index++) {
-      console.log("menu items index"+Object.keys(menuItems)[index])
-      newItems.push(
-        Object.keys(menuItems)[index]
-      )
-    }
+    Object.keys(currentItems).map(key => {
+
+      if(key >= 12 * (counter - 1) && x <= (12 * counter)) {
+        newItems.push(
+          menuItems[key]
+        )
+      }
+    })
     console.log("new items"+newItems)
     return newItems
   }
