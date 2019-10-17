@@ -64,6 +64,7 @@ class Closed extends Component {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/status/1')
       .then(res => {
         this.setState({ data: res.data });
+        console.log("getdata = "+res.data)
       })
       .catch(error => {
         this.setState({
