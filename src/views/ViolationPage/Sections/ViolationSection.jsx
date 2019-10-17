@@ -131,10 +131,12 @@ class ViolationSection extends React.Component {
     var newItems = []
     const menuItems = this.mapToAlphaGrid();
     for (let index = 12 * (counter - 1); index < (12 * counter); index++) {
+      console.log("menu items index"+menuItems[index])
       newItems.push(
         menuItems[index]
       )
     }
+    console.log("new items"+newItems)
     return newItems
   }
 
