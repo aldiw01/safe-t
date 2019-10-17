@@ -122,6 +122,7 @@ class ViolationSection extends React.Component {
           // Create new menu item
           menu[item.id.charAt(0)] = [item];
         }
+        console.log("menu"+menu)
         return menu;
       }, {});
 
@@ -131,17 +132,11 @@ class ViolationSection extends React.Component {
     var newItems = []
     const menuItems = this.mapToAlphaGrid()
     Object.keys(menuItems).map(key => {
-
+      console.log("key :"+key)
       if(key >= 12 * (counter - 1) && key <= (12 * counter)) {
-        console.log(menuItems[key])
-        const items = menuItems[key]
-        console.log("items.doc = "+items.documentation)
-        newItems.push({
-          documentation: items.documentation,
-          vehicle_id: items.vehicle_id,
-          violance_address: items.violance_address,
-          created: items.created,
-        })
+        newItems.push(
+          menuItems[key]
+        )
       }
     })
     console.log("new items"+newItems)
