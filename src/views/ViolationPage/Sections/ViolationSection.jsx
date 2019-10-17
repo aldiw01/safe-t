@@ -3,8 +3,7 @@ import React from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import Spinner from 'react-spinkit';
+import {Col, Row, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import History from 'components/History/History';
 // @material-ui/icons
 
