@@ -3,7 +3,9 @@ import React from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
+import { Card, CardBody, CardHeader, Col, Row, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Spinner from 'react-spinkit';
+import History from 'components/History/History';
 // @material-ui/icons
 
 // core components
@@ -15,8 +17,6 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import axios from 'axios';
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
-
-import team1 from "assets/img/faces/risa.jpg";
 
 class ViolationSection extends React.Component {
   constructor(props) {
@@ -50,6 +50,16 @@ class ViolationSection extends React.Component {
         created: '',
         updated: '',
       },
+      history: [{
+        id: '',
+        ticket_id: '',
+        from_name: '',
+        info: '',
+        message: '',
+        status: '',
+        created: '',
+        updated: '',
+      }]
     }
   }
 
@@ -112,7 +122,6 @@ class ViolationSection extends React.Component {
   }
 
   mapToAlphaGrid = () => {
-
     return this.state.data.sort((a, b) => b.created - a.created)
       .reduce((menu, item) => {
         if (menu[item.id.charAt(0)]) {
@@ -148,9 +157,9 @@ class ViolationSection extends React.Component {
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
                     <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
                       {
-                        width:"183px",height:"183px"
+                        width: "183px", height: "183px"
                       }
-                    }  />
+                    } />
                     {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
                   </GridItem>
                   <h5 className={classes.cardTitle}>
@@ -158,11 +167,12 @@ class ViolationSection extends React.Component {
                     <br />
                     <small className={classes.smallTitle}>{item.violance_address}</small>
                     <br />
-                    <small className={classes.smallTitle}>{item.created}</small>
+                    <small className={classes.smallTitle}>{item.incident_date}</small>
+                    <br />
+                    <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i>Detail</button>
                   </h5>
                 </Card>
               </GridItem>
-
             )
           })}
         </GridContainer>
@@ -172,15 +182,51 @@ class ViolationSection extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
         <div>
-            {
-              this.renderAll()
-            }
+          {
+            this.renderAll()
+          }
         </div>
+        <Modal isOpen={this.state.view} toggle={() => this.toggleView(this.state.id)} className={'modal-primary modal-lg ' + this.props.className}>
+          <ModalHeader toggle={() => this.toggleView(this.state.id)}>Data Tiket</ModalHeader>
+          <ModalBody className="modal-body-display d-block">
+            <Col sm="12" lg="12" className="m-auto">
+              <Row>
+                <Col xs="3">No Kendaraan</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.vehicle_id}</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="3">Jenis Pelanggaran</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.violation_type}</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="3">Detail</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.detail}</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="3">TKP</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.violance_address}</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="3">Tanggal</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>{this.state.focus.incident_date}</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="3">Status</Col>
+                <Col xs="9" className="border-bottom mt-auto" style={viewStyle}>Closed</Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="12">
+                  <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
+                </Col>
+                <div className="w-100 py-2"></div>
+                <Col xs="12">
+                  <History history={this.state.history} />
+                </Col>
+              </Row>
+            </Col>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => this.toggleView(this.state.id)}>Close</Button>
+          </ModalFooter>
+        </Modal>
       </div >
     );
   }
