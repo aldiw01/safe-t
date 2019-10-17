@@ -176,11 +176,7 @@ class ViolationSection extends React.Component {
     var allpage = this.state.data.length / 12 + 1
     console.log("allpage = " + allpage)
     
-    this.trueRender(this.mapToAlphaGrid(this.state.paginatedData))
-  };
-
-  trueRender(currentItems) {
-    return Object.keys(currentItems).map(key => {
+    return Object.keys(this.mapToAlphaGrid(this.state.paginatedData)).map(key => {
       const items = currentItems[key];
       console.log("itemss from currenItems = " + items);
       return (
@@ -211,6 +207,10 @@ class ViolationSection extends React.Component {
         </GridContainer>
       )
     });
+  };
+
+  trueRender(currentItems) {
+    
   }
 
   render() {
