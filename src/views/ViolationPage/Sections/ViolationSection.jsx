@@ -91,12 +91,27 @@ class ViolationSection extends React.Component {
   }
 
   toggleView = id => {
-    this.setState({
-      id: id,
-      view: !this.state.view,
-      focus: this.state.data[id]
-    });
-  }
+    if (id !== this.state.id) {
+      axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
+        .then(res => {
+          this.setState({ history: res.data });
+        })
+        .catch(error => {
+          this.setState({
+            history: [{
+              id: '',
+              ticket_id: '',
+              from_name: '',
+              info: '',
+              message: '',
+              status: '',
+              violance_address: '',
+              created: '',
+              updated: '',
+            }]
+          });
+        });
+    }
 
     this.setState({
       id: id,

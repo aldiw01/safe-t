@@ -113,6 +113,7 @@ class Closed extends Component {
   }
 
   toggleView = id => {
+    console.log("id: "+id)
     if (id !== this.state.id) {
       axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
         .then(res => {
