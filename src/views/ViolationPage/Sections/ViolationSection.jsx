@@ -220,9 +220,6 @@ class ViolationSection extends React.Component {
                   <img className="d-block w-100" src={process.env.REACT_APP_API_PATH + '/image/ticket/' + this.state.focus.documentation} alt='Ticket' />
                 </Col>
                 <div className="w-100 py-2"></div>
-                <Col xs="12">
-                  <History history={this.state.history} />
-                </Col>
               </Row>
             </Col>
           </ModalBody>
