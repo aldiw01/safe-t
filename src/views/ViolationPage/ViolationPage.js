@@ -60,7 +60,7 @@ class ViolationPage extends React.Component {
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fas fa-car" /> Google Playstore
+                  <i className="fab fa-google-play" /> Google Playstore
                 </Button>
                 <br />
                 <Button
@@ -70,7 +70,7 @@ class ViolationPage extends React.Component {
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fab fa-warning" /> Violation Data
+                  <i className="fas fa-car-crash" /> Violation Data
                 </Button>
               </GridItem>
             </GridContainer>
