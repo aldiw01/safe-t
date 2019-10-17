@@ -60,7 +60,7 @@ class ViolationPage extends React.Component {
                   // target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="fab fa-google-play" /> Google Playstore
+                  <i className="fas fa-car" /> Google Playstore
                 </Button>
                 <br />
                 <Button
