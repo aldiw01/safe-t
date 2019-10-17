@@ -187,12 +187,12 @@ class ViolationSection extends React.Component {
               <GridItem xs={12} sm={12} md={3}>
                 <Card plain>
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
+                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." style={
                       {
                         width: "183px", height: "183px"
                       }
-                    } />
-                    {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
+                    } /> */}
+                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  />
                   </GridItem>
                   <h5 className={classes.cardTitle}>
                     {item.vehicle_id}
