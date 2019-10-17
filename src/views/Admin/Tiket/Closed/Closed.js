@@ -210,6 +210,7 @@ class Closed extends Component {
           incident_date: items.incident_date,
           actions: <React.Fragment>
             <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i></button>
+            {console.log("i: "+i)}
             <button title="Delete Data" className="px-3 py-1 mr-1 btn btn-danger" onClick={() => toggleDelete(i)}><i className="fa fa-minus-circle"></i></button>
           </React.Fragment>
         });
