@@ -134,34 +134,28 @@ class ViolationSection extends React.Component {
       const items = menuItems[key];
       return ( 
         <div>
-          <span>{key}</span> 
-          <ul> 
             {items.map(item => {
-              return <li><a href={item.path}>{item.name}</a></li >
+              return (
+                <GridContainer className="justify-content-center">
+                  <GridItem xs={12} sm={12} md={3}>
+                    <Card plain>
+                      <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
+                        <img src={team1} alt="..." className={imageClasses} />
+                      </GridItem>
+                      <h5 className={classes.cardTitle}>
+                        coba{item.reporter_id}
+                        <br />
+                        <small className={classes.smallTitle}>Founder</small>
+                      </h5>
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              )
             })} 
-          </ul> 
         </div>
       )
     });
   };
-
-  // <div>
-  //   <GridContainer className="justify-content-center">
-  //     <GridItem xs={12} sm={12} md={3}>
-  //       <Card plain>
-  //         <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-  //           <img src={team1} alt="..." className={imageClasses} />
-  //         </GridItem>
-  //         <h5 className={classes.cardTitle}>
-  //           {console.log("reporter last:"+this.state.data[0])}
-  //           coba{this.state.data[0].reporter_id}
-  //           <br />
-  //           <small className={classes.smallTitle}>Founder</small>
-  //         </h5>
-  //       </Card>
-  //     </GridItem>
-  //   </GridContainer>
-  // </div>
   
   render() {
     const { classes } = this.props;
