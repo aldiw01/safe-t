@@ -60,15 +60,8 @@ class ViolationSection extends React.Component {
   getData = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
-        this.setState({ data: res }); // res.data => res
+        this.setState({ data: res.data });
         console.log("get data: "+res.data)
-        console.log("get data Values: "+Object.values(res))
-        console.log("get data Entries.data: "+Object.entries(res).data)
-        console.log("data.reporter_id =  " + res.reporter_id)
-        console.log("data.vehicle_id =  " + res.vehicle_id)
-        console.log("data.violation_type =  " + res.violation_type)
-        console.log("data.detail =  " + res.detail)
-        console.log("data.incident_date =  " + res.incident_date)
       })
       .catch(error => {
         this.setState({
@@ -204,8 +197,8 @@ class ViolationSection extends React.Component {
                   <img src={team1} alt="..." className={imageClasses} />
                 </GridItem>
                 <h5 className={classes.cardTitle}>
-                  {console.log("reporter last:"+this.state.data.reporter_id)}
-                  coba{this.state.data.reporter_id}
+                  {console.log("reporter last:"+this.state.data[0])}
+                  coba{this.state.data[0].reporter_id}
                   <br />
                   <small className={classes.smallTitle}>Founder</small>
                 </h5>
