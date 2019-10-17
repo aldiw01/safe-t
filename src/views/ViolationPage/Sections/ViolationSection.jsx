@@ -113,7 +113,7 @@ class ViolationSection extends React.Component {
 
   mapToAlphaGrid = () => {
 
-    return this.state.data.sort((a, b) => a.id - b.id)
+    return this.state.data.sort((a, b) => b.create - a.created)
       .reduce((menu, item) => {
         if (menu[item.id.charAt(0)]) {
           // Add to existing menu item
@@ -154,9 +154,10 @@ class ViolationSection extends React.Component {
                     {/* <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses}  /> */}
                   </GridItem>
                   <h5 className={classes.cardTitle}>
-                    {item.reporter_id}
+                    {item.vehicle_id}
                     <br />
-                    <small className={classes.smallTitle}>Founder</small>
+                    <small className={classes.smallTitle}>{item.violance_address}</small>
+                    <small className={classes.smallTitle}>{item.created}</small>
                   </h5>
                 </Card>
               </GridItem>
@@ -173,13 +174,11 @@ class ViolationSection extends React.Component {
 
     return (
       <div className={classes.section}>
-        <h2 className={classes.title}>Perkenalkan Tim Kami</h2>
+        <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
         <div>
-          
             {
               this.renderAll()
             }
-          
         </div>
       </div >
     );
