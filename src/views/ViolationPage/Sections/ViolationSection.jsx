@@ -131,9 +131,9 @@ class ViolationSection extends React.Component {
   paginate = (counter) => {
     var newItems = []
     const menuItems = this.mapToAlphaGrid()
-    Object.keys(currentItems).map(key => {
+    Object.keys(menuItems).map(key => {
 
-      if(key >= 12 * (counter - 1) && x <= (12 * counter)) {
+      if(key >= 12 * (counter - 1) && key <= (12 * counter)) {
         newItems.push(
           menuItems[key]
         )
