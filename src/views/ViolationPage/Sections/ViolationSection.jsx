@@ -126,13 +126,13 @@ class ViolationSection extends React.Component {
       }, {});
   };
 
-  paginate = (counter) => {
+  paginate = (counter, arr) => {
     var newItems = []
     
     for (let index = 12 * (counter - 1); index < 12 * counter; index++) {
-      console.log("index ke "+index+" = "+this.state.data[index])
+      console.log("index ke "+index+" = "+arr[index])
       newItems.push(
-        this.state.data[index]
+        arr[index]
       )
     }
     console.log("new items"+newItems)
@@ -149,11 +149,11 @@ class ViolationSection extends React.Component {
     // const menuItems = this.mapToAlphaGrid()
     var counter = 1
     //const currentItems = this.mapToAlphaGrid(this.paginate(counter));
-    const currentItems = this.mapToAlphaGrid(this.state.data);
-    console.log("keys of currentitems = " + Object.keys(currentItems));
+    // const currentItems = this.mapToAlphaGrid(this.state.data);\
     Object.keys(currentItems).map(key => {
       const items = currentItems[key];
-      console.log("items = " + items);
+      if(items.length > 1)
+        const currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
     })
     var allpage = this.state.data.length / 12 + 1
     return Object.keys(currentItems).map(key => {
