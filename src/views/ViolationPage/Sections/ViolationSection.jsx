@@ -91,6 +91,7 @@ class ViolationSection extends React.Component {
   }
 
   toggleView = id => {
+    console.log("id:"+id)
     if (id !== this.state.id) {
       axios.get(localStorage.getItem('serverAPI') + '/history/ticket/' + this.state.data[id].id)
         .then(res => {
@@ -136,6 +137,7 @@ class ViolationSection extends React.Component {
   };
 
   renderAll = () => {
+    var i=0
     const { classes } = this.props;
     let toggleView = this.toggleView;
     const imageClasses = classNames(
@@ -169,8 +171,9 @@ class ViolationSection extends React.Component {
                     <br />
                     <small className={classes.smallTitle}>{item.incident_date}</small>
                     <br />
-                    <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(item.id)}><i className="fa fa-search"></i>Detail</button>
+                    <button title="View Data" className="px-3 py-1 mr-1 btn btn-primary" onClick={() => toggleView(i)}><i className="fa fa-search"></i>Detail</button>
                     {console.log("item.id: "+item.id)}
+                    i++
                   </h5>
                 </Card>
               </GridItem>
