@@ -138,26 +138,26 @@ class ViolationSection extends React.Component {
     console.log("mappping _result: " + menuItems);
     return Object.keys(menuItems).map(key => {
       const items = menuItems[key];
-      return ( 
+      return (
         <div>
-            {items.map(item => {
-              return (
-                <GridContainer className="justify-content-center">
-                  <GridItem xs={12} sm={12} md={3}>
-                    <Card plain>
-                      <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                        <img src={team1} alt="..." className={imageClasses} />
-                      </GridItem>
-                      <h5 className={classes.cardTitle}>
-                        coba{item.reporter_id}
-                        <br />
-                        <small className={classes.smallTitle}>Founder</small>
-                      </h5>
-                    </Card>
+          {items.map(item => {
+            return (
+
+              <GridItem xs={12} sm={12} md={3}>
+                <Card plain>
+                  <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
+                    <img src={team1} alt="..." className={imageClasses} />
                   </GridItem>
-                </GridContainer>
-              )
-            })} 
+                  <h5 className={classes.cardTitle}>
+                    coba{item.reporter_id}
+                    <br />
+                    <small className={classes.smallTitle}>Founder</small>
+                  </h5>
+                </Card>
+              </GridItem>
+
+            )
+          })}
         </div>
       )
     });
@@ -170,9 +170,11 @@ class ViolationSection extends React.Component {
       <div className={classes.section}>
         <h2 className={classes.title}>Perkenalkan Tim Kami</h2>
         <div>
-          {
-            this.renderAll()
-          }
+          <GridContainer className="justify-content-center">
+            {
+              this.renderAll()
+            }
+          </GridContainer>
         </div>
       </div >
     );
