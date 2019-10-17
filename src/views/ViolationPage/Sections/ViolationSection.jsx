@@ -146,10 +146,10 @@ class ViolationSection extends React.Component {
               <GridItem xs={12} sm={12} md={3}>
                 <Card plain>
                   <GridItem xs={12} sm={12} md={10} className={classes.itemGrid}>
-                    <img src={team1} alt="..." className={imageClasses} />
+                    <img src={process.env.REACT_APP_API_PATH + '/image/ticket/' + item.documentation} alt="..." className={imageClasses} />
                   </GridItem>
                   <h5 className={classes.cardTitle}>
-                    coba{item.reporter_id}
+                    {item.reporter_id}
                     <br />
                     <small className={classes.smallTitle}>Founder</small>
                   </h5>
