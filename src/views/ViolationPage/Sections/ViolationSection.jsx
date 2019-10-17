@@ -134,9 +134,14 @@ class ViolationSection extends React.Component {
 
       if(key >= 12 * (counter - 1) && key <= (12 * counter)) {
         console.log(menuItems[key])
-        newItems.push(
-          menuItems[key]
-        )
+        const items = menuItems[key]
+        console.log("items.doc = "+items.documentation)
+        newItems.push({
+          documentation: items.documentation,
+          vehicle_id: items.vehicle_id,
+          violance_address: items.violance_address,
+          created: items.created,
+        })
       }
     })
     console.log("new items"+newItems)
