@@ -153,8 +153,8 @@ class ViolationSection extends React.Component {
     Object.keys(menuItems).map(key => {
       const items = menuItems[key];
       console.log("items.length ? = "+items.length);
-      var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
-      console.log("currentItems from items : " + currentItems);
+      // var currentItems = this.mapToAlphaGrid(this.paginate(counter, items));
+      // console.log("currentItems from items : " + currentItems);
     })
     var allpage = this.state.data.length / 12 + 1
     return Object.keys(menuItems).map(key => {
