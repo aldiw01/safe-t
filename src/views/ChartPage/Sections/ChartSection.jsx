@@ -16,28 +16,27 @@ class ChartSection extends React.Component {
       },
       axisY: {
         title: "Bounce Rate",
-        includeZero: false,
-        suffix: "%"
       },
       axisX: {
         valueFormatString: "MMM"
       },
       data: [{
+        yValueFormatString: "$#,###",
+				xValueFormatString: "MMMM",
         type: "line",
-        toolTipContent: "Week {x}: {y}%",
         dataPoints: [
-          { x: 1, y: 64 },
-          { x: 2, y: 61 },
-          { x: 3, y: 64 },
-          { x: 4, y: 62 },
-          { x: 5, y: 64 },
-          { x: 6, y: 60 },
-          { x: 7, y: 58 },
-          { x: 8, y: 59 },
-          { x: 9, y: 53 },
-          { x: 10, y: 54 },
-          { x: 11, y: 61 },
-          { x: 12, y: 60 }
+          { x: new Date(2017, 0), y: 25060 },
+					{ x: new Date(2017, 1), y: 27980 },
+					{ x: new Date(2017, 2), y: 42800 },
+					{ x: new Date(2017, 3), y: 32400 },
+					{ x: new Date(2017, 4), y: 35260 },
+					{ x: new Date(2017, 5), y: 33900 },
+					{ x: new Date(2017, 6), y: 40000 },
+					{ x: new Date(2017, 7), y: 52500 },
+					{ x: new Date(2017, 8), y: 32300 },
+					{ x: new Date(2017, 9), y: 42000 },
+					{ x: new Date(2017, 10), y: 37160 },
+					{ x: new Date(2017, 11), y: 38400 }
         ]
       }]
     }
