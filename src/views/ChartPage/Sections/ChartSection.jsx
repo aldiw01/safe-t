@@ -69,4 +69,4 @@ class ChartSection extends React.Component {
 	}
 }
 
-export default withStyles(teamStyle)(ChartSection);
+export default ChartSection;
