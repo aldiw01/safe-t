@@ -65,7 +65,7 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div className={classes.section}>
+      <div>
         <h2 className={classes.title}>Graph Violation Data</h2>
         <br />
         <br />
