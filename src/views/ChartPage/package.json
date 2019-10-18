@@ -1,6 +1,6 @@
 {
-  "name": "LandingPage",
+  "name": "ChartPage",
   "version": "0.0.0",
   "private": true,
-  "main": "./LandingPage.jsx"
+  "main": "./ChartPage.jsx"
 }

@@ -4,7 +4,6 @@ import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import {Col, Row, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import History from 'components/History/History';
 // @material-ui/icons
 
 // core components

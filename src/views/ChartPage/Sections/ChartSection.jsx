@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -65,7 +64,7 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div>
+      <div className={classes.section}>
         <h2 className={classes.title}>Graph Violation Data</h2>
         <br />
         <br />
