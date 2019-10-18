@@ -4,9 +4,6 @@ import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import CanvasJSReact from '../../assets/chart/canvasjs.react';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -21,7 +18,6 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
-import ProductSection from "./Sections/ChartSection.jsx";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
@@ -96,7 +92,6 @@ class ChartPage extends React.Component {
           <div className={classes.container} style={{ color: "initial" }}>
             <ChartSection />
           </div>
-          <SponsorsSection />
         </div>
         <Footer />
       </div>
