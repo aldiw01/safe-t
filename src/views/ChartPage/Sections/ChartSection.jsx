@@ -64,8 +64,9 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div>
-        <h2>Graph Violation Data</h2>
+      <div className={classes.section}>
+        <h2 className={classes.title}>Graph Violation Data</h2>
+        {console.log("classess: "+classes)}
         <br />
         <br />
         <br />
@@ -77,7 +78,7 @@ class ChartSection extends React.Component {
         <br />
         <br />
         <br />
-        <h2>Graph Violation Data</h2>
+        <h2 className={classes.title}>Graph Violation Data</h2>
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
