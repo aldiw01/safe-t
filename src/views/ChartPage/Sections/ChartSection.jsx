@@ -5,7 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+//import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
 class ChartSection extends React.Component {
   render() {

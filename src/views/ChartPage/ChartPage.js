@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -18,10 +18,10 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
+import ChartSection from "./Sections/ChartSection.jsx";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
-import ChartSection from "./Sections/ChartSection.jsx";
 
 const dashboardRoutes = ["chart"];
 
