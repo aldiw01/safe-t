@@ -64,6 +64,17 @@ class ViolationPage extends React.Component {
                 </Button>
                 <br />
                 <Button
+                  color="info"
+                  size="lg"
+                  href="/chart"
+                  // target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {/* <Link to="/violation"> </Link> */}
+                  <i className="fas fa-chart-line" /> Chart Violation Data
+                </Button>
+                <br />
+                <Button
                   color="warning"
                   size="lg"
                   href="/violation"

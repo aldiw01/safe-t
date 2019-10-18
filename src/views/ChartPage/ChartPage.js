@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Component } from 'react';
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { Link } from "react-router-dom";
+import CanvasJSReact from '../../assets/chart/canvasjs.react';
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // core components
 import Header from "components/Header/Header.jsx";
@@ -20,21 +21,15 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
-import ProductSection from "./Sections/ProductSection.jsx";
-import TeamSection from "./Sections/TeamSection.jsx";
-import DemoSection from "./Sections/DemoSection";
-import GuideSection from "./Sections/GuideSection";
-import AboutProductSection from "./Sections/AboutProductSection";
-import TimelineSection from "./Sections/TimelineSection";
-import AboutUsSection from "./Sections/AboutUsSection";
-import SponsorsSection from "./Sections/SponsorsSection";
+import ProductSection from "./Sections/ChartSection.jsx";
 
 import bgImage from "assets/img/bg.png";
 import logo from "assets/img/logo.png";
+import ChartSection from "./Sections/ChartSection.jsx";
 
-const dashboardRoutes = ["home"];
+const dashboardRoutes = ["chart"];
 
-class LandingPage extends React.Component {
+class ChartPage extends React.Component {
   render() {
     const { classes, ...rest } = this.props;
     return (
@@ -99,13 +94,7 @@ class LandingPage extends React.Component {
         </Parallax>
         <div className={classNames(classes.main, classes.mainRaised)} style={{ backgroundImage: "url('" + bgImage + "')" }}>
           <div className={classes.container} style={{ color: "initial" }}>
-            <ProductSection />
-            <GuideSection />
-            <DemoSection />
-            <AboutProductSection />
-            <TimelineSection />
-            <TeamSection />
-            <AboutUsSection />
+            <ChartSection />
           </div>
           <SponsorsSection />
         </div>
@@ -115,4 +104,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default withStyles(landingPageStyle)(LandingPage);
+export default withStyles(landingPageStyle)(ChartPage);
