@@ -12,7 +12,7 @@ class ChartSection extends React.Component {
       exportEnabled: true,
       theme: "light2", // "light1", "dark1", "dark2"
       title: {
-        text: "Bounce Rate by Week of Year"
+        text: "Graph Violation Data"
       },
       axisY: {
         title: "Bounce Rate",
@@ -20,9 +20,7 @@ class ChartSection extends React.Component {
         suffix: "%"
       },
       axisX: {
-        title: "Week of Year",
-        prefix: "W",
-        interval: 2
+        valueFormatString: "MMM"
       },
       data: [{
         type: "line",
@@ -39,18 +37,7 @@ class ChartSection extends React.Component {
           { x: 9, y: 53 },
           { x: 10, y: 54 },
           { x: 11, y: 61 },
-          { x: 12, y: 60 },
-          { x: 13, y: 55 },
-          { x: 14, y: 60 },
-          { x: 15, y: 56 },
-          { x: 16, y: 60 },
-          { x: 17, y: 59.5 },
-          { x: 18, y: 63 },
-          { x: 19, y: 58 },
-          { x: 20, y: 54 },
-          { x: 21, y: 59 },
-          { x: 22, y: 64 },
-          { x: 23, y: 59 }
+          { x: 12, y: 60 }
         ]
       }]
     }
@@ -82,10 +69,16 @@ class ChartSection extends React.Component {
         <CanvasJSChart options={graph}
         /* onRef={ref => this.chart = ref} */
         />
+        <br />
+        <br />
+        <br />
+        <br />
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
         {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+        <br />
+        <br />
       </div>
     );
   }
