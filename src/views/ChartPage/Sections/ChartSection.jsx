@@ -11,9 +11,9 @@ class ChartSection extends React.Component {
       animationEnabled: true,
       exportEnabled: true,
       theme: "light2", // "light1", "dark1", "dark2"
-      title: {
-        text: "Graph Violation Data"
-      },
+      // title: {
+      //   text: "Graph Violation Data"
+      // },
       axisY: {
         title: "Bounce Rate",
       },
@@ -21,7 +21,7 @@ class ChartSection extends React.Component {
         valueFormatString: "MMM"
       },
       data: [{
-        yValueFormatString: "$#,###",
+        yValueFormatString: "#,###",
 				xValueFormatString: "MMMM",
         type: "line",
         dataPoints: [
@@ -44,9 +44,9 @@ class ChartSection extends React.Component {
     const pie = {
       exportEnabled: true,
       animationEnabled: true,
-      title: {
-        text: "Violation Traffic Sources"
-      },
+      // title: {
+      //   text: "Violation Traffic Sources"
+      // },
       data: [{
         type: "pie",
         startAngle: 75,
@@ -64,7 +64,12 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div>
+      <div className={classes.section}>
+        <h2 className={classes.title}>Graph Violation Data</h2>
+        <br />
+        <br />
+        <br />
+        <br />
         <CanvasJSChart options={graph}
         /* onRef={ref => this.chart = ref} */
         />
@@ -72,6 +77,7 @@ class ChartSection extends React.Component {
         <br />
         <br />
         <br />
+        <h2 className={classes.title}>Graph Violation Data</h2>
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
