@@ -187,7 +187,8 @@ class ViolationSection extends React.Component {
     return (
       <div className={classes.section}>
         <h2 className={classes.title}>Data Pelanggaran Terverifikasi</h2>
-        {console.log("classess: "+classes)}
+        {console.log("classess: "+classes.section)}
+        {console.log("classess: "+classes.title)}
         <div>
           {
             this.renderAll()

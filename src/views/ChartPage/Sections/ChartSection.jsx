@@ -7,6 +7,7 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 class ChartSection extends React.Component {
   render() {
     const { classes } = this.props;
+    console.log("classes: "+classes)
     const graph = {
       animationEnabled: true,
       exportEnabled: true,
@@ -64,9 +65,8 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div className={classes.section}>
-        <h2 className={classes.title}>Graph Violation Data</h2>
-        {console.log("classess: "+classes)}
+      <div>
+        <h2>Graph Violation Data</h2>
         <br />
         <br />
         <br />
