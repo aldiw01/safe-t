@@ -7,6 +7,7 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class ChartSection extends React.Component {
   render() {
+    const { classes } = this.props;
     const graph = {
       animationEnabled: true,
       exportEnabled: true,
