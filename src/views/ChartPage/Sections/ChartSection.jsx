@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import withStyles from "@material-ui/core/styles/withStyles";
-
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -9,7 +7,7 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class ChartSection extends React.Component {
   render() {
-		const options = {
+		const graph = {
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: "light2", // "light1", "dark1", "dark2"
@@ -55,16 +53,43 @@ class ChartSection extends React.Component {
 					{ x: 23, y: 59 }
 				]
 			}]
+    }
+    
+    const pie = {
+			exportEnabled: true,
+			animationEnabled: true,
+			title: {
+				text: "Violation Traffic Sources"
+			},
+			data: [{
+				type: "pie",
+				startAngle: 75,
+				toolTipContent: "<b>{label}</b>: {y}%",
+				showInLegend: "true",
+				legendText: "{label}",
+				indexLabelFontSize: 16,
+				indexLabel: "{label} - {y}%",
+				dataPoints: [
+					{ y: 18, label: "Pending Data" },
+					{ y: 49, label: "Not Valid Report" },
+					{ y: 9, label: "Verified Data Report" },
+				]
+			}]
 		}
 		
 		return (
 		<div>
-			<h1>React Line Chart</h1>
-			<CanvasJSChart options = {options} 
+			<CanvasJSChart graph = {graph} 
 				/* onRef={ref => this.chart = ref} */
 			/>
 			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
 		</div>
+    <div>
+    <CanvasJSChart pie = {pie} 
+      /* onRef={ref => this.chart = ref} */
+    />
+    {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+  </div>
 		);
 	}
 }
