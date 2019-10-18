@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-//import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+import withStyles from "@material-ui/core/styles/withStyles";
+import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
 class ChartSection extends React.Component {
   render() {
@@ -65,8 +65,8 @@ class ChartSection extends React.Component {
     }
 
     return (
-      <div>
-        <h2>Graph Violation Data</h2>
+      <div className={classes.section}>
+        <h2 className={classes.title}>Graph Violation Data</h2>
         <br />
         <br />
         <br />
@@ -78,7 +78,7 @@ class ChartSection extends React.Component {
         <br />
         <br />
         <br />
-        <h2>Graph Violation Data</h2>
+        <h2 className={classes.title}>Status Violation Data</h2>
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
@@ -90,4 +90,4 @@ class ChartSection extends React.Component {
   }
 }
 
-export default ChartSection;
+export default withStyles(teamStyle)(ChartSection);
