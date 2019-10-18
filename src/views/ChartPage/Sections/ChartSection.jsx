@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 import withStyles from "@material-ui/core/styles/withStyles";
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
 class ChartSection extends React.Component {
   render() {
+    var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const { classes } = this.props;
     console.log("classes: "+classes)
     const graph = {
