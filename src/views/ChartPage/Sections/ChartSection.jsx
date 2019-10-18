@@ -79,7 +79,10 @@ class ChartSection extends React.Component {
 
     return (
       <div>
-        <CanvasJSChart graph={graph}
+        <CanvasJSChart options={graph}
+        /* onRef={ref => this.chart = ref} */
+        />
+        <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
         {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
