@@ -205,8 +205,8 @@ class ChartSection extends React.Component {
         indexLabel: "{label} - {y}%",
         dataPoints: [
           { y: 20 , label: "Pending Data" },
-          { y: this.state.data9.length, label: "Not Valid Report" },
-          { y: this.state.data1.length, label: "Verified Data Report" },
+          { y: 20, label: "Not Valid Report" },
+          { y: 20, label: "Verified Data Report" },
         ]
       }]
       
@@ -214,8 +214,6 @@ class ChartSection extends React.Component {
 
     return (
       <div className={classes.section}>
-        {console.log("data9: "+this.state.data9.length)}
-        {console.log("data1: "+this.state.data1.length)}
         <h2 className={classes.title}>Graph Violation Data</h2>
         <br />
         <br />
