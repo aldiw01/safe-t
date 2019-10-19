@@ -82,7 +82,7 @@ class ChartSection extends React.Component {
   getDataAll = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/0')
       .then(res => {
-        this.setState({ data0: res.data0 });
+        this.setState({ data0: res.data });
       })
       .catch(error => {
         this.setState({
@@ -106,7 +106,7 @@ class ChartSection extends React.Component {
   getDataVerified = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
       .then(res => {
-        this.setState({ data1: res.data1 });
+        this.setState({ data1: res.data });
       })
       .catch(error => {
         this.setState({
@@ -130,7 +130,7 @@ class ChartSection extends React.Component {
   getDataNotVerified = () => {
     axios.get(localStorage.getItem('serverAPI') + '/ticket/list/9')
       .then(res => {
-        this.setState({ data9: res.data9 });
+        this.setState({ data9: res.data });
       })
       .catch(error => {
         this.setState({
@@ -230,6 +230,9 @@ class ChartSection extends React.Component {
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
+        {console.log("data0"+this.state.data0)}
+        {console.log("data1"+this.state.data1)}
+        {console.log("data9"+this.state.data9)}
         {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
         <br />
         <br />
