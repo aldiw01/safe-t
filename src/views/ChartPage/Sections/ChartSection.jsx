@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+import axios from 'axios';
 
 class ChartSection extends React.Component {
   constructor(props) {
