@@ -4,6 +4,152 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
 class ChartSection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: '',
+      view: false,
+      loader: false,
+      fileImage: '',
+      data0: [{
+        id: '',
+        reporter_id: '',
+        vehicle_id: '',
+        violation_type: '',
+        detail: '',
+        incident_date: '',
+        documentation: '',
+        violance_address: '',
+        created: '',
+        updated: '',
+      }],
+      data1: [{
+        id: '',
+        reporter_id: '',
+        vehicle_id: '',
+        violation_type: '',
+        detail: '',
+        incident_date: '',
+        documentation: '',
+        violance_address: '',
+        created: '',
+        updated: '',
+      }],
+      data9: [{
+        id: '',
+        reporter_id: '',
+        vehicle_id: '',
+        violation_type: '',
+        detail: '',
+        incident_date: '',
+        documentation: '',
+        violance_address: '',
+        created: '',
+        updated: '',
+      }],
+      focus: {
+        id: '',
+        reporter_id: '',
+        vehicle_id: '',
+        violation_type: '',
+        detail: '',
+        incident_date: '',
+        documentation: '',
+        violance_address: '',
+        created: '',
+        updated: '',
+      },
+      history: [{
+        id: '',
+        ticket_id: '',
+        from_name: '',
+        info: '',
+        message: '',
+        status: '',
+        created: '',
+        updated: '',
+      }]
+    }
+  }
+
+  componentDidMount() {
+    this.getDataAll();
+    this.getDataVerified();
+    this.getDataNotVerified();
+  }
+
+  getDataAll = () => {
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/list/0')
+      .then(res => {
+        this.setState({ data0: res.data0 });
+      })
+      .catch(error => {
+        this.setState({
+          data0: [{
+            id: '',
+            reporter_id: '',
+            vehicle_id: '',
+            violation_type: '',
+            detail: '',
+            incident_date: '',
+            documentation: '',
+            violance_address: '',
+            created: '',
+            updated: '',
+          }]
+        })
+        console.log(error);
+      });
+  }
+
+  getDataVerified = () => {
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/list/1')
+      .then(res => {
+        this.setState({ data1: res.data1 });
+      })
+      .catch(error => {
+        this.setState({
+          data1: [{
+            id: '',
+            reporter_id: '',
+            vehicle_id: '',
+            violation_type: '',
+            detail: '',
+            incident_date: '',
+            documentation: '',
+            violance_address: '',
+            created: '',
+            updated: '',
+          }]
+        })
+        console.log(error);
+      });
+  }
+
+  getDataNotVerified = () => {
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/list/9')
+      .then(res => {
+        this.setState({ data9: res.data9 });
+      })
+      .catch(error => {
+        this.setState({
+          data9: [{
+            id: '',
+            reporter_id: '',
+            vehicle_id: '',
+            violation_type: '',
+            detail: '',
+            incident_date: '',
+            documentation: '',
+            violance_address: '',
+            created: '',
+            updated: '',
+          }]
+        })
+        console.log(error);
+      });
+  }
+
   render() {
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const { classes } = this.props;
@@ -57,9 +203,9 @@ class ChartSection extends React.Component {
         indexLabelFontSize: 16,
         indexLabel: "{label} - {y}%",
         dataPoints: [
-          { y: 18, label: "Pending Data" },
-          { y: 49, label: "Not Valid Report" },
-          { y: 9, label: "Verified Data Report" },
+          { y: this.state.data0.length - this.state.data1.length , label: "Pending Data" },
+          { y: this.state.data9.length, label: "Not Valid Report" },
+          { y: this.state.data1.length, label: "Verified Data Report" },
         ]
       }]
     }
