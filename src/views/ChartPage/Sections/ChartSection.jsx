@@ -204,7 +204,7 @@ class ChartSection extends React.Component {
         indexLabelFontSize: 16,
         indexLabel: "{label} - {y}%",
         dataPoints: [
-          { y: this.state.data0.length - this.state.data1.length , label: "Pending Data" },
+          { y: 20 , label: "Pending Data" },
           { y: this.state.data9.length, label: "Not Valid Report" },
           { y: this.state.data1.length, label: "Verified Data Report" },
         ]
