@@ -206,7 +206,9 @@ class ChartSection extends React.Component {
         dataPoints: [
           { y: 20 , label: "Pending Data" },
           { y: this.state.data9.length, label: "Not Valid Report" },
+          console.log("data9: "+this.state.data9.length),
           { y: this.state.data1.length, label: "Verified Data Report" },
+          console.log("data1: "+this.state.data1.length)
         ]
       }]
     }
