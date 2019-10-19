@@ -122,6 +122,7 @@ class ViolationSection extends React.Component {
   mapToAlphaGrid = () => {
     return this.state.data.sort((a, b) => b.created - a.created)
       .reduce((menu, item) => {
+        console.log("data: "+this.state.data)
         if (menu[item.id.charAt(0)]) {
           // Add to existing menu item
           menu[item.id.charAt(0)].push(item)
