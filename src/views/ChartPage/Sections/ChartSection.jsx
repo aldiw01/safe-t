@@ -3,6 +3,7 @@ import CanvasJSReact from '../../../assets/chart/canvasjs.react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 import axios from 'axios';
+import { throws } from 'assert';
 
 class ChartSection extends React.Component {
   constructor(props) {
@@ -204,9 +205,9 @@ class ChartSection extends React.Component {
         indexLabelFontSize: 16,
         indexLabel: "{label} - {y}%",
         dataPoints: [
-          { y: 20 , label: "Pending Data" },
-          { y: 20, label: "Not Valid Report" },
-          { y: 20, label: "Verified Data Report" },
+          { y: this.state.data0.length, label: "Pending Data" },
+          { y: this.state.data9.length, label: "Not Valid Report" },
+          { y: this.state.data1.length, label: "Verified Data Report" },
         ]
       }]
       
@@ -230,9 +231,6 @@ class ChartSection extends React.Component {
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
-        {console.log("data0"+this.state.data0.length)}
-        {console.log("data1"+this.state.data1.length)}
-        {console.log("data9"+this.state.data9.length)}
         {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
         <br />
         <br />
