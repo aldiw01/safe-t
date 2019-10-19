@@ -206,9 +206,9 @@ class ChartSection extends React.Component {
         indexLabel: "{label} - {total}%",
         dataPoints: [
           
-          { y: this.state.data0.length, label: "Pending Data", total: this.state.data0.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length), },
-          { y: this.state.data9.length, label: "Not Valid Report", total: this.state.data9.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length) },
-          { y: this.state.data1.length, label: "Verified Data Report", total: this.state.data1.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length) },
+          { y: this.state.data0.length, label: "Pending Data", total: (this.state.data0.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
+          { y: this.state.data9.length, label: "Not Valid Report", total: (this.state.data9.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
+          { y: this.state.data1.length, label: "Verified Data Report", total: (this.state.data1.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
         ]
       }]
       
