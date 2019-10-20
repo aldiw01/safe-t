@@ -13,6 +13,18 @@ class ChartSection extends React.Component {
       view: false,
       loader: false,
       fileImage: '',
+      data: [{
+        id: '',
+        reporter_id: '',
+        vehicle_id: '',
+        violation_type: '',
+        detail: '',
+        incident_date: '',
+        documentation: '',
+        violance_address: '',
+        created: '',
+        updated: '',
+      }],
       data0: [{
         id: '',
         reporter_id: '',
@@ -75,9 +87,34 @@ class ChartSection extends React.Component {
   }
 
   componentDidMount() {
+    this.getData();
     this.getDataAll();
     this.getDataVerified();
     this.getDataNotVerified();
+  }
+
+  getData = () => {
+    axios.get(localStorage.getItem('serverAPI') + '/ticket/all')
+      .then(res => {
+        this.setState({ data: res.data });
+      })
+      .catch(error => {
+        this.setState({
+          data: [{
+            id: '',
+            reporter_id: '',
+            vehicle_id: '',
+            violation_type: '',
+            detail: '',
+            incident_date: '',
+            documentation: '',
+            violance_address: '',
+            created: '',
+            updated: '',
+          }]
+        })
+        console.log(error);
+      });
   }
 
   getDataAll = () => {
@@ -153,9 +190,29 @@ class ChartSection extends React.Component {
   }
 
   render() {
+    var totalDate = []
+    var listMonth = []
+    var first
+    var second
+    for (let index = 0; index < this.state.data.length; index++) {
+      totalDate[index] = this.state.data[index].incident_date
+    }
+
+    for (let index = 0; index < totalDate.length; index++) {
+      first = totalDate[index][5]
+      second = totalDate[index][6]
+      listMonth[index] = first + second
+      listMonth[index] = parseInt(listMonth[index], 10)
+    }
+
+    function getOccurrence(listMonth, value) {
+      var count = 0;
+      listMonth.forEach((v) => (v === value && count++));
+      return count;
+    }
+
     var CanvasJSChart = CanvasJSReact.CanvasJSChart;
     const { classes } = this.props;
-    console.log("classes: "+classes)
     const graph = {
       animationEnabled: true,
       exportEnabled: true,
@@ -164,28 +221,28 @@ class ChartSection extends React.Component {
       //   text: "Graph Violation Data"
       // },
       axisY: {
-        title: "Bounce Rate",
+        title: "Jumlah Laporan",
       },
       axisX: {
         valueFormatString: "MMM"
       },
       data: [{
         yValueFormatString: "#,###",
-				xValueFormatString: "MMMM",
+        xValueFormatString: "MMMM",
         type: "line",
         dataPoints: [
-          { x: new Date(2017, 0), y: 25060 },
-					{ x: new Date(2017, 1), y: 27980 },
-					{ x: new Date(2017, 2), y: 42800 },
-					{ x: new Date(2017, 3), y: 32400 },
-					{ x: new Date(2017, 4), y: 35260 },
-					{ x: new Date(2017, 5), y: 33900 },
-					{ x: new Date(2017, 6), y: 40000 },
-					{ x: new Date(2017, 7), y: 52500 },
-					{ x: new Date(2017, 8), y: 32300 },
-					{ x: new Date(2017, 9), y: 42000 },
-					{ x: new Date(2017, 10), y: 37160 },
-					{ x: new Date(2017, 11), y: 38400 }
+          { x: new Date(2017, 0), y: getOccurrence(listMonth, 1) },
+          { x: new Date(2017, 1), y: getOccurrence(listMonth, 2) },
+          { x: new Date(2017, 2), y: getOccurrence(listMonth, 3) },
+          { x: new Date(2017, 3), y: getOccurrence(listMonth, 4) },
+          { x: new Date(2017, 4), y: getOccurrence(listMonth, 5) },
+          { x: new Date(2017, 5), y: getOccurrence(listMonth, 6) },
+          { x: new Date(2017, 6), y: getOccurrence(listMonth, 7) },
+          { x: new Date(2017, 7), y: getOccurrence(listMonth, 8) },
+          { x: new Date(2017, 8), y: getOccurrence(listMonth, 9) },
+          { x: new Date(2017, 9), y: getOccurrence(listMonth, 10) },
+          { x: new Date(2017, 10), y: getOccurrence(listMonth, 11) },
+          { x: new Date(2017, 11), y: getOccurrence(listMonth, 12) },
         ]
       }]
     }
@@ -205,18 +262,18 @@ class ChartSection extends React.Component {
         indexLabelFontSize: 16,
         indexLabel: "{label} - {total}%",
         dataPoints: [
-          
-          { y: this.state.data0.length, label: "Pending Data", total: (this.state.data0.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
-          { y: this.state.data9.length, label: "Not Valid Report", total: (this.state.data9.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
-          { y: this.state.data1.length, label: "Verified Data Report", total: (this.state.data1.length/(this.state.data0.length+this.state.data1.length+this.state.data9.length)*100).toFixed(2), },
+
+          { y: this.state.data0.length, label: "Pending Data", total: (this.state.data0.length / (this.state.data0.length + this.state.data1.length + this.state.data9.length) * 100).toFixed(2), },
+          { y: this.state.data9.length, label: "Not Valid Report", total: (this.state.data9.length / (this.state.data0.length + this.state.data1.length + this.state.data9.length) * 100).toFixed(2), },
+          { y: this.state.data1.length, label: "Verified Data Report", total: (this.state.data1.length / (this.state.data0.length + this.state.data1.length + this.state.data9.length) * 100).toFixed(2), },
         ]
       }]
-      
+
     }
 
     return (
       <div className={classes.section}>
-        <h2 className={classes.title}>Graph Violation Data</h2>
+        <h2 className={classes.title}>Graph Laporan Masuk</h2>
         <br />
         <br />
         <br />
@@ -228,7 +285,7 @@ class ChartSection extends React.Component {
         <br />
         <br />
         <br />
-        <h2 className={classes.title}>Status Violation Data</h2>
+        <h2 className={classes.title}>Status Laporan</h2>
         <CanvasJSChart options={pie}
         /* onRef={ref => this.chart = ref} */
         />
